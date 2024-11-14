@@ -1,0 +1,137 @@
+#main-container {
+	transition: all 1s ease-out;
+}
+
+#top-container {
+	background-image: url("./assets/ffm2.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-color: black;
+	transition: all 1s ease-out;
+	background-position-x: center;
+}
+
+.start-background {
+	background-color: rgb(0, 0, 255, 0.09);
+}
+
+.passfotos-background {
+	background-color: blue;
+	opacity: 1;
+}
+
+.bewerbung-background {
+	background-color: #ffbe33; /* #ffd333; /*#fbd87f;*/
+}
+
+.portraits-background {
+	background-color: #fa8072;
+}
+
+.produkte-background {
+	background-color: #545e0c;
+}
+
+.rahmen-background {
+	background-color: #540d6e;
+}
+
+.labor-background {
+	background-color: #098e9c;
+}
+
+.video-background {
+	background-color: #2e4447;
+}
+
+.glas-background {
+	background-color: #aca7a1;
+}
+
+.final-background {
+	background-color: #000000;
+}
+
+h1,
+h2,
+h3,
+h5 {
+	font-family: "Raleway";
+	color: white;
+}
+
+.service-description {
+	font-family: "Barlow";
+	color: white;
+	font-size: 16px;
+}
+
+h1 {
+	letter-spacing: 2px;
+}
+
+.line-1 {
+	height: 2px;
+	background: white;
+	width: 20%;
+	transition: all 1s ease-out;
+}
+
+.arrow {
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	display: inline-block;
+	padding: 5px;
+}
+
+.right {
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+}
+
+.arrow-container {
+	cursor: pointer;
+}
+
+.arrow-container:hover .line-1 {
+	width: 30%;
+}
+
+a,
+.shopping-cart-item {
+	text-decoration: none;
+	color: white;
+	font-family: "Barlow";
+	font-size: 16px;
+	letter-spacing: 1px;
+}
+
+.shopping-cart-item {
+	padding: 0;
+	margin: 0;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+html::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+#animated-rect {
+	animation: svgAnimation 20s linear infinite;
+}
+
+@keyframes svgAnimation {
+	from {
+		stroke-dashoffset: 0;
+	}
+	to {
+		stroke-dashoffset: 1000;
+	}
+}
