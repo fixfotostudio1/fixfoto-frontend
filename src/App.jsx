@@ -20,7 +20,7 @@ const App = () => {
 	const [scrollPerc, setScrollPerc] = useState(0);
 	const [background, setBackground] = useState("start-background");
 	const [showDialog, setShowDialog] = useState(false);
-	const [dialogContent, setDialogContent] = useState(null);
+	const [dialogType, setDialogType] = useState(null);
 	const [shoppingCartContent, setShoppingCartContent] = useState([]);
 
 	const shoppingCartRef = useRef({ current: [] });
@@ -184,7 +184,7 @@ const App = () => {
 					scrollPerc={scrollPerc}
 					title="FOTOPRODUKTE"
 					handleClick={() => {
-						setDialogContent("fotoprodukte");
+						setDialogType("Fotoprodukte");
 						setShowDialog(true);
 					}}
 				/>
@@ -196,14 +196,14 @@ const App = () => {
 				<ShoppingCart
 					shoppingCartContent={shoppingCartContent}
 					handleClick={() => {
-						setDialogContent("warenkorb");
+						setDialogType("ShoppingCartDialog");
 						setShowDialog(true);
 					}}
 				/>
 				<Dialog
 					show={showDialog}
-					content={dialogContent}
-					handleRedirect={setDialogContent}
+					dialogType={dialogType}
+					handleRedirect={setDialogType}
 					handleClose={() => setShowDialog(false)}
 					handleItemAddition={updateShoppingCartContent}
 				/>
