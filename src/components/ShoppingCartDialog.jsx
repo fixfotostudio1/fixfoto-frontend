@@ -1,4 +1,8 @@
-const ShoppingCartDialog = () => {
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+
+const ShoppingCartDialog = ({ handleClose, shoppingCartContent }) => {
+	console.log("shoppingCartContent: ", shoppingCartContent);
 	return (
 		<>
 			<Modal.Header closeButton>

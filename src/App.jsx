@@ -206,6 +206,7 @@ const App = () => {
 					handleRedirect={setDialogType}
 					handleClose={() => setShowDialog(false)}
 					handleItemAddition={updateShoppingCartContent}
+					shoppingCartContent={shoppingCartContent}
 				/>
 			</div>
 		</div>

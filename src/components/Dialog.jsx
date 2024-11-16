@@ -10,11 +10,17 @@ const Dialog = ({
 	handleClose,
 	handleRedirect,
 	handleItemAddition,
+	shoppingCartContent,
 }) => {
 	let content;
 	switch (dialogType) {
 		case "ShoppingCartDialog":
-			content = <ShoppingCartDialog />;
+			content = (
+				<ShoppingCartDialog
+					handleClose={handleClose}
+					shoppingCartContent={shoppingCartContent}
+				/>
+			);
 			break;
 		case "ContactDataDialog":
 			content = <ContactDataDialog />;

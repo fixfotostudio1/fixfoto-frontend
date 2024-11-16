@@ -49,35 +49,53 @@ const priceList = {
 };
 
 const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
-	const [selectedItem, setSelectedItem] = useState(null);
-	const [selectedSize, setSelectedSize] = useState(null);
-	const [selectedNumber, setSelectedNumber] = useState(null);
+	const [sizeOptions, setSizeOptions] = useState([
+		"Wählen Sie bitte zuerst ein Produkt.",
+	]);
 
-	const [groessen, setGroessen] = useState([]);
-
-	const [price, setPrice] = useState(0);
-
-	const changeGroessen = (produkt) => {
-		console.log("produkt: ", itemType, produkt);
-		setGroessen(Object.keys(priceList[itemType][produkt]));
-	};
-
-	const changePrice = (produkt, size, number) => {
-		console.log("produkt, size, number: ", produkt, size, number);
-		if (
-			produkt !== "Wählen" &&
-			size !== "Wählen Sie bitte zuerst ein Produkt..." &&
-			number
-		) {
-			setPrice(priceList[itemType][produkt][size] * number);
+	const changeSizeOptions = () => {
+		if (priceList[itemType].hasOwnProperty(nameRef.current.value)) {
+			setSizeOptions(Object.keys(priceList[itemType][nameRef.current.value]));
+			console.log(
+				"sizeRef before: ",
+				sizeRef.current.value,
+				Object.keys(priceList[itemType][nameRef.current.value])[0]
+			);
+			sizeRef = {
+				current: {
+					value: Object.keys(priceList[itemType][nameRef.current.value])[0],
+				},
+			};
+			console.log("sizeRef after: ", sizeRef.current.value);
 		} else {
-			setPrice(0);
+			setSizeOptions(["Wählen Sie bitte zuerst ein Produkt."]);
 		}
 	};
 
-	const nameRef = useRef({ current: null });
-	const sizeRef = useRef({ current: null });
-	const numberRef = useRef({ current: null });
+	const [price, setPrice] = useState(null);
+	const changePrice = () => {
+		if (
+			priceList[itemType].hasOwnProperty(nameRef.current.value) &&
+			priceList[itemType][nameRef.current.value].hasOwnProperty(
+				sizeRef.current.value
+			) &&
+			numberRef.current.value
+		) {
+			setPrice(
+				Math.round(
+					priceList[itemType][nameRef.current.value][sizeRef.current.value] *
+						numberRef.current.value *
+						100
+				) / 100
+			);
+		} else {
+			setPrice(null);
+		}
+	};
+
+	let nameRef = useRef({ current: null });
+	let sizeRef = useRef({ current: null });
+	let numberRef = useRef({ current: null });
 	return (
 		<>
 			<Modal.Header closeButton>
@@ -91,16 +109,12 @@ const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
 						aria-label="Default select example"
 						style={{ width: "70%" }}
 						onChange={() => {
-							changeGroessen(nameRef.current.value);
-							changePrice(
-								nameRef.current.value,
-								sizeRef.current.value,
-								numberRef.current.value
-							);
+							changeSizeOptions();
+							changePrice();
 						}}
 					>
 						<option>Wählen...</option>
-						{Object.keys(priceList[itemType]).map((item) => (
+						{...Object.keys(priceList[itemType]).map((item) => (
 							<option value={item}>{item}</option>
 						))}
 					</Form.Select>
@@ -109,24 +123,14 @@ const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
 					<Form.Label style={{ padding: 0, margin: 0 }}>Größe:</Form.Label>
 					<Form.Select
 						ref={sizeRef}
-						disabled={groessen.length <= 1}
+						disabled={sizeOptions.length === 1}
 						aria-label="Default select example"
 						style={{ width: "70%" }}
-						onChange={() =>
-							changePrice(
-								nameRef.current.value,
-								sizeRef.current.value,
-								numberRef.current.value
-							)
-						}
+						onChange={() => {
+							changePrice();
+						}}
 					>
-						{groessen.length === 0 ? (
-							<option value={null}>
-								Wählen Sie bitte zuerst ein Produkt...
-							</option>
-						) : (
-							groessen.map((item) => <option value={item}>{item}</option>)
-						)}
+						{...sizeOptions.map((size) => <option value={size}>{size}</option>)}
 					</Form.Select>
 				</Form.Group>
 				<Form.Group className="d-flex justify-content-between align-items-center mt-3">
@@ -135,13 +139,9 @@ const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
 						style={{ width: "70%" }}
 						type="number"
 						ref={numberRef}
-						onChange={() =>
-							changePrice(
-								nameRef.current.value,
-								sizeRef.current.value,
-								numberRef.current.value
-							)
-						}
+						onChange={() => {
+							changePrice();
+						}}
 					/>
 				</Form.Group>
 				<Form.Group
@@ -151,18 +151,22 @@ const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
 					<Form.Label style={{ padding: 0, margin: 0 }}>Foto:</Form.Label>
 					<Form.Control style={{ width: "70%" }} type="file" />
 				</Form.Group>
-				<div className="d-flex justify-content-between align-items-center mt-5">
-					<p style={{ padding: 0, margin: 0, color: "white" }}>Preis:</p>
-					<h4
-						style={{
-							padding: 0,
-							margin: 0,
-							width: "68%",
-						}}
-					>
-						{price}€
-					</h4>
-				</div>
+				{price ? (
+					<div className="d-flex justify-content-between align-items-center mt-5">
+						<p style={{ padding: 0, margin: 0, color: "white" }}>Preis:</p>
+						<h4
+							style={{
+								padding: 0,
+								margin: 0,
+								width: "68%",
+							}}
+						>
+							{price}€
+						</h4>
+					</div>
+				) : (
+					""
+				)}
 			</Modal.Body>
 			<Modal.Footer>
 				<Button
@@ -170,7 +174,11 @@ const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
 					onClick={() =>
 						handleItemAddition({
 							name: nameRef.current.value,
-							price: priceList[nameRef.current.value][sizeRef.current.value],
+							size: sizeRef.current.value,
+							price:
+								priceList[itemType][nameRef.current.value][
+									sizeRef.current.value
+								],
 							number: parseInt(numberRef.current.value),
 						})
 					}
