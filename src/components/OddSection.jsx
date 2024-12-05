@@ -1,5 +1,38 @@
-const OddSection = ({ id, scrollPerc, title, handleClick }) => {
+const OddSection = ({ id, scrollPerc, title, handleClick, items }) => {
 	//<p style={{ color: "white" }}>{`HELLO ${scrollPerc}%`}</p>;
+	let mainText;
+	if (items) {
+		mainText = () => (
+			<p
+				className="service-description"
+				style={{
+					maxWidth: "70%",
+					marginBottom: "0px",
+				}}
+			>
+				{...Object.keys(items).map((item) => (
+					<>
+						{item + ": " + items[item] + " EUR"} <br />
+					</>
+				))}
+			</p>
+		);
+	} else {
+		mainText = () => (
+			<p
+				className="service-description"
+				style={{
+					maxWidth: "70%",
+					marginBottom: "0px",
+				}}
+			>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur,
+				doloremque! Quasi, vel molestiae? Porro quis soluta quod alias nihil.
+				Quisquam, consequatur distinctio. Non animi iusto excepturi modi alias
+				eaque ipsam?
+			</p>
+		);
+	}
 	return (
 		<div id={id} className="m-0 p-0 max-vw-100" style={{ height: "130vh" }}>
 			<div
@@ -28,18 +61,7 @@ const OddSection = ({ id, scrollPerc, title, handleClick }) => {
 				>
 					<b>{title}</b>
 				</h1>
-				<p
-					className="service-description"
-					style={{
-						maxWidth: "70%",
-						marginBottom: "0px",
-					}}
-				>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur,
-					doloremque! Quasi, vel molestiae? Porro quis soluta quod alias nihil.
-					Quisquam, consequatur distinctio. Non animi iusto excepturi modi alias
-					eaque ipsam?
-				</p>
+				{mainText()}
 				<div
 					className="d-flex align-items-center arrow-container"
 					style={{

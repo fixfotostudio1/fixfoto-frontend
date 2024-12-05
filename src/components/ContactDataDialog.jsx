@@ -1,4 +1,8 @@
-const ContactDataDialog = () => {
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+
+const ContactDataDialog = ({ handleClose, handleRedirect }) => {
 	return (
 		<>
 			<Modal.Header closeButton>
@@ -24,7 +28,10 @@ const ContactDataDialog = () => {
 			</Modal.Body>
 			<Modal.Footer>
 				<Button variant="secondary">Zurück zum Warenkorb</Button>
-				<Button variant="primary" onClick={handleClose}>
+				<Button
+					variant="primary"
+					onClick={() => handleRedirect("PaymentDialog")}
+				>
 					Bezahlen
 				</Button>
 			</Modal.Footer>

@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import ItemDialog from "./ItemDialog";
 import ShoppingCartDialog from "./ShoppingCartDialog";
 import ContactDataDialog from "./ContactDataDialog";
+import PaymentDialog from "./PaymentDialog";
 
 const Dialog = ({
 	show,
@@ -23,7 +24,20 @@ const Dialog = ({
 			);
 			break;
 		case "ContactDataDialog":
-			content = <ContactDataDialog />;
+			content = (
+				<ContactDataDialog
+					handleClose={handleClose}
+					handleRedirect={handleRedirect}
+				/>
+			);
+			break;
+		case "PaymentDialog":
+			content = (
+				<PaymentDialog
+					handleClose={handleClose}
+					handleRedirect={handleRedirect}
+				/>
+			);
 			break;
 		default:
 			content = (
