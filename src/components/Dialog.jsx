@@ -2,16 +2,18 @@ import Modal from "react-bootstrap/Modal";
 
 import ItemDialog from "./ItemDialog";
 import ShoppingCartDialog from "./ShoppingCartDialog";
-import ContactDataDialog from "./ContactDataDialog";
+import DeliveryAddressDialog from "./DeliveryAddressDialog";
 import PaymentDialog from "./PaymentDialog";
+import DeliveryTypeDialog from "./DeliveryTypeDialog";
 
 const Dialog = ({
 	show,
 	dialogType,
 	handleClose,
 	handleRedirect,
-	handleItemAddition,
-	shoppingCartContent,
+	changeOrder,
+	order,
+	pricelist,
 }) => {
 	let content;
 	switch (dialogType) {
@@ -19,13 +21,14 @@ const Dialog = ({
 			content = (
 				<ShoppingCartDialog
 					handleClose={handleClose}
-					shoppingCartContent={shoppingCartContent}
+					handleRedirect={handleRedirect}
+					order={order}
 				/>
 			);
 			break;
-		case "ContactDataDialog":
+		case "DeliveryAddressDialog":
 			content = (
-				<ContactDataDialog
+				<DeliveryAddressDialog
 					handleClose={handleClose}
 					handleRedirect={handleRedirect}
 				/>
@@ -39,12 +42,24 @@ const Dialog = ({
 				/>
 			);
 			break;
+		case "DeliveryTypeDialog":
+			content = (
+				<DeliveryTypeDialog
+					handleClose={handleClose}
+					handleRedirect={handleRedirect}
+					changeOrder={changeOrder}
+					order={order}
+				/>
+			);
+			break;
 		default:
 			content = (
 				<ItemDialog
 					itemType={dialogType}
-					handleItemAddition={handleItemAddition}
+					handleItemAddition={changeOrder}
 					handleRedirect={handleRedirect}
+					pricelist={pricelist}
+					order={order}
 				/>
 			);
 	}

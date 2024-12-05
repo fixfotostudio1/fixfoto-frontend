@@ -2,7 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const ContactDataDialog = ({ handleClose, handleRedirect }) => {
+const DeliveryAddressDialog = ({ handleClose, handleRedirect }) => {
 	return (
 		<>
 			<Modal.Header closeButton>
@@ -27,7 +27,7 @@ const ContactDataDialog = ({ handleClose, handleRedirect }) => {
 				</Form.Group>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant="secondary">Zurück zum Warenkorb</Button>
+				<Button variant="secondary">Zurück zur Versandart</Button>
 				<Button
 					variant="primary"
 					onClick={() => handleRedirect("PaymentDialog")}
@@ -39,4 +39,4 @@ const ContactDataDialog = ({ handleClose, handleRedirect }) => {
 	);
 };
 
-export default ContactDataDialog;
+export default DeliveryAddressDialog;

@@ -3,67 +3,28 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState, useRef } from "react";
 
-const priceList = {
-	Fotoprodukte: {
-		"Poster (Glanz)": {
-			"30 x 30": 17.9,
-			"30 x 40": 19.9,
-			"30 x 45": 21.9,
-			"40 x 40": 24.9,
-			"40 x 50": 27.9,
-			"40 x 60": 29.9,
-			"50 x 50": 34.9,
-			"50 x 60": 39.9,
-			"50 x 70": 44.9,
-		},
-		"Poster (Matt)": {
-			"30 x 30": 17.9,
-			"30 x 40": 19.9,
-			"30 x 45": 21.9,
-			"40 x 40": 24.9,
-			"40 x 50": 27.9,
-			"40 x 60": 29.9,
-			"50 x 50": 34.9,
-			"50 x 60": 39.9,
-			"50 x 70": 44.9,
-		},
-		"Leinen auf Keilrahmen": {
-			"30 x 30": 34.9,
-			"30 x 40": 39.9,
-			"30 x 45": 39.9,
-			"40 x 40": 44.9,
-			"40 x 50": 49.9,
-			"40 x 60": 54.9,
-			"50 x 50": 59.9,
-			"50 x 60": 64.9,
-			"50 x 70": 69.9,
-		},
-		Tassendruck: {
-			"Verschiedene Farben": 19.9,
-			Magic: 24.9,
-		},
-		Kissendruck: {
-			"Verschiedene Farben": 24.9,
-		},
-	},
-};
-
-const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
+const ItemDialog = ({
+	itemType,
+	handleItemAddition,
+	handleRedirect,
+	pricelist,
+	order,
+}) => {
 	const [sizeOptions, setSizeOptions] = useState([
 		"Wählen Sie bitte zuerst ein Produkt.",
 	]);
 
 	const changeSizeOptions = () => {
-		if (priceList[itemType].hasOwnProperty(nameRef.current.value)) {
-			setSizeOptions(Object.keys(priceList[itemType][nameRef.current.value]));
+		if (pricelist[itemType].hasOwnProperty(nameRef.current.value)) {
+			setSizeOptions(Object.keys(pricelist[itemType][nameRef.current.value]));
 			console.log(
 				"sizeRef before: ",
 				sizeRef.current.value,
-				Object.keys(priceList[itemType][nameRef.current.value])[0]
+				Object.keys(pricelist[itemType][nameRef.current.value])[0]
 			);
 			sizeRef = {
 				current: {
-					value: Object.keys(priceList[itemType][nameRef.current.value])[0],
+					value: Object.keys(pricelist[itemType][nameRef.current.value])[0],
 				},
 			};
 			console.log("sizeRef after: ", sizeRef.current.value);
@@ -75,15 +36,15 @@ const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
 	const [price, setPrice] = useState(null);
 	const changePrice = () => {
 		if (
-			priceList[itemType].hasOwnProperty(nameRef.current.value) &&
-			priceList[itemType][nameRef.current.value].hasOwnProperty(
+			pricelist[itemType].hasOwnProperty(nameRef.current.value) &&
+			pricelist[itemType][nameRef.current.value].hasOwnProperty(
 				sizeRef.current.value
 			) &&
 			numberRef.current.value
 		) {
 			setPrice(
 				Math.round(
-					priceList[itemType][nameRef.current.value][sizeRef.current.value] *
+					pricelist[itemType][nameRef.current.value][sizeRef.current.value] *
 						numberRef.current.value *
 						100
 				) / 100
@@ -114,7 +75,7 @@ const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
 						}}
 					>
 						<option>Wählen...</option>
-						{...Object.keys(priceList[itemType]).map((item) => (
+						{...Object.keys(pricelist[itemType]).map((item) => (
 							<option value={item}>{item}</option>
 						))}
 					</Form.Select>
@@ -171,25 +132,28 @@ const ItemDialog = ({ itemType, handleItemAddition, handleRedirect }) => {
 			<Modal.Footer>
 				<Button
 					variant="secondary"
-					onClick={() =>
-						handleItemAddition({
-							name: nameRef.current.value,
-							size: sizeRef.current.value,
-							price:
-								priceList[itemType][nameRef.current.value][
-									sizeRef.current.value
-								],
-							number: parseInt(numberRef.current.value),
-						})
-					}
+					onClick={() => {
+						const newItem = {
+							product: nameRef.current.value,
+							type: sizeRef.current.value,
+							amount: parseInt(numberRef.current.value),
+							filename: "",
+						};
+						const newOrder = {
+							...order,
+							items: order["items"].concat([newItem]),
+						};
+						console.log("newOrder: ", newOrder);
+						handleItemAddition(newOrder);
+					}}
 				>
 					Zum Warenkorb hinzufügen
 				</Button>
 				<Button
 					variant="primary"
-					onClick={() => handleRedirect("ContactDataDialog")}
+					onClick={() => handleRedirect("ShoppingCartDialog")}
 				>
-					Bestellen
+					Warenkorb ansehen
 				</Button>
 			</Modal.Footer>
 		</>

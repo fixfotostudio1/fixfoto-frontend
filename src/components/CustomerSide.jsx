@@ -21,22 +21,23 @@ import video from "../assets/video.png";
 import glas from "../assets/glas.png";
 
 const CustomerSide = ({ pricelist }) => {
-	console.log("pricelist: ", pricelist);
 	const [scrollPerc, setScrollPerc] = useState(0);
 	const [background, setBackground] = useState("start-background");
 	const [showDialog, setShowDialog] = useState(false);
 	const [dialogType, setDialogType] = useState(null);
 	const [shoppingCartContent, setShoppingCartContent] = useState([]);
+
 	const [clientSecret, setClientSecret] = useState(null);
+	const [order, setOrder] = useState({
+		items: [],
+		deliveryType: "Abholen",
+		deliveryAddress: {},
+	});
+
+	const addItem = (newItem) => {};
 
 	const shoppingCartRef = useRef({ current: [] });
 	shoppingCartRef.current = shoppingCartContent;
-
-	const updateShoppingCartContent = (item) => {
-		console.log("shoppingCartContent: ", shoppingCartContent);
-		//console.log("shoppingCartContent: ", shoppingCartContent);
-		setShoppingCartContent([...shoppingCartRef.current, item]);
-	};
 
 	const updateBackground = () => {
 		const newScrollPerc =
@@ -218,7 +219,7 @@ const CustomerSide = ({ pricelist }) => {
 						scrollPerc={scrollPerc}
 						title="FOTOPRODUKTE"
 						handleClick={() => {
-							setDialogType("Fotoprodukte");
+							setDialogType("fotoprodukte");
 							setShowDialog(true);
 						}}
 					/>
@@ -247,8 +248,9 @@ const CustomerSide = ({ pricelist }) => {
 						dialogType={dialogType}
 						handleRedirect={setDialogType}
 						handleClose={() => setShowDialog(false)}
-						handleItemAddition={updateShoppingCartContent}
-						shoppingCartContent={shoppingCartContent}
+						changeOrder={setOrder}
+						order={order}
+						pricelist={pricelist}
 					/>
 				</div>
 			</div>

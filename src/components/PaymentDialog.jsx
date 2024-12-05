@@ -1,3 +1,6 @@
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+
 import {
 	PaymentElement,
 	useStripe,
@@ -43,12 +46,21 @@ const PaymentDialog = ({ handleClose }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<PaymentElement />
-			<button disabled={!stripe}>Submit</button>
-			{/* Show error message to your customers */}
-			{errorMessage && <div>{errorMessage}</div>}
-		</form>
+		<>
+			<Modal.Header closeButton>
+				<Modal.Title>Zahlungsart wählen</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<form onSubmit={handleSubmit}>
+					<PaymentElement />
+				</form>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button disabled={!stripe}>Submit</Button>
+				{/* Show error message to your customers */}
+				{errorMessage && <div>{errorMessage}</div>}
+			</Modal.Footer>
+		</>
 	);
 };
 
