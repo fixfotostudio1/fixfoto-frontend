@@ -2,12 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const DeliveryTypeDialog = ({
-	handleClose,
-	handleRedirect,
-	changeOrder,
-	order,
-}) => {
+const DeliveryTypeDialog = ({ handleRedirect, changeOrder, order }) => {
 	return (
 		<>
 			<Modal.Header closeButton>
@@ -21,8 +16,8 @@ const DeliveryTypeDialog = ({
 							name="group1"
 							type="radio"
 							id="inline-radio-1"
+							checked={order["deliveryType"] === "Abholen"}
 							onChange={({ target }) => {
-								console.log("Abholen: ", target.value === "on");
 								if (target.value === "on")
 									changeOrder({ ...order, deliveryType: "Abholen" });
 							}}
@@ -32,10 +27,10 @@ const DeliveryTypeDialog = ({
 							name="group1"
 							type="radio"
 							id="inline-radio-2"
+							checked={order["deliveryType"] === "Hermes-Versand"}
 							onChange={({ target }) => {
-								console.log("Hermes-Versandart: ", target.value === "on");
 								if (target.value === "on")
-									changeOrder({ ...order, deliveryType: "Hermes-Versandart" });
+									changeOrder({ ...order, deliveryType: "Hermes-Versand" });
 							}}
 						/>
 					</div>

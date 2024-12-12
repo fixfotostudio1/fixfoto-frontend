@@ -9,6 +9,7 @@ const ItemDialog = ({
 	handleRedirect,
 	pricelist,
 	order,
+	addItem,
 }) => {
 	const [sizeOptions, setSizeOptions] = useState([
 		"Wählen Sie bitte zuerst ein Produkt.",
@@ -57,6 +58,7 @@ const ItemDialog = ({
 	let nameRef = useRef({ current: null });
 	let sizeRef = useRef({ current: null });
 	let numberRef = useRef({ current: null });
+	let fileRef = useRef({ current: null });
 	return (
 		<>
 			<Modal.Header closeButton>
@@ -110,7 +112,7 @@ const ItemDialog = ({
 					className="d-flex justify-content-between align-items-center mt-3"
 				>
 					<Form.Label style={{ padding: 0, margin: 0 }}>Foto:</Form.Label>
-					<Form.Control style={{ width: "70%" }} type="file" />
+					<Form.Control ref={fileRef} style={{ width: "70%" }} type="file" />
 				</Form.Group>
 				{price ? (
 					<div className="d-flex justify-content-between align-items-center mt-5">
@@ -133,18 +135,13 @@ const ItemDialog = ({
 				<Button
 					variant="secondary"
 					onClick={() => {
-						const newItem = {
+						console.log("fileRef: ", fileRef.current.files[0]);
+						addItem({
 							product: nameRef.current.value,
 							type: sizeRef.current.value,
 							amount: parseInt(numberRef.current.value),
-							filename: "",
-						};
-						const newOrder = {
-							...order,
-							items: order["items"].concat([newItem]),
-						};
-						console.log("newOrder: ", newOrder);
-						handleItemAddition(newOrder);
+							file: fileRef.current.files ? fileRef.current.files[0] : null,
+						});
 					}}
 				>
 					Zum Warenkorb hinzufügen

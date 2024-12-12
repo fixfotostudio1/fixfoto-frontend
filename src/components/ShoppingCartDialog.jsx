@@ -2,7 +2,12 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 
-const ShoppingCartDialog = ({ handleClose, order, handleRedirect }) => {
+const ShoppingCartDialog = ({
+	handleClose,
+	order,
+	handleRedirect,
+	deleteItem,
+}) => {
 	console.log("shoppingCartContent: ", order);
 	return (
 		<>
@@ -17,15 +22,19 @@ const ShoppingCartDialog = ({ handleClose, order, handleRedirect }) => {
 							<th>Typ</th>
 							<th>Dateiname</th>
 							<th>Anzahl</th>
+							<th>Entfernen</th>
 						</tr>
 					</thead>
 					<tbody>
-						{...order["items"].map((item) => (
+						{...order["items"].map((item, index) => (
 							<tr>
 								<td>{item["product"]}</td>
 								<td>{item["type"]}</td>
-								<td>{item["filename"]}</td>
+								<td>{item["file"].name}</td>
 								<td>{item["amount"]}</td>
+								<td>
+									<Button onClick={() => deleteItem(index)}>Löschen</Button>
+								</td>
 							</tr>
 						))}
 					</tbody>

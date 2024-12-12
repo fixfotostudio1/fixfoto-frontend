@@ -31,10 +31,41 @@ const CustomerSide = ({ pricelist }) => {
 	const [order, setOrder] = useState({
 		items: [],
 		deliveryType: "Abholen",
-		deliveryAddress: {},
+		deliveryAddress: {
+			firstName: "",
+			surname: "",
+			mobile: "",
+			email: "",
+			street: "",
+			houseNumber: "",
+			ZIPCode: "",
+			city: "",
+		},
 	});
+	const orderRef = useRef({ current: order });
+	orderRef.current = order;
 
-	const addItem = (newItem) => {};
+	const addItem = (newItem) => {
+		const newItems = orderRef.current["items"].concat([newItem]);
+		setOrder({ ...order, items: newItems });
+	};
+
+	const deleteItem = (index) => {
+		const newItems = orderRef.current["items"]
+			.slice(0, index)
+			.concat(orderRef.current["items"].slice(index + 1));
+		setOrder({ ...order, items: newItems });
+	};
+
+	const changeDeliveryType = (newType) => {
+		setOrder({ ...order, deliveryType: newType });
+	};
+
+	const updateDeliveryAddress = (key, value) => {
+		const newDeliveryAddress = { ...orderRef.current["deliveryAddress"] };
+		newDeliveryAddress[key] = value;
+		setOrder({ ...order, deliveryAddress: newDeliveryAddress });
+	};
 
 	const shoppingCartRef = useRef({ current: [] });
 	shoppingCartRef.current = shoppingCartContent;
@@ -119,6 +150,8 @@ const CustomerSide = ({ pricelist }) => {
 				console.log("client secret result: ", result);
 			});
 	};
+
+	console.log("orderRef.current: ", orderRef.current);
 
 	return (
 		<Elements stripe={stripePromise} options={options}>
@@ -251,6 +284,10 @@ const CustomerSide = ({ pricelist }) => {
 						changeOrder={setOrder}
 						order={order}
 						pricelist={pricelist}
+						addItem={addItem}
+						deleteItem={deleteItem}
+						updateDeliveryAddress={updateDeliveryAddress}
+						changeDeliveryType={changeDeliveryType}
 					/>
 				</div>
 			</div>
