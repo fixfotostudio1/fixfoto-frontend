@@ -2,7 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 
-const OverviewDialog = ({ handleRedirect, order }) => {
+const OverviewDialog = ({ handleRedirect, order, getClientSecret }) => {
 	return (
 		<>
 			<Modal.Header closeButton>
@@ -59,11 +59,10 @@ const OverviewDialog = ({ handleRedirect, order }) => {
 			<Modal.Footer>
 				<Button
 					onClick={() => {
-						console.log("get client secret");
 						handleRedirect("PaymentDialog");
 					}}
 				>
-					Lieferadresse ändern
+					Bezahlen
 				</Button>
 			</Modal.Footer>
 		</>

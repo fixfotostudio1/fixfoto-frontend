@@ -1,7 +1,6 @@
 import Button from "react-bootstrap/Button";
 
 const TableRow = ({ item, handleClick }) => {
-	console.log(item["deliveryType"]);
 	let buttonText = "";
 	if (item["status"] === "abholbereit" || item["status"] === "versandbereit") {
 		buttonText = "abgeschlossen";

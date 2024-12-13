@@ -8,7 +8,6 @@ const ShoppingCartDialog = ({
 	handleRedirect,
 	deleteItem,
 }) => {
-	console.log("shoppingCartContent: ", order);
 	return (
 		<>
 			<Modal.Header closeButton>

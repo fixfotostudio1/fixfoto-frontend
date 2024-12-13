@@ -11,6 +11,7 @@ const ItemDialog = ({
 	order,
 	addItem,
 }) => {
+	console.log("pricelist[itemType]: ", pricelist, itemType);
 	const [sizeOptions, setSizeOptions] = useState([
 		"Wählen Sie bitte zuerst ein Produkt.",
 	]);
@@ -18,17 +19,11 @@ const ItemDialog = ({
 	const changeSizeOptions = () => {
 		if (pricelist[itemType].hasOwnProperty(nameRef.current.value)) {
 			setSizeOptions(Object.keys(pricelist[itemType][nameRef.current.value]));
-			console.log(
-				"sizeRef before: ",
-				sizeRef.current.value,
-				Object.keys(pricelist[itemType][nameRef.current.value])[0]
-			);
 			sizeRef = {
 				current: {
 					value: Object.keys(pricelist[itemType][nameRef.current.value])[0],
 				},
 			};
-			console.log("sizeRef after: ", sizeRef.current.value);
 		} else {
 			setSizeOptions(["Wählen Sie bitte zuerst ein Produkt."]);
 		}
@@ -135,8 +130,8 @@ const ItemDialog = ({
 				<Button
 					variant="secondary"
 					onClick={() => {
-						console.log("fileRef: ", fileRef.current.files[0]);
 						addItem({
+							supertype: itemType,
 							product: nameRef.current.value,
 							type: sizeRef.current.value,
 							amount: parseInt(numberRef.current.value),

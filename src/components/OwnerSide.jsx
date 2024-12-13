@@ -40,7 +40,6 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				},
 			})
 			.then((result) => {
-				console.log(result);
 				setOrderInfo(result["data"]);
 			});
 	};
@@ -65,7 +64,6 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 		} else if (order["status"] === "abgeschlossen") {
 			newStatus = "gelöscht";
 		}
-		console.log("newStatus: ", newStatus);
 		axios
 			.put(
 				`http://localhost:3001/api/orders/${order["id"]}`,

@@ -12,15 +12,9 @@ const App = () => {
 		axios.get("http://localhost:3001/api/pricelist").then((result) => {
 			setPricelist(result["data"][0]);
 		});
-
-		axios.post("http://localhost:3001/api/orders", {
-			amount: 20.0,
-			token: "000",
-		});
 	}, []);
 
 	const handlePricelistChange = (newPricelist, token) => {
-		console.log(`http://localhost:3001/api/pricelist/${newPricelist["id"]}`);
 		axios
 			.put(
 				`http://localhost:3001/api/pricelist/${newPricelist["id"]}`,

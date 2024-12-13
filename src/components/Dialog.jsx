@@ -6,6 +6,14 @@ import DeliveryAddressDialog from "./DeliveryAddressDialog";
 import PaymentDialog from "./PaymentDialog";
 import DeliveryTypeDialog from "./DeliveryTypeDialog";
 import OverviewDialog from "./OverviewDialog";
+import { useState } from "react";
+
+import { STRIPE_PUBLISHABLE_KEY, CLIENT_SECRET } from "../utils/config";
+
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
+import axios from "axios";
 
 const Dialog = ({
 	show,
@@ -18,8 +26,23 @@ const Dialog = ({
 	addItem,
 	deleteItem,
 	updateDeliveryAddress,
+	getClientSecret,
 }) => {
+	const [clientSecret, setClientSecret] = useState(null);
+	const [toggle, setToggle] = useState(true);
 	let content;
+
+	const fetchClientSecret = () => {
+		axios
+			.post("http://localhost:3001/api/orders/", {
+				items: order.items,
+				deliveryType: order.deliveryType,
+			})
+			.then((result) => {
+				setClientSecret(result["data"]["client_secret"]);
+			});
+	};
+
 	switch (dialogType) {
 		case "ShoppingCartDialog":
 			content = (
@@ -41,12 +64,39 @@ const Dialog = ({
 			);
 			break;
 		case "PaymentDialog":
-			content = (
-				<PaymentDialog
-					handleClose={handleClose}
-					handleRedirect={handleRedirect}
-				/>
-			);
+			if (!clientSecret) {
+				axios
+					.post("http://localhost:3001/api/orders/", {
+						items: order.items,
+						deliveryType: order.deliveryType,
+					})
+					.then((result) => {
+						setClientSecret(result["data"]["client_secret"]);
+					})
+					.then(() => {
+						console.log("clS none: ", clientSecret);
+						content = (
+							<Elements
+								stripe={stripePromise}
+								options={{ clientSecret: clientSecret }}
+							>
+								<PaymentDialog handleRedirect={handleRedirect} order={order} />
+							</Elements>
+						);
+						setToggle(!toggle);
+					});
+			} else {
+				console.log("clS: ", clientSecret);
+				content = (
+					<Elements
+						stripe={stripePromise}
+						options={{ clientSecret: clientSecret }}
+					>
+						<PaymentDialog handleRedirect={handleRedirect} order={order} />
+					</Elements>
+				);
+			}
+
 			break;
 		case "DeliveryTypeDialog":
 			content = (
@@ -59,7 +109,11 @@ const Dialog = ({
 			break;
 		case "OverviewDialog":
 			content = (
-				<OverviewDialog order={order} handleRedirect={handleRedirect} />
+				<OverviewDialog
+					order={order}
+					handleRedirect={handleRedirect}
+					getClientSecret={getClientSecret}
+				/>
 			);
 			break;
 		default:
@@ -74,6 +128,7 @@ const Dialog = ({
 				/>
 			);
 	}
+
 	return (
 		<Modal show={show} onHide={handleClose} animation={true} centered>
 			{content}

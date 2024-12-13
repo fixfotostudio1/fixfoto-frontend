@@ -6,12 +6,6 @@ import TitleSection from "./TitleSection";
 import FinalSection from "./FinalSection";
 import Dialog from "./Dialog";
 import ShoppingCart from "./ShoppingCart";
-import axios from "axios";
-import { STRIPE_PUBLISHABLE_KEY, CLIENT_SECRET } from "../utils/config";
-
-import { Elements } from "@stripe/react-stripe-js";
-const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
-import { loadStripe } from "@stripe/stripe-js";
 
 import pass from "../assets/pass.png";
 import bew from "../assets/bew.jpg";
@@ -27,7 +21,6 @@ const CustomerSide = ({ pricelist }) => {
 	const [dialogType, setDialogType] = useState(null);
 	const [shoppingCartContent, setShoppingCartContent] = useState([]);
 
-	const [clientSecret, setClientSecret] = useState(null);
 	const [order, setOrder] = useState({
 		items: [],
 		deliveryType: "Abholen",
@@ -134,164 +127,135 @@ const CustomerSide = ({ pricelist }) => {
 		};
 	});
 
-	const options = {
-		// passing the client secret obtained in step 3
-		clientSecret: CLIENT_SECRET,
-		// Fully customizable with appearance API.
-		appearance: {
-			/*...*/
-		},
-	};
-
-	const fetchClientSecret = () => {
-		axios
-			.post("http://localhost:3001/api/orders/getClientSecret", shoppingCartRef)
-			.then((result) => {
-				console.log("client secret result: ", result);
-			});
-	};
-
-	console.log("orderRef.current: ", orderRef.current);
-
 	return (
-		<Elements stripe={stripePromise} options={options}>
-			<div id="top-container" style={{ maxWidth: "100vw" }}>
-				<div
-					id="main-container"
-					className={`d-flex flex-column ${background}`}
+		<div id="top-container" style={{ maxWidth: "100vw" }}>
+			<div
+				id="main-container"
+				className={`d-flex flex-column ${background}`}
+				style={{
+					height: "1270vh",
+					maxWidth: "100vw",
+				}}
+			>
+				<NavBar />
+				<TitleSection />
+				<img
+					className="position-absolute "
+					src={pass}
+					alt=""
 					style={{
-						height: "1270vh",
-						maxWidth: "100vw",
+						width: "60vmin",
+						top: "160vh",
+						left: "15vw",
 					}}
-				>
-					<NavBar />
-					<TitleSection />
-					<img
-						className="position-absolute "
-						src={pass}
-						alt=""
-						style={{
-							width: "60vmin",
-							top: "160vh",
-							left: "15vw",
-						}}
-					/>
-					<img
-						className="position-absolute "
-						src={bew}
-						alt=""
-						style={{
-							width: "60vmin",
-							top: "295vh",
-							right: "13vw",
-							borderTop: "20px solid white",
-							boxSizing: "content-box",
-						}}
-					/>
-					<img
-						className="position-absolute "
-						src={prod}
-						alt=""
-						style={{
-							width: "60vmin",
-							top: "545vh",
-							left: "52vw",
-						}}
-					/>
-					<img
-						className="position-absolute "
-						src={lab}
-						alt=""
-						style={{
-							width: "60vmin",
-							top: "815vh",
-							right: "13vw",
-							boxSizing: "content-box",
-						}}
-					/>
-					<img
-						className="position-absolute "
-						src={video}
-						alt=""
-						style={{
-							width: "50vmin",
-							top: "935vh",
-							left: "15vw",
-						}}
-					/>
-					<img
-						className="position-absolute "
-						src={glas}
-						alt=""
-						style={{
-							width: "35vmin",
-							top: "1070vh",
-							right: "23vw",
-							boxSizing: "content-box",
-						}}
-					/>
-					<OddSection
-						id="passfotos"
-						scrollPerc={scrollPerc}
-						title="PASSFOTOS"
-						items={pricelist["passfotos"]}
-					/>
-					<EvenSection
-						id="bewerbung"
-						scrollPerc={scrollPerc}
-						title="BEWERBUNGSBILDER"
-					/>
-					<OddSection
-						id="portraits"
-						scrollPerc={scrollPerc}
-						title="PORTRAITS"
-						items={pricelist["portraits"]}
-					/>
-					<EvenSection
-						id="produkte"
-						scrollPerc={scrollPerc}
-						title="FOTOPRODUKTE"
-						handleClick={() => {
-							setDialogType("fotoprodukte");
-							setShowDialog(true);
-						}}
-					/>
-					<OddSection
-						id="rahmen"
-						scrollPerc={scrollPerc}
-						title="BILDERRAHMEN"
-					/>
-					<EvenSection id="labor" scrollPerc={scrollPerc} title="LABOR" />
-					<OddSection
-						id="video"
-						scrollPerc={scrollPerc}
-						title="VIDEOKASSETTEN"
-					/>
-					<EvenSection id="glas" scrollPerc={scrollPerc} title="3D GLASFOTO" />
-					<FinalSection />
-					<ShoppingCart
-						shoppingCartContent={shoppingCartContent}
-						handleClick={() => {
-							setDialogType("ShoppingCartDialog");
-							setShowDialog(true);
-						}}
-					/>
-					<Dialog
-						show={showDialog}
-						dialogType={dialogType}
-						handleRedirect={setDialogType}
-						handleClose={() => setShowDialog(false)}
-						changeOrder={setOrder}
-						order={order}
-						pricelist={pricelist}
-						addItem={addItem}
-						deleteItem={deleteItem}
-						updateDeliveryAddress={updateDeliveryAddress}
-						changeDeliveryType={changeDeliveryType}
-					/>
-				</div>
+				/>
+				<img
+					className="position-absolute "
+					src={bew}
+					alt=""
+					style={{
+						width: "60vmin",
+						top: "295vh",
+						right: "13vw",
+						borderTop: "20px solid white",
+						boxSizing: "content-box",
+					}}
+				/>
+				<img
+					className="position-absolute "
+					src={prod}
+					alt=""
+					style={{
+						width: "60vmin",
+						top: "545vh",
+						left: "52vw",
+					}}
+				/>
+				<img
+					className="position-absolute "
+					src={lab}
+					alt=""
+					style={{
+						width: "60vmin",
+						top: "815vh",
+						right: "13vw",
+						boxSizing: "content-box",
+					}}
+				/>
+				<img
+					className="position-absolute "
+					src={video}
+					alt=""
+					style={{
+						width: "50vmin",
+						top: "935vh",
+						left: "15vw",
+					}}
+				/>
+				<img
+					className="position-absolute "
+					src={glas}
+					alt=""
+					style={{
+						width: "35vmin",
+						top: "1070vh",
+						right: "23vw",
+						boxSizing: "content-box",
+					}}
+				/>
+				<OddSection
+					id="passfotos"
+					scrollPerc={scrollPerc}
+					title="PASSFOTOS"
+					items={pricelist["passfotos"]}
+				/>
+				<EvenSection
+					id="bewerbung"
+					scrollPerc={scrollPerc}
+					title="BEWERBUNGSBILDER"
+				/>
+				<OddSection
+					id="portraits"
+					scrollPerc={scrollPerc}
+					title="PORTRAITS"
+					items={pricelist["portraits"]}
+				/>
+				<EvenSection
+					id="produkte"
+					scrollPerc={scrollPerc}
+					title="FOTOPRODUKTE"
+					handleClick={() => {
+						setDialogType("fotoprodukte");
+						setShowDialog(true);
+					}}
+				/>
+				<OddSection id="rahmen" scrollPerc={scrollPerc} title="BILDERRAHMEN" />
+				<EvenSection id="labor" scrollPerc={scrollPerc} title="LABOR" />
+				<OddSection id="video" scrollPerc={scrollPerc} title="VIDEOKASSETTEN" />
+				<EvenSection id="glas" scrollPerc={scrollPerc} title="3D GLASFOTO" />
+				<FinalSection />
+				<ShoppingCart
+					shoppingCartContent={shoppingCartContent}
+					handleClick={() => {
+						setDialogType("ShoppingCartDialog");
+						setShowDialog(true);
+					}}
+				/>
+				<Dialog
+					show={showDialog}
+					dialogType={dialogType}
+					handleRedirect={setDialogType}
+					handleClose={() => setShowDialog(false)}
+					changeOrder={setOrder}
+					order={order}
+					pricelist={pricelist}
+					addItem={addItem}
+					deleteItem={deleteItem}
+					updateDeliveryAddress={updateDeliveryAddress}
+					changeDeliveryType={changeDeliveryType}
+				/>
 			</div>
-		</Elements>
+		</div>
 	);
 };
 
