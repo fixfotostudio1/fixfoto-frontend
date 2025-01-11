@@ -18,13 +18,15 @@ const PaymentDialog = ({ order }) => {
 		const { error } = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
-				return_url: "https://example.com/order/123/complete",
+				return_url: "http://localhost:5173/success",
 			},
 		});
 
 		if (error) {
 			setErrorMessage(error.message);
+			console.log("fail actions");
 		} else {
+			console.log("success actions");
 		}
 	};
 

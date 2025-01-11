@@ -6,7 +6,8 @@ import DeliveryAddressDialog from "./DeliveryAddressDialog";
 import PaymentDialog from "./PaymentDialog";
 import DeliveryTypeDialog from "./DeliveryTypeDialog";
 import OverviewDialog from "./OverviewDialog";
-import { useState } from "react";
+import ConfirmationDialog from "./ConfirmationDialog";
+import { useState, useRef } from "react";
 
 import { STRIPE_PUBLISHABLE_KEY, CLIENT_SECRET } from "../utils/config";
 
@@ -29,19 +30,10 @@ const Dialog = ({
 	getClientSecret,
 }) => {
 	const [clientSecret, setClientSecret] = useState(null);
-	const [toggle, setToggle] = useState(true);
-	let content;
+	const clientSecretRef = useRef({ current: clientSecret });
+	clientSecretRef.current = clientSecret;
 
-	const fetchClientSecret = () => {
-		axios
-			.post("http://localhost:3001/api/orders/", {
-				items: order.items,
-				deliveryType: order.deliveryType,
-			})
-			.then((result) => {
-				setClientSecret(result["data"]["client_secret"]);
-			});
-	};
+	let content;
 
 	switch (dialogType) {
 		case "ShoppingCartDialog":
@@ -64,26 +56,23 @@ const Dialog = ({
 			);
 			break;
 		case "PaymentDialog":
-			if (!clientSecret) {
+			if (!clientSecretRef.current) {
 				axios
 					.post("http://localhost:3001/api/orders/", {
 						items: order.items,
 						deliveryType: order.deliveryType,
 					})
 					.then((result) => {
-						setClientSecret(result["data"]["client_secret"]);
-					})
-					.then(() => {
-						console.log("clS none: ", clientSecret);
+						console.log("clientSecretRef.current:", clientSecretRef.current);
 						content = (
 							<Elements
 								stripe={stripePromise}
-								options={{ clientSecret: clientSecret }}
+								options={{ clientSecret: result["data"]["client_secret"] }}
 							>
 								<PaymentDialog handleRedirect={handleRedirect} order={order} />
 							</Elements>
 						);
-						setToggle(!toggle);
+						setClientSecret(result["data"]["client_secret"]);
 					});
 			} else {
 				console.log("clS: ", clientSecret);
@@ -115,6 +104,9 @@ const Dialog = ({
 					getClientSecret={getClientSecret}
 				/>
 			);
+			break;
+		case "ConfirmationDialog":
+			content = <ConfirmationDialog />;
 			break;
 		default:
 			content = (

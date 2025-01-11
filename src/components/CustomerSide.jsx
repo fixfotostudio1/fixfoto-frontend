@@ -14,7 +14,7 @@ import lab from "../assets/labor.png";
 import video from "../assets/video.png";
 import glas from "../assets/glas.png";
 
-const CustomerSide = ({ pricelist }) => {
+const CustomerSide = ({ pricelist, orderSuccess }) => {
 	const [scrollPerc, setScrollPerc] = useState(0);
 	const [background, setBackground] = useState("start-background");
 	const [showDialog, setShowDialog] = useState(false);
@@ -120,12 +120,16 @@ const CustomerSide = ({ pricelist }) => {
 	};
 
 	useEffect(() => {
+		if (orderSuccess) {
+			setDialogType("ConfirmationDialog");
+			setShowDialog(true);
+		}
 		window.addEventListener("scroll", updateBackground);
 
 		return () => {
 			window.removeEventListener("scroll", updateBackground);
 		};
-	});
+	}, []);
 
 	return (
 		<div id="top-container" style={{ maxWidth: "100vw" }}>
