@@ -61,7 +61,18 @@ const OddSection = ({ id, scrollPerc, title, handleClick, items }) => {
 				>
 					<b>{title}</b>
 				</h1>
-				{mainText()}
+				<p
+					className="service-description"
+					style={{
+						maxWidth: "70%",
+						marginBottom: "0px",
+					}}
+				>
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur,
+					doloremque! Quasi, vel molestiae? Porro quis soluta quod alias nihil.
+					Quisquam, consequatur distinctio. Non animi iusto excepturi modi alias
+					eaque ipsam?
+				</p>
 				<div
 					className="d-flex align-items-center arrow-container"
 					style={{

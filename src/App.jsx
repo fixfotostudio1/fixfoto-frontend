@@ -1,25 +1,36 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import CustomerSide from "./components/CustomerSide";
-import OwnerSide from "./components/OwnerSide";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { uploadFile } from "react-s3";
+import { Route, Routes } from "react-router-dom";
+
+import "./App.css";
+import CustomerSide from "./components/CustomerSide/CustomerSide";
+import OwnerSide from "./components/OwnerSide";
 import {
 	AWS_ACCESS_KEY,
 	AWS_SECRET_ACCESS_KEY,
 	S3_BUCKET,
 	REGION,
 } from "./utils/config";
-import axios from "axios";
 
 const App = () => {
 	const [pricelist, setPricelist] = useState(null);
-	useEffect(() => {
-		axios.get("http://localhost:3001/api/pricelist").then((result) => {
-			setPricelist(result["data"][0]);
-		});
-	}, []);
+
+	const uploadImages = (images) => {
+		const orderNumber = Date.now().toString();
+
+		for (const image of images) {
+			uploadFile(image, {
+				bucketName: S3_BUCKET,
+				region: REGION,
+				accessKeyId: AWS_ACCESS_KEY,
+				secretAccessKey: AWS_SECRET_ACCESS_KEY,
+			})
+				.then((data) => console.log(data))
+				.catch((error) => console.error(error));
+		}
+	};
 
 	const handlePricelistChange = (newPricelist, token) => {
 		axios
@@ -39,22 +50,11 @@ const App = () => {
 			});
 	};
 
-	const [images, setImages] = useState([]);
-
-	const uploadImages = (images) => {
-		const orderNumber = Date.now().toString();
-
-		for (const image of images) {
-			uploadFile(image, {
-				bucketName: S3_BUCKET,
-				region: REGION,
-				accessKeyId: AWS_ACCESS_KEY,
-				secretAccessKey: AWS_SECRET_ACCESS_KEY,
-			})
-				.then((data) => console.log(data))
-				.catch((error) => console.error(error));
-		}
-	};
+	useEffect(() => {
+		axios.get("http://localhost:3001/api/pricelist").then((result) => {
+			setPricelist(result["data"][0]);
+		});
+	}, []);
 
 	if (pricelist)
 		return (
