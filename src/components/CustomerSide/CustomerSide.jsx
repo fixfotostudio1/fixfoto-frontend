@@ -35,55 +35,55 @@ const CustomerSide = ({
 					document.documentElement.clientHeight)) *
 			100;
 
-		const sectionNumber = 11;
-		if (newScrollPerc <= (1 * 100) / sectionNumber) {
+		const sectionNumber = 12;
+		if (newScrollPerc <= (1 * 100 - 50) / sectionNumber) {
 			setBackground("start-background");
 		} else if (
-			newScrollPerc > (1 * 100) / sectionNumber &&
-			newScrollPerc <= (2 * 100) / sectionNumber
+			newScrollPerc > (1 * 100 - 50) / sectionNumber &&
+			newScrollPerc <= (2 * 100 - 50) / sectionNumber
 		) {
 			setBackground("passfotos-background");
 		} else if (
-			newScrollPerc > (2 * 100) / sectionNumber &&
-			newScrollPerc <= (3 * 100) / sectionNumber
+			newScrollPerc > (2 * 100 - 50) / sectionNumber &&
+			newScrollPerc <= (3 * 100 - 50) / sectionNumber
 		) {
 			setBackground("bewerbung-background");
 		} else if (
-			newScrollPerc > (3 * 100) / sectionNumber &&
-			newScrollPerc <= (4 * 100) / sectionNumber
+			newScrollPerc > (3 * 100 - 50) / sectionNumber &&
+			newScrollPerc <= (4 * 100 - 50) / sectionNumber
 		) {
 			setBackground("portraits-background");
 		} else if (
-			newScrollPerc > (4 * 100) / sectionNumber &&
-			newScrollPerc <= (5 * 100) / sectionNumber
-		) {
-			setBackground("kopien-background");
-		} else if (
-			newScrollPerc > (5 * 100) / sectionNumber &&
-			newScrollPerc <= (6 * 100) / sectionNumber
+			newScrollPerc > (4 * 100 - 50) / sectionNumber &&
+			newScrollPerc <= (5 * 100 - 50) / sectionNumber
 		) {
 			setBackground("produkte-background");
 		} else if (
-			newScrollPerc > (6 * 100) / sectionNumber &&
-			newScrollPerc <= (7 * 100) / sectionNumber
+			newScrollPerc > (5 * 100 - 50) / sectionNumber &&
+			newScrollPerc <= (6 * 100 - 50) / sectionNumber
 		) {
 			setBackground("rahmen-background");
 		} else if (
-			newScrollPerc > (7 * 100) / sectionNumber &&
-			newScrollPerc <= (8 * 100) / sectionNumber
+			newScrollPerc > (6 * 100 - 50) / sectionNumber &&
+			newScrollPerc <= (7 * 100 - 50) / sectionNumber
 		) {
 			setBackground("labor-background");
 		} else if (
-			newScrollPerc > (8 * 100) / sectionNumber &&
-			newScrollPerc <= (9 * 100) / sectionNumber
+			newScrollPerc > (7 * 100 - 50) / sectionNumber &&
+			newScrollPerc <= (8 * 100 - 50) / sectionNumber
 		) {
 			setBackground("video-background");
 		} else if (
-			newScrollPerc > (9 * 100) / sectionNumber &&
-			newScrollPerc <= (10 * 100) / sectionNumber
+			newScrollPerc > (8 * 100 - 50) / sectionNumber &&
+			newScrollPerc <= (9 * 100 - 50) / sectionNumber
 		) {
 			setBackground("glas-background");
-		} else if (newScrollPerc > (10 * 100) / sectionNumber) {
+		} else if (
+			newScrollPerc > (9 * 100 - 50) / sectionNumber &&
+			newScrollPerc <= (10 * 100 - 50) / sectionNumber
+		) {
+			setBackground("kopien-background");
+		} else if (newScrollPerc > (10 * 100 - 50) / sectionNumber) {
 			setBackground("final-background");
 		}
 	};
@@ -114,9 +114,7 @@ const CustomerSide = ({
 				<TitleSection />
 				<ProductSection
 					sectionStyle={{
-						margin: "0",
-						marginLeft: "51%",
-						height: "100vh",
+						top: "100vh",
 					}}
 					id="passfotos"
 					overTitle={"Lorem ipsum"}
@@ -124,19 +122,14 @@ const CustomerSide = ({
 					mainText={"Lorem ipsum"}
 					callToAction={"BESTELLEN"}
 					imageSource={pass}
+					imageSide={"left"}
 					imageStyle={{
-						position: "absolute",
 						width: "30vw",
-						top: "150vh",
-						left: "15vw",
 					}}
 				/>
 				<ProductSection
 					sectionStyle={{
-						margin: "0",
-						marginLeft: "20%",
-						height: "100vh",
-						marginRight: "31%",
+						top: "200vh",
 					}}
 					id="bewerbung"
 					overTitle={"Lorem ipsum"}
@@ -144,20 +137,14 @@ const CustomerSide = ({
 					mainText={"Lorem ipsum"}
 					callToAction={"BESTELLEN"}
 					imageSource={bew}
+					imageSide={"right"}
 					imageStyle={{
-						position: "absolute",
 						width: "30vw",
-						top: "290vh",
-						right: "13vw",
-						borderTop: "20px solid white",
-						boxSizing: "content-box",
 					}}
 				/>
 				<ProductSection
 					sectionStyle={{
-						margin: "0",
-						marginLeft: "51%",
-						height: "100vh",
+						top: "300vh",
 					}}
 					id="portraits"
 					overTitle={"Lorem ipsum"}
@@ -165,29 +152,12 @@ const CustomerSide = ({
 					mainText={"Lorem ipsum"}
 					callToAction={"BESTELLEN"}
 					imageSource={{}}
+					imageSide={"left"}
 					imageStyle={{}}
 				/>
 				<ProductSection
 					sectionStyle={{
-						margin: "0",
-						marginLeft: "20%",
-						height: "100vh",
-						marginRight: "31%",
-					}}
-					id="kopien"
-					overTitle={"Lorem ipsum"}
-					title="KOPIEN"
-					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
-					imageSource={null}
-					imageStyle={{}}
-				/>
-				<ProductSection
-					sectionStyle={{
-						margin: "0",
-						marginLeft: "20%",
-						height: "100vh",
-						marginRight: "31%",
+						top: "400vh",
 					}}
 					id="produkte"
 					overTitle={"Lorem ipsum"}
@@ -195,12 +165,9 @@ const CustomerSide = ({
 					mainText={"Lorem ipsum"}
 					callToAction={"BESTELLEN"}
 					imageSource={prod}
+					imageSide={"right"}
 					imageStyle={{
-						position: "absolute",
 						width: "30vw",
-						top: "665vh",
-						right: "20vw",
-						boxSizing: "content-box",
 					}}
 					handleClick={() => {
 						setDialogType("fotoprodukte");
@@ -209,9 +176,7 @@ const CustomerSide = ({
 				/>
 				<ProductSection
 					sectionStyle={{
-						margin: "0",
-						marginLeft: "51%",
-						height: "100vh",
+						top: "500vh",
 					}}
 					id="rahmen"
 					overTitle={"Lorem ipsum"}
@@ -219,14 +184,12 @@ const CustomerSide = ({
 					mainText={"Lorem ipsum"}
 					callToAction={"BESTELLEN"}
 					imageSource={null}
+					imageSide={"left"}
 					imageStyle={{}}
 				/>
 				<ProductSection
 					sectionStyle={{
-						margin: "0",
-						marginLeft: "20%",
-						height: "100vh",
-						marginRight: "31%",
+						top: "600vh",
 					}}
 					id="labor"
 					overTitle={"Lorem ipsum"}
@@ -234,20 +197,15 @@ const CustomerSide = ({
 					mainText={"Lorem ipsum"}
 					callToAction={"BESTELLEN"}
 					imageSource={lab}
+					imageSide={"right"}
 					imageStyle={{
-						position: "absolute",
 						width: "30vw",
-						top: "925vh",
-						right: "20vw",
-						boxSizing: "content-box",
 					}}
 					handleClick={() => {}}
 				/>
 				<ProductSection
 					sectionStyle={{
-						margin: "0",
-						marginLeft: "51%",
-						height: "100vh",
+						top: "700vh",
 					}}
 					id="video"
 					overTitle={"Lorem ipsum"}
@@ -255,19 +213,14 @@ const CustomerSide = ({
 					mainText={"Lorem ipsum"}
 					callToAction={"BESTELLEN"}
 					imageSource={video}
+					imageSide={"left"}
 					imageStyle={{
-						position: "absolute",
 						width: "25vw",
-						top: "1048vh",
-						left: "15vw",
 					}}
 				/>
 				<ProductSection
 					sectionStyle={{
-						margin: "0",
-						marginLeft: "20%",
-						height: "100vh",
-						marginRight: "31%",
+						top: "800vh",
 					}}
 					id="glas"
 					overTitle={"Lorem ipsum"}
@@ -275,26 +228,39 @@ const CustomerSide = ({
 					mainText={"Lorem ipsum"}
 					callToAction={"BESTELLEN"}
 					imageSource={glas}
+					imageSide={"right"}
 					imageStyle={{
-						position: "absolute",
 						width: "20vw",
-						top: "1175vh",
-						right: "25vw",
-						boxSizing: "content-box",
 					}}
 					handleClick={() => {}}
 				/>
+
+				<ProductSection
+					sectionStyle={{
+						top: "900vh",
+					}}
+					id="kopien"
+					overTitle={"Lorem ipsum"}
+					title="KOPIEN"
+					mainText={"Lorem ipsum"}
+					callToAction={"BESTELLEN"}
+					imageSource={null}
+					imageSide={"left"}
+					imageStyle={{}}
+				/>
 				<FinalSection />
 				<Dialog
-					show={showDialog}
+					showDialog={showDialog}
 					dialogType={dialogType}
-					handleRedirect={setDialogType}
 					handleClose={() => setShowDialog(false)}
+					handleRedirect={setDialogType}
 					order={order}
 					pricelist={pricelist}
 					addItem={addItem}
 					deleteItem={deleteItem}
+					changeDeliveryAddress={changeDeliveryAddress}
 					changeDeliveryType={changeDeliveryType}
+					submitPayment={submitPayement}
 				/>
 			</div>
 		</div>

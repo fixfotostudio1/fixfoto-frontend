@@ -35,12 +35,12 @@ const NavBar = () => {
 				<a href="#passfotos">Passbilder</a>
 				<a href="#bewerbung">Bewerbungsbilder</a>
 				<a href="#portraits">Portraits</a>
-				<a href="#kopien">Kopien</a>
 				<a href="#produkte">Fotoprodukte</a>
 				<a href="#rahmen">Rahmen</a>
 				<a href="#labor">Labor</a>
 				<a href="#video">Videokassetten</a>
 				<a href="#glas">3D Glasfoto</a>
+				<a href="#kopien">Kopien</a>
 			</div>
 		</div>
 	);
