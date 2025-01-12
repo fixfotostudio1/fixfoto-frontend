@@ -100,28 +100,24 @@ const CartAndCheckoutDialog = ({
 							<Form>
 								<div key="inline-radio" className="mb-3">
 									<Form.Check
-										label="Abholen"
+										label="Abholen (Kostenlos)"
 										name="group1"
 										type="radio"
 										id="inline-radio-1"
 										checked={order["deliveryType"] === "Abholen"}
 										onChange={({ target }) => {
-											if (target.value === "on")
-												changeOrder({ ...order, deliveryType: "Abholen" });
+											if (target.value === "on") changeDeliveryType("Abholen");
 										}}
 									/>
 									<Form.Check
-										label="Hermes-Versand"
+										label="Hermes-Versand (4.99)"
 										name="group1"
 										type="radio"
 										id="inline-radio-2"
 										checked={order["deliveryType"] === "Hermes-Versand"}
 										onChange={({ target }) => {
 											if (target.value === "on")
-												changeOrder({
-													...order,
-													deliveryType: "Hermes-Versand",
-												});
+												changeDeliveryType("Hermes-Versand");
 										}}
 									/>
 								</div>
@@ -130,7 +126,113 @@ const CartAndCheckoutDialog = ({
 					</Accordion.Item>
 					<Accordion.Item eventKey="2">
 						<Accordion.Header>Ihre Kontaktdaten</Accordion.Header>
-						<Accordion.Body></Accordion.Body>
+						<Accordion.Body>
+							<Form.Group className="d-flex justify-content-between align-items-center">
+								<Form.Label style={{ padding: 0, margin: 0 }}>
+									Vorname:
+								</Form.Label>
+								<Form.Control
+									value={order["deliveryAddress"]["firstName"]}
+									onChange={({ target }) => {
+										changeDeliveryAddress("firstName", target.value);
+									}}
+									style={{ width: "70%" }}
+									type="text"
+								/>
+							</Form.Group>
+							<Form.Group className="d-flex justify-content-between align-items-center mt-3">
+								<Form.Label style={{ padding: 0, margin: 0 }}>
+									Nachname:
+								</Form.Label>
+								<Form.Control
+									value={order["deliveryAddress"]["surname"]}
+									onChange={({ target }) => {
+										changeDeliveryAddress("surname", target.value);
+									}}
+									style={{ width: "70%" }}
+									type="text"
+								/>
+							</Form.Group>
+							<Form.Group className="d-flex justify-content-between align-items-center mt-3">
+								<Form.Label style={{ padding: 0, margin: 0 }}>
+									Mobil:
+								</Form.Label>
+								<Form.Control
+									onChange={({ target }) => {
+										changeDeliveryAddress("mobile", target.value);
+									}}
+									style={{ width: "70%" }}
+									value={order["deliveryAddress"]["mobile"]}
+								/>
+							</Form.Group>
+							<Form.Group className="d-flex justify-content-between align-items-center mt-3">
+								<Form.Label style={{ padding: 0, margin: 0 }}>
+									Email-Addresse:
+								</Form.Label>
+								<Form.Control
+									onChange={({ target }) => {
+										changeDeliveryAddress("email", target.value);
+									}}
+									style={{ width: "70%" }}
+									type="email"
+									value={order["deliveryAddress"]["email"]}
+								/>
+							</Form.Group>
+							{order["deliveryType"] === "Abholen" ? (
+								<></>
+							) : (
+								<>
+									<Form.Group className="d-flex justify-content-between align-items-center mt-3">
+										<Form.Label style={{ padding: 0, margin: 0 }}>
+											Straße:
+										</Form.Label>
+										<Form.Control
+											onChange={({ target }) => {
+												changeDeliveryAddress("street", target.value);
+											}}
+											style={{ width: "70%" }}
+											value={order["deliveryAddress"]["street"]}
+										/>
+									</Form.Group>
+									<Form.Group className="d-flex justify-content-between align-items-center mt-3">
+										<Form.Label style={{ padding: 0, margin: 0 }}>
+											Hausnummer:
+										</Form.Label>
+										<Form.Control
+											onChange={({ target }) => {
+												changeDeliveryAddress("houseNumber", target.value);
+											}}
+											style={{ width: "70%" }}
+											value={order["deliveryAddress"]["houseNumber"]}
+										/>
+									</Form.Group>
+									<Form.Group className="d-flex justify-content-between align-items-center mt-3">
+										<Form.Label style={{ padding: 0, margin: 0 }}>
+											Postzahl:
+										</Form.Label>
+										<Form.Control
+											onChange={({ target }) => {
+												changeDeliveryAddress("ZIPCode", target.value);
+											}}
+											style={{ width: "70%" }}
+											value={order["deliveryAddress"]["ZIPCode"]}
+										/>
+									</Form.Group>
+									<Form.Group className="d-flex justify-content-between align-items-center mt-3">
+										<Form.Label style={{ padding: 0, margin: 0 }}>
+											Stadt:
+										</Form.Label>
+										<Form.Control
+											onChange={({ target }) => {
+												changeDeliveryAddress("city", target.value);
+											}}
+											style={{ width: "70%" }}
+											value={order["deliveryAddress"]["city"]}
+										/>
+									</Form.Group>
+								</>
+							)}
+						</Accordion.Body>
 					</Accordion.Item>
 					<Accordion.Item eventKey="3">
 						<Accordion.Header>Zahlungsarten</Accordion.Header>
