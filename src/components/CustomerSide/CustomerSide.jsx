@@ -4,7 +4,7 @@ import ProductSection from "./ProductSection";
 import NavBar from "../NavBar";
 import TitleSection from "../TitleSection";
 import FinalSection from "../FinalSection";
-import Dialog from "../Dialog";
+import Dialog from "./Dialog";
 import ShoppingCart from "../ShoppingCart";
 
 import pass from "../../assets/pass.png";
@@ -172,6 +172,7 @@ const CustomerSide = ({
 					handleClick={() => {
 						setDialogType("fotoprodukte");
 						setShowDialog(true);
+						console.log("products handleClick");
 					}}
 				/>
 				<ProductSection

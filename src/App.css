@@ -131,6 +131,10 @@ html {
 	animation: svgAnimation 20s linear infinite;
 }
 
+td {
+	word-break: break-word;
+}
+
 @keyframes svgAnimation {
 	from {
 		stroke-dashoffset: 0;
