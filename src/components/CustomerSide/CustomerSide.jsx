@@ -21,7 +21,7 @@ const CustomerSide = ({
 	addItem,
 	changeDeliveryAddress,
 	changeDeliveryType,
-	deleteItem,
+	changeAmount,
 	submitPayement,
 }) => {
 	const [background, setBackground] = useState("start-background");
@@ -258,7 +258,7 @@ const CustomerSide = ({
 					order={order}
 					pricelist={pricelist}
 					addItem={addItem}
-					deleteItem={deleteItem}
+					changeAmount={changeAmount}
 					changeDeliveryAddress={changeDeliveryAddress}
 					changeDeliveryType={changeDeliveryType}
 					submitPayment={submitPayement}

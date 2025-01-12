@@ -8,7 +8,7 @@ const CartAndCheckoutDialog = ({
 	handleClose,
 	order,
 	pricelist,
-	deleteItem,
+	changeAmount,
 	changeDeliveryAddress,
 	changeDeliveryType,
 	submitPayment,
@@ -44,14 +44,18 @@ const CartAndCheckoutDialog = ({
 													<Form.Group className="d-flex justify-content-between align-items-center">
 														<Form.Control
 															type="number"
-															defaultValue={order["items"][index]["amount"]}
+															value={order["items"][index]["amount"]}
 															style={{ maxWidth: "80%" }}
+															onChange={({ target }) =>
+																changeAmount(index, target.value)
+															}
+															min={1}
 														/>
 													</Form.Group>
 													<br />
 													<Button
 														style={{ height: "fit-content" }}
-														onClick={() => deleteItem(index)}
+														onClick={() => changeAmount(index, 0)}
 													>
 														X
 													</Button>
@@ -92,7 +96,37 @@ const CartAndCheckoutDialog = ({
 					</Accordion.Item>
 					<Accordion.Item eventKey="1">
 						<Accordion.Header>Versand</Accordion.Header>
-						<Accordion.Body></Accordion.Body>
+						<Accordion.Body>
+							<Form>
+								<div key="inline-radio" className="mb-3">
+									<Form.Check
+										label="Abholen"
+										name="group1"
+										type="radio"
+										id="inline-radio-1"
+										checked={order["deliveryType"] === "Abholen"}
+										onChange={({ target }) => {
+											if (target.value === "on")
+												changeOrder({ ...order, deliveryType: "Abholen" });
+										}}
+									/>
+									<Form.Check
+										label="Hermes-Versand"
+										name="group1"
+										type="radio"
+										id="inline-radio-2"
+										checked={order["deliveryType"] === "Hermes-Versand"}
+										onChange={({ target }) => {
+											if (target.value === "on")
+												changeOrder({
+													...order,
+													deliveryType: "Hermes-Versand",
+												});
+										}}
+									/>
+								</div>
+							</Form>
+						</Accordion.Body>
 					</Accordion.Item>
 					<Accordion.Item eventKey="2">
 						<Accordion.Header>Ihre Kontaktdaten</Accordion.Header>

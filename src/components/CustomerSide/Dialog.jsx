@@ -11,7 +11,7 @@ const Dialog = ({
 	order,
 	pricelist,
 	addItem,
-	deleteItem,
+	changeAmount,
 	changeDeliveryAddress,
 	changeDeliveryType,
 	submitPayment,
@@ -25,7 +25,7 @@ const Dialog = ({
 					handleClose={handleClose}
 					order={order}
 					pricelist={pricelist}
-					deleteItem={deleteItem}
+					changeAmount={changeAmount}
 					changeDeliveryAddress={changeDeliveryAddress}
 					changeDeliveryType={changeDeliveryType}
 					submitPayment={submitPayment}

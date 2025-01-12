@@ -108,6 +108,7 @@ const ItemDialog = ({ handleRedirect, itemType, pricelist, addItem }) => {
 						type="number"
 						ref={numberRef}
 						defaultValue={1}
+						min={1}
 						onChange={() => {
 							changePrice();
 						}}
