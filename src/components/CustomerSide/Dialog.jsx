@@ -43,8 +43,6 @@ const Dialog = ({
 			);
 	}
 
-	console.log("Dialog before return");
-
 	return (
 		<Modal show={showDialog} onHide={handleClose} animation={true} centered>
 			{content}
