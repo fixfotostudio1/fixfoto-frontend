@@ -3,6 +3,9 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Accordion from "react-bootstrap/Accordion";
+import { useState, useRef } from "react";
+import { useStripe, useElements } from "@stripe/react-stripe-js";
+import { PaymentElement } from "@stripe/react-stripe-js";
 
 const CartAndCheckoutDialog = ({
 	handleClose,
@@ -11,17 +14,27 @@ const CartAndCheckoutDialog = ({
 	changeAmount,
 	changeDeliveryAddress,
 	changeDeliveryType,
-	submitPayment,
+	clientSecret,
+	fetchClientSecret,
+	alwaysActiveList,
+	toggleActivity,
 }) => {
+	let stripe = null;
+	if (clientSecret) {
+		stripe = useStripe();
+	}
+
 	return (
 		<>
 			<Modal.Header closeButton>
 				<Modal.Title>Bearbeiten & bestellen</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<Accordion defaultActiveKey={["0"]} alwaysOpen>
+				<Accordion defaultActiveKey={alwaysActiveList} alwaysOpen>
 					<Accordion.Item eventKey="0">
-						<Accordion.Header>Warenkorb</Accordion.Header>
+						<Accordion.Header onClick={() => toggleActivity("0")}>
+							Warenkorb
+						</Accordion.Header>
 						<Accordion.Body>
 							<Table striped bordered hover>
 								<thead>
@@ -95,7 +108,9 @@ const CartAndCheckoutDialog = ({
 						</Accordion.Body>
 					</Accordion.Item>
 					<Accordion.Item eventKey="1">
-						<Accordion.Header>Versand</Accordion.Header>
+						<Accordion.Header onClick={() => toggleActivity("1")}>
+							Versand
+						</Accordion.Header>
 						<Accordion.Body>
 							<Form>
 								<div key="inline-radio" className="mb-3">
@@ -125,7 +140,9 @@ const CartAndCheckoutDialog = ({
 						</Accordion.Body>
 					</Accordion.Item>
 					<Accordion.Item eventKey="2">
-						<Accordion.Header>Ihre Kontaktdaten</Accordion.Header>
+						<Accordion.Header onClick={() => toggleActivity("2")}>
+							Ihre Kontaktdaten
+						</Accordion.Header>
 						<Accordion.Body>
 							<Form.Group className="d-flex justify-content-between align-items-center">
 								<Form.Label style={{ padding: 0, margin: 0 }}>
@@ -235,8 +252,28 @@ const CartAndCheckoutDialog = ({
 						</Accordion.Body>
 					</Accordion.Item>
 					<Accordion.Item eventKey="3">
-						<Accordion.Header>Zahlungsarten</Accordion.Header>
-						<Accordion.Body></Accordion.Body>
+						<Accordion.Header
+							onClick={() => {
+								toggleActivity("3");
+								fetchClientSecret();
+							}}
+						>
+							Zahlungsarten
+						</Accordion.Header>
+						<Accordion.Body>
+							{clientSecret ? (
+								<>
+									<PaymentElement />
+									<Button disabled={!stripe} onClick={() => {}}>
+										Submit
+									</Button>
+									{/* Show error message to your customers */}
+									{/* errorMessage && <div>{errorMessage}</div> */}
+								</>
+							) : (
+								<></>
+							)}
+						</Accordion.Body>
 					</Accordion.Item>
 				</Accordion>
 			</Modal.Body>

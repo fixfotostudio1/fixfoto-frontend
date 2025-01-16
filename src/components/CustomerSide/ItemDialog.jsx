@@ -173,7 +173,9 @@ const ItemDialog = ({ handleRedirect, itemType, pricelist, addItem }) => {
 				</Button>
 				<Button
 					variant="primary"
-					onClick={() => handleRedirect("CartAndCheckoutDialog")}
+					onClick={() => {
+						handleRedirect("CartAndCheckoutDialog");
+					}}
 				>
 					Warenkorb ansehen
 				</Button>

@@ -89,13 +89,13 @@ const ProductSection = ({
 							<b>{callToAction}</b>
 						</h5>
 						<div
-							class="line-1"
+							className="line-1"
 							style={{
 								marginRight: "-11px",
 							}}
 						></div>
 						<div className="d-flex align-items-center">
-							<i class="arrow right"></i>
+							<i className="arrow right"></i>
 						</div>
 					</div>
 				</div>
@@ -179,13 +179,13 @@ const ProductSection = ({
 							<b>{callToAction}</b>
 						</h5>
 						<div
-							class="line-1"
+							className="line-1"
 							style={{
 								marginRight: "-11px",
 							}}
 						></div>
 						<div className="d-flex align-items-center">
-							<i class="arrow right"></i>
+							<i className="arrow right"></i>
 						</div>
 					</div>
 				</div>

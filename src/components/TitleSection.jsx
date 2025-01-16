@@ -20,7 +20,7 @@ const TitleSection = () => {
 						marginBottom: "10px",
 					}}
 				>
-					<span class="material-symbols-outlined">location_on</span>
+					<span className="material-symbols-outlined">location_on</span>
 					<h5
 						style={{
 							color: "white",
@@ -52,7 +52,7 @@ const TitleSection = () => {
 				>
 					{" "}
 					<i
-						class="fa fa-envelope"
+						className="fa fa-envelope"
 						style={{ fontSize: "24px", color: "white" }}
 					></i>
 					<p
@@ -78,7 +78,7 @@ const TitleSection = () => {
 				>
 					{" "}
 					<i
-						class="fa fa-phone"
+						className="fa fa-phone"
 						style={{ fontSize: "24px", color: "white" }}
 					></i>
 					<p
@@ -104,7 +104,7 @@ const TitleSection = () => {
 				>
 					{" "}
 					<i
-						class="fa fa-instagram"
+						className="fa fa-instagram"
 						style={{ fontSize: "24px", color: "white" }}
 					></i>
 					<p

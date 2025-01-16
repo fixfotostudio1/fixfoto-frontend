@@ -22,7 +22,6 @@ const CustomerSide = ({
 	changeDeliveryAddress,
 	changeDeliveryType,
 	changeAmount,
-	submitPayement,
 }) => {
 	const [background, setBackground] = useState("start-background");
 	const [showDialog, setShowDialog] = useState(false);
@@ -261,7 +260,6 @@ const CustomerSide = ({
 					changeAmount={changeAmount}
 					changeDeliveryAddress={changeDeliveryAddress}
 					changeDeliveryType={changeDeliveryType}
-					submitPayment={submitPayement}
 				/>
 			</div>
 		</div>
