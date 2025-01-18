@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Accordion from "react-bootstrap/Accordion";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { PaymentElement } from "@stripe/react-stripe-js";
 
@@ -12,6 +12,7 @@ const CartAndCheckoutDialog = ({
 	order,
 	pricelist,
 	changeAmount,
+	deleteItem,
 	changeDeliveryAddress,
 	changeDeliveryType,
 	clientSecret,
@@ -20,9 +21,107 @@ const CartAndCheckoutDialog = ({
 	toggleActivity,
 }) => {
 	let stripe = null;
+	let elements = null;
 	if (clientSecret) {
 		stripe = useStripe();
+		elements = useElements();
 	}
+
+	const submitPayment = async () => {
+		if (!stripe || !elements) {
+			return;
+		}
+
+		const { error } = await stripe.confirmPayment({
+			elements,
+			confirmParams: {
+				return_url: "http://localhost:5173/success",
+			},
+		});
+
+		if (error) {
+			setErrorMessage(
+				<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
+					<p style={{ padding: 0, margin: 0 }}>{error.message}</p>
+				</Modal.Body>
+			);
+		} else {
+		}
+	};
+
+	const [errorMessage, setErrorMessage] = useState(<></>);
+	const showFormGaps = () => {
+		if (order["items"].length === 0) {
+			return (
+				<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
+					<p style={{ padding: 0, margin: 0 }}>Ihr Warenkorb ist leer.</p>
+				</Modal.Body>
+			);
+		} else if (
+			order["items"].filter((item) => item["amount"] === "").length !== 0
+		) {
+			return (
+				<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
+					<p style={{ padding: 0, margin: 0 }}>
+						Zu einem oder mehreren der Produkte in Ihrem Warenkorb haben Sie
+						eine ungültige Menge angegeben.
+					</p>
+				</Modal.Body>
+			);
+		} else if (checkInvalidDeliveryFields().length > 0) {
+			return (
+				<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
+					<p style={{ padding: 0, margin: 0 }}>
+						Sie müssen <b>{`${checkInvalidDeliveryFields().join(", ")}`}</b>{" "}
+						unter "Kontaktdaten" angeben.
+					</p>
+				</Modal.Body>
+			);
+		} else {
+			return "";
+		}
+	};
+
+	const checkInvalidDeliveryFields = () => {
+		let invalidFields = [];
+		if (!order["deliveryAddress"]["firstName"]) {
+			invalidFields.push("Vorname");
+		}
+		if (!order["deliveryAddress"]["surname"]) {
+			invalidFields.push("Nachname");
+		}
+		if (!order["deliveryAddress"]["mobile"]) {
+			invalidFields.push("Mobil");
+		}
+		if (!order["deliveryAddress"]["email"]) {
+			invalidFields.push("Email-Adresse");
+		}
+		if (
+			order["deliveryType"] !== "Abholen" &&
+			!order["deliveryAddress"]["street"]
+		) {
+			invalidFields.push("Straße");
+		}
+		if (
+			order["deliveryType"] !== "Abholen" &&
+			!order["deliveryAddress"]["houseNumber"]
+		) {
+			invalidFields.push("Hausnummer");
+		}
+		if (
+			order["deliveryType"] !== "Abholen" &&
+			!order["deliveryAddress"]["ZIPCode"]
+		) {
+			invalidFields.push("Postzahl");
+		}
+		if (
+			order["deliveryType"] !== "Abholen" &&
+			!order["deliveryAddress"]["city"]
+		) {
+			invalidFields.push("Stadt");
+		}
+		return invalidFields;
+	};
 
 	return (
 		<>
@@ -58,7 +157,13 @@ const CartAndCheckoutDialog = ({
 														<Form.Control
 															type="number"
 															value={order["items"][index]["amount"]}
-															style={{ maxWidth: "80%" }}
+															style={{
+																maxWidth: "80%",
+																backgroundColor:
+																	order["items"][index]["amount"] === ""
+																		? "rgba(255, 0, 0, 0.3)"
+																		: "",
+															}}
 															onChange={({ target }) =>
 																changeAmount(index, target.value)
 															}
@@ -68,7 +173,7 @@ const CartAndCheckoutDialog = ({
 													<br />
 													<Button
 														style={{ height: "fit-content" }}
-														onClick={() => changeAmount(index, 0)}
+														onClick={() => deleteItem(index)}
 													>
 														X
 													</Button>
@@ -264,11 +369,6 @@ const CartAndCheckoutDialog = ({
 							{clientSecret ? (
 								<>
 									<PaymentElement />
-									<Button disabled={!stripe} onClick={() => {}}>
-										Submit
-									</Button>
-									{/* Show error message to your customers */}
-									{/* errorMessage && <div>{errorMessage}</div> */}
 								</>
 							) : (
 								<></>
@@ -277,11 +377,22 @@ const CartAndCheckoutDialog = ({
 					</Accordion.Item>
 				</Accordion>
 			</Modal.Body>
+			{errorMessage}
 			<Modal.Footer>
 				<Button variant="secondary" onClick={() => handleClose()}>
 					Weiter einkaufen
 				</Button>
-				<Button variant="primary" onClick={() => {}}>
+				<Button
+					variant="primary"
+					onClick={() => {
+						if (showFormGaps()) {
+							setErrorMessage(showFormGaps());
+						} else {
+							setErrorMessage(<></>);
+							submitPayment();
+						}
+					}}
+				>
 					Bestellen
 				</Button>
 			</Modal.Footer>

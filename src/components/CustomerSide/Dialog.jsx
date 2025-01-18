@@ -19,6 +19,7 @@ const Dialog = ({
 	order,
 	pricelist,
 	addItem,
+	deleteItem,
 	changeAmount,
 	changeDeliveryAddress,
 	changeDeliveryType,
@@ -64,6 +65,7 @@ const Dialog = ({
 						order={order}
 						pricelist={pricelist}
 						changeAmount={changeAmount}
+						deleteItem={deleteItem}
 						changeDeliveryAddress={changeDeliveryAddress}
 						changeDeliveryType={changeDeliveryType}
 						clientSecret={clientSecret}

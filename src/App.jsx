@@ -58,19 +58,27 @@ const App = () => {
 	};
 
 	const changeAmount = (index, newAmount) => {
-		if (newAmount === 0) {
-			const newItems = orderRef.current["items"]
-				.slice(0, index)
-				.concat(orderRef.current["items"].slice(index + 1));
-			setOrder({ ...order, items: newItems });
+		if (
+			isNaN(newAmount) ||
+			parseInt(Number(newAmount)) != newAmount ||
+			isNaN(parseInt(newAmount, 10))
+		) {
+			orderRef.current["items"][index]["amount"] = "";
+			setOrder({ ...order });
+		} else if (newAmount == 0) {
+			orderRef.current["items"][index]["amount"] = 1;
+			setOrder({ ...order });
 		} else {
 			orderRef.current["items"][index]["amount"] = newAmount;
-			console.log(
-				"App.js changeAmount amount: ",
-				orderRef.current["items"][index]["amount"]
-			);
 			setOrder({ ...order });
 		}
+	};
+
+	const deleteItem = (index) => {
+		const newItems = orderRef.current["items"]
+			.slice(0, index)
+			.concat(orderRef.current["items"].slice(index + 1));
+		setOrder({ ...order, items: newItems });
 	};
 
 	const changeDeliveryType = (newType) => {
@@ -114,6 +122,7 @@ const App = () => {
 							order={order}
 							pricelist={pricelist}
 							addItem={addItem}
+							deleteItem={deleteItem}
 							changeAmount={changeAmount}
 							changeDeliveryAddress={changeDeliveryAddress}
 							changeDeliveryType={changeDeliveryType}

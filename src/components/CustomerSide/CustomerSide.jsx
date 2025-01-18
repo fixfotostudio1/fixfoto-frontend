@@ -19,6 +19,7 @@ const CustomerSide = ({
 	orderSuccess,
 	pricelist,
 	addItem,
+	deleteItem,
 	changeDeliveryAddress,
 	changeDeliveryType,
 	changeAmount,
@@ -257,6 +258,7 @@ const CustomerSide = ({
 					order={order}
 					pricelist={pricelist}
 					addItem={addItem}
+					deleteItem={deleteItem}
 					changeAmount={changeAmount}
 					changeDeliveryAddress={changeDeliveryAddress}
 					changeDeliveryType={changeDeliveryType}

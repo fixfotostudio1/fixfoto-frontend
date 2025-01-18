@@ -68,7 +68,6 @@ const ItemDialog = ({ handleRedirect, itemType, pricelist, addItem }) => {
 			<Modal.Header closeButton>
 				<Modal.Title>{itemType.toUpperCase().replace("-", " ")}</Modal.Title>
 			</Modal.Header>
-			{errorMessage}
 			<Modal.Body>
 				<Form.Group className="d-flex justify-content-between align-items-center">
 					<Form.Label style={{ padding: 0, margin: 0 }}>Druckart:</Form.Label>
@@ -138,6 +137,7 @@ const ItemDialog = ({ handleRedirect, itemType, pricelist, addItem }) => {
 					""
 				)}
 			</Modal.Body>
+			{errorMessage}
 			<Modal.Footer>
 				<Button
 					variant="secondary"
