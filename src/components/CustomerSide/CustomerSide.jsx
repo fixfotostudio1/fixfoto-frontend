@@ -20,6 +20,7 @@ const CustomerSide = ({
 	pricelist,
 	addItem,
 	deleteItem,
+	changeOrderNumber,
 	changeDeliveryAddress,
 	changeDeliveryType,
 	changeAmount,
@@ -90,7 +91,7 @@ const CustomerSide = ({
 
 	useEffect(() => {
 		if (orderSuccess) {
-			setDialogType("ConfirmationDialog");
+			setDialogType("PostPaymentInfoDialog");
 			setShowDialog(true);
 		}
 		window.addEventListener("scroll", updateBackground);
@@ -256,9 +257,11 @@ const CustomerSide = ({
 					handleClose={() => setShowDialog(false)}
 					handleRedirect={setDialogType}
 					order={order}
+					orderSuccess={orderSuccess}
 					pricelist={pricelist}
 					addItem={addItem}
 					deleteItem={deleteItem}
+					changeOrderNumber={changeOrderNumber}
 					changeAmount={changeAmount}
 					changeDeliveryAddress={changeDeliveryAddress}
 					changeDeliveryType={changeDeliveryType}

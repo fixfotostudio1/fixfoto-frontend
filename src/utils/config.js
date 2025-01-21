@@ -4,6 +4,7 @@ const AWS_ACCESS_KEY = import.meta.env.VITE_AWS_ACCESS_KEY;
 const AWS_SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY;
 const S3_BUCKET = import.meta.env.VITE_S3_BUCKET;
 const REGION = import.meta.env.VITE_REGION;
+const AWS_IDENTITY_POOL_ID = import.meta.env.VITE_AWS_IDENTITY_POOL_ID;
 
 export {
 	STRIPE_PUBLISHABLE_KEY,
@@ -12,4 +13,5 @@ export {
 	AWS_SECRET_ACCESS_KEY,
 	S3_BUCKET,
 	REGION,
+	AWS_IDENTITY_POOL_ID,
 };

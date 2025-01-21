@@ -8,6 +8,7 @@ import { STRIPE_PUBLISHABLE_KEY } from "../../utils/config";
 
 import ItemDialog from "./ItemDialog";
 import CartAndCheckoutDialog from "./CartAndCheckoutDialog";
+import PostPaymentInfoDialog from "./PostPaymentInfoDialog";
 
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
@@ -17,9 +18,11 @@ const Dialog = ({
 	handleClose,
 	handleRedirect,
 	order,
+	orderSuccess,
 	pricelist,
 	addItem,
 	deleteItem,
+	changeOrderNumber,
 	changeAmount,
 	changeDeliveryAddress,
 	changeDeliveryType,
@@ -37,6 +40,7 @@ const Dialog = ({
 				})
 				.then((result) => {
 					console.log("clientSecretRef.current:", clientSecretRef.current);
+					changeOrderNumber();
 					setClientSecret(result["data"]["client_secret"]);
 				});
 		}
@@ -57,6 +61,15 @@ const Dialog = ({
 	};
 
 	switch (dialogType) {
+		case "PostPaymentInfoDialog":
+			content = (
+				<PostPaymentInfoDialog
+					handleClose={handleClose}
+					order={order}
+					orderSuccess={orderSuccess}
+				/>
+			);
+			break;
 		case "CartAndCheckoutDialog":
 			if (!clientSecret) {
 				content = (
@@ -66,6 +79,7 @@ const Dialog = ({
 						pricelist={pricelist}
 						changeAmount={changeAmount}
 						deleteItem={deleteItem}
+						changeOrderNumber={changeOrderNumber}
 						changeDeliveryAddress={changeDeliveryAddress}
 						changeDeliveryType={changeDeliveryType}
 						clientSecret={clientSecret}
@@ -85,6 +99,8 @@ const Dialog = ({
 							order={order}
 							pricelist={pricelist}
 							changeAmount={changeAmount}
+							deleteItem={deleteItem}
+							changeOrderNumber={changeOrderNumber}
 							changeDeliveryAddress={changeDeliveryAddress}
 							changeDeliveryType={changeDeliveryType}
 							clientSecret={clientSecret}

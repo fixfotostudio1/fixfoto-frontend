@@ -13,6 +13,7 @@ const CartAndCheckoutDialog = ({
 	pricelist,
 	changeAmount,
 	deleteItem,
+	changeOrderNumber,
 	changeDeliveryAddress,
 	changeDeliveryType,
 	clientSecret,
@@ -35,7 +36,7 @@ const CartAndCheckoutDialog = ({
 		const { error } = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
-				return_url: "http://localhost:5173/success",
+				return_url: "http://localhost:5173/after_payment_attempt",
 			},
 		});
 
@@ -389,6 +390,7 @@ const CartAndCheckoutDialog = ({
 							setErrorMessage(showFormGaps());
 						} else {
 							setErrorMessage(<></>);
+							changeOrderNumber();
 							submitPayment();
 						}
 					}}
