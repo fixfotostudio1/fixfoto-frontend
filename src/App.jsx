@@ -8,11 +8,11 @@ import {
 	PutObjectCommand,
 } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
+import Cookies from "js-cookie";
 
 import {
-	AWS_ACCESS_KEY,
-	AWS_SECRET_ACCESS_KEY,
 	S3_BUCKET,
+	S3_TEMP_BUCKET,
 	REGION,
 	AWS_IDENTITY_POOL_ID,
 } from "./utils/config";
@@ -52,27 +52,64 @@ const App = () => {
 			});
 	};
 
-	const [order, setOrder] = useState({
-		items: [],
-		deliveryType: "Abholen",
-		deliveryAddress: {
-			firstName: "",
-			surname: "",
-			mobile: "",
-			email: "",
-			street: "",
-			houseNumber: "",
-			ZIPCode: "",
-			city: "",
-		},
-		orderNumber: "",
-	});
+	const [order, setOrder] = useState(
+		Cookies.get("order")
+			? JSON.parse(Cookies.get("order"))
+			: {
+					items: [],
+					deliveryType: "Abholen",
+					deliveryAddress: {
+						firstName: "",
+						surname: "",
+						mobile: "",
+						email: "",
+						street: "",
+						houseNumber: "",
+						ZIPCode: "",
+						city: "",
+					},
+					orderNumber: "",
+			  }
+	);
 	const orderRef = useRef({ current: order });
 	orderRef.current = order;
 
 	const addItem = (newItem) => {
 		const newItems = orderRef.current["items"].concat([newItem]);
 		setOrder({ ...orderRef.current, items: newItems });
+
+		const reader = new FileReader();
+		reader.readAsArrayBuffer(newItem.file);
+		reader.onload = (e) => {
+			console.log("DataURL:", e.target.result);
+			let command = new PutObjectCommand({
+				Bucket: S3_TEMP_BUCKET,
+				Body: e.target.result,
+				Key: newItem.S3TempName,
+			});
+
+			try {
+				const response = client.send(command);
+				console.log(response);
+			} catch (caught) {
+				if (
+					caught instanceof S3ServiceException &&
+					caught.name === "EntityTooLarge"
+				) {
+					console.error(
+						`Error from S3 while uploading object to ${S3_TEMP_BUCKET}. \
+                The object was too large. To upload objects larger than 5GB, use the S3 console (160GB max) \
+                or the multipart upload API (5TB max).`
+					);
+				} else if (caught instanceof S3ServiceException) {
+					console.error(
+						`Error from S3 while uploading object to ${S3_TEMP_BUCKET}.  ${caught.name}: ${caught.message}`
+					);
+				} else {
+					throw caught;
+				}
+			}
+		};
 	};
 
 	const changeAmount = (index, newAmount) => {
@@ -124,12 +161,12 @@ const App = () => {
 			for (const image of images) {
 				const reader = new FileReader();
 				reader.readAsArrayBuffer(image);
-				reader.onload = function (e) {
+				reader.onload = (e) => {
 					console.log("DataURL:", e.target.result);
 					let command = new PutObjectCommand({
 						Bucket: S3_BUCKET,
 						Body: e.target.result,
-						Key: "test-file",
+						Key: image.name,
 					});
 
 					try {
@@ -158,15 +195,43 @@ const App = () => {
 		}
 	};
 
-	uploadImages();
+	const loadCookies = () => {
+		if (Cookies.get("order")) {
+			console.log("cookies used");
+			setOrder(JSON.parse(Cookies.get("order")));
+		}
+		console.log("load cookies");
+	};
+	const updateCookies = () => {
+		console.log("orderRef.current[items]: ", orderRef.current["items"]);
+		const cookiesOrder = {
+			...orderRef.current,
+			items: orderRef.current["items"].map((item) =>
+				Object({
+					file: { name: item.file ? item.file.name : item.name },
+					supertype: item.supertype,
+					product: item.product,
+					type: item.type,
+					amount: item.amount,
+					S3TempName: item.S3TempName,
+				})
+			),
+		};
+
+		Cookies.set("order", JSON.stringify(cookiesOrder));
+		console.log("update cookies");
+	};
 
 	useEffect(() => {
 		axios.get("http://localhost:3001/api/pricelist").then((result) => {
 			setPricelist(result["data"][0]);
 		});
+		//loadCookies();
 	}, []);
 
-	console.log("App orderNumber: ", order.orderNumber);
+	useEffect(() => {
+		updateCookies();
+	}, [order]);
 
 	if (pricelist) {
 		return (

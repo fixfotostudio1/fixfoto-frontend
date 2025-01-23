@@ -156,6 +156,7 @@ const ItemDialog = ({ handleRedirect, itemType, pricelist, addItem }) => {
 								type: sizeRef.current.value,
 								amount: parseInt(numberRef.current.value),
 								file: fileRef.current.files ? fileRef.current.files[0] : null,
+								S3TempName: Date.now().toString(),
 							});
 						} else {
 							setErrorMessage(
