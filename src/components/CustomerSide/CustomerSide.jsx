@@ -24,6 +24,8 @@ const CustomerSide = ({
 	changeDeliveryAddress,
 	changeDeliveryType,
 	changeAmount,
+	uploadImages,
+	deleteCookies,
 }) => {
 	const [background, setBackground] = useState("start-background");
 	const [showDialog, setShowDialog] = useState(false);
@@ -265,6 +267,8 @@ const CustomerSide = ({
 					changeAmount={changeAmount}
 					changeDeliveryAddress={changeDeliveryAddress}
 					changeDeliveryType={changeDeliveryType}
+					uploadImages={uploadImages}
+					deleteCookies={deleteCookies}
 				/>
 			</div>
 		</div>

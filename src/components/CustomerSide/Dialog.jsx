@@ -26,6 +26,8 @@ const Dialog = ({
 	changeAmount,
 	changeDeliveryAddress,
 	changeDeliveryType,
+	uploadImages,
+	deleteCookies,
 }) => {
 	const [clientSecret, setClientSecret] = useState(null);
 	const clientSecretRef = useRef({ current: clientSecret });
@@ -40,7 +42,7 @@ const Dialog = ({
 				})
 				.then((result) => {
 					console.log("clientSecretRef.current:", clientSecretRef.current);
-					changeOrderNumber();
+					changeOrderNumber(Date.now().toString());
 					setClientSecret(result["data"]["client_secret"]);
 				});
 		}
@@ -67,6 +69,9 @@ const Dialog = ({
 					handleClose={handleClose}
 					order={order}
 					orderSuccess={orderSuccess}
+					uploadImages={uploadImages}
+					deleteCookies={deleteCookies}
+					deleteItem={deleteItem}
 				/>
 			);
 			break;

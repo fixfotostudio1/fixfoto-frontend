@@ -390,7 +390,9 @@ const CartAndCheckoutDialog = ({
 							setErrorMessage(showFormGaps());
 						} else {
 							setErrorMessage(<></>);
-							changeOrderNumber();
+							changeOrderNumber(
+								order["orderNumber"] + "-" + Date.now().toString()
+							);
 							submitPayment();
 						}
 					}}

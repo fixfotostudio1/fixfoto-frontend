@@ -5,6 +5,8 @@ import { Route, Routes, useSearchParams } from "react-router-dom";
 import {
 	S3Client,
 	S3ServiceException,
+	DeleteObjectsCommand,
+	GetObjectCommand,
 	PutObjectCommand,
 } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
@@ -81,34 +83,7 @@ const App = () => {
 		const reader = new FileReader();
 		reader.readAsArrayBuffer(newItem.file);
 		reader.onload = (e) => {
-			console.log("DataURL:", e.target.result);
-			let command = new PutObjectCommand({
-				Bucket: S3_TEMP_BUCKET,
-				Body: e.target.result,
-				Key: newItem.S3TempName,
-			});
-
-			try {
-				const response = client.send(command);
-				console.log(response);
-			} catch (caught) {
-				if (
-					caught instanceof S3ServiceException &&
-					caught.name === "EntityTooLarge"
-				) {
-					console.error(
-						`Error from S3 while uploading object to ${S3_TEMP_BUCKET}. \
-                The object was too large. To upload objects larger than 5GB, use the S3 console (160GB max) \
-                or the multipart upload API (5TB max).`
-					);
-				} else if (caught instanceof S3ServiceException) {
-					console.error(
-						`Error from S3 while uploading object to ${S3_TEMP_BUCKET}.  ${caught.name}: ${caught.message}`
-					);
-				} else {
-					throw caught;
-				}
-			}
+			uploadImage(e.target.result, newItem.S3TempName, S3_TEMP_BUCKET);
 		};
 	};
 
@@ -130,6 +105,7 @@ const App = () => {
 	};
 
 	const deleteItem = (index) => {
+		console.log("deleteItem");
 		const newItems = orderRef.current["items"]
 			.slice(0, index)
 			.concat(orderRef.current["items"].slice(index + 1));
@@ -146,64 +122,101 @@ const App = () => {
 		setOrder({ ...orderRef.current, deliveryAddress: newDeliveryAddress });
 	};
 
-	const changeOrderNumber = () => {
-		const addition = Date.now().toString();
-		const newOrderNumber = !orderRef.current["orderNumber"]
-			? addition
-			: orderRef.current["orderNumber"] + "-" + addition;
+	const changeOrderNumber = (newOrderNumber) => {
+		console.log("changeOrderNumber");
 		setOrder({ ...orderRef.current, orderNumber: newOrderNumber });
 	};
 
 	const uploadImages = async () => {
+		console.log("uploadImages");
 		if (client) {
-			const images = order["items"].map((item) => item.file);
+			const imageS3TempNames = order["items"].map((item) => item.S3TempName);
 
-			for (const image of images) {
-				const reader = new FileReader();
-				reader.readAsArrayBuffer(image);
-				reader.onload = (e) => {
-					console.log("DataURL:", e.target.result);
-					let command = new PutObjectCommand({
-						Bucket: S3_BUCKET,
-						Body: e.target.result,
-						Key: image.name,
-					});
-
-					try {
-						const response = client.send(command);
-						console.log(response);
-					} catch (caught) {
-						if (
-							caught instanceof S3ServiceException &&
-							caught.name === "EntityTooLarge"
-						) {
-							console.error(
-								`Error from S3 while uploading object to ${S3_BUCKET}. \
-                The object was too large. To upload objects larger than 5GB, use the S3 console (160GB max) \
-                or the multipart upload API (5TB max).`
-							);
-						} else if (caught instanceof S3ServiceException) {
-							console.error(
-								`Error from S3 while uploading object to ${S3_BUCKET}.  ${caught.name}: ${caught.message}`
-							);
-						} else {
-							throw caught;
-						}
-					}
-				};
+			for (const imageName of imageS3TempNames) {
+				const response = await client.send(
+					new GetObjectCommand({
+						Bucket: S3_TEMP_BUCKET,
+						Key: imageName,
+					})
+				);
+				// The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
+				const byteArr = await response.Body.transformToByteArray();
+				uploadImage(byteArr, order.orderNumber + "-" + imageName, S3_BUCKET);
 			}
 		}
 	};
 
-	const loadCookies = () => {
-		if (Cookies.get("order")) {
-			console.log("cookies used");
-			setOrder(JSON.parse(Cookies.get("order")));
+	const uploadImage = (imageAsByteArray, S3Name, bucketName) => {
+		let command = new PutObjectCommand({
+			Bucket: bucketName,
+			Body: imageAsByteArray,
+			Key: S3Name,
+		});
+
+		try {
+			const response = client.send(command);
+			console.log(response);
+		} catch (caught) {
+			if (
+				caught instanceof S3ServiceException &&
+				caught.name === "EntityTooLarge"
+			) {
+				console.error(
+					`Error from S3 while uploading object to ${bucketName}. \
+        The object was too large. To upload objects larger than 5GB, use the S3 console (160GB max) \
+        or the multipart upload API (5TB max).`
+				);
+			} else if (caught instanceof S3ServiceException) {
+				console.error(
+					`Error from S3 while uploading object to ${bucketName}.  ${caught.name}: ${caught.message}`
+				);
+			} else {
+				throw caught;
+			}
 		}
-		console.log("load cookies");
 	};
+
+	const deleteImages = async () => {
+		const keys = orderRef.current["items"].map((item) => item.S3TempName);
+		console.log("deleteImages: ", keys);
+		try {
+			const response = await client.send(
+				new DeleteObjectsCommand({
+					Bucket: S3_TEMP_BUCKET,
+					Delete: {
+						Objects: keys.map((k) => ({ Key: k })),
+					},
+				})
+			);
+			console.log("deleted images: ", response);
+		} catch (caught) {
+			if (
+				caught instanceof S3ServiceException &&
+				caught.name === "NoSuchBucket"
+			) {
+				console.error(
+					`Error from S3 while deleting objects from ${S3_TEMP_BUCKET}. The bucket doesn't exist.`
+				);
+			} else if (caught instanceof S3ServiceException) {
+				console.error(
+					`Error from S3 while deleting objects from ${S3_TEMP_BUCKET}.  ${caught.name}: ${caught.message}`
+				);
+			} else {
+				throw caught;
+			}
+		}
+	};
+
+	if (redirect_status === "succeeded" || redirect_status === "pending") {
+		uploadImages().then(() => {
+			deleteImages().then(() => {
+				order["items"].forEach((item, index) => deleteItem(index));
+			});
+		});
+	}
+
 	const updateCookies = () => {
-		console.log("orderRef.current[items]: ", orderRef.current["items"]);
+		console.log("updateCookies");
 		const cookiesOrder = {
 			...orderRef.current,
 			items: orderRef.current["items"].map((item) =>
@@ -217,21 +230,20 @@ const App = () => {
 				})
 			),
 		};
-
 		Cookies.set("order", JSON.stringify(cookiesOrder));
-		console.log("update cookies");
 	};
 
 	useEffect(() => {
 		axios.get("http://localhost:3001/api/pricelist").then((result) => {
 			setPricelist(result["data"][0]);
 		});
-		//loadCookies();
 	}, []);
 
 	useEffect(() => {
 		updateCookies();
 	}, [order]);
+
+	console.log("orderNumber: ", order["orderNumber"]);
 
 	if (pricelist) {
 		return (
@@ -248,6 +260,8 @@ const App = () => {
 							changeAmount={changeAmount}
 							changeDeliveryAddress={changeDeliveryAddress}
 							changeDeliveryType={changeDeliveryType}
+							uploadImages={() => uploadImages()}
+							deleteCookies={() => deleteCookies()}
 						/>
 					}
 				/>
@@ -269,10 +283,12 @@ const App = () => {
 							pricelist={pricelist}
 							addItem={addItem}
 							deleteItem={deleteItem}
-							changeOrderNumber={() => changeOrderNumber()}
+							changeOrderNumber={changeOrderNumber}
 							changeAmount={changeAmount}
 							changeDeliveryAddress={changeDeliveryAddress}
 							changeDeliveryType={changeDeliveryType}
+							uploadImages={() => uploadImages()}
+							deleteCookies={() => deleteCookies()}
 						/>
 					}
 				/>
