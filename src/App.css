@@ -102,13 +102,45 @@ h1 {
 	width: 30%;
 }
 
-a,
+.nav-link,
 .shopping-cart-item {
 	text-decoration: none;
 	color: white;
 	font-family: "Barlow";
 	font-size: 16px;
 	letter-spacing: 1px;
+	line-height: 15px;
+}
+
+.navbar-nav {
+	--bs-nav-link-hover-color: white !important;
+}
+
+.nav-link:hover {
+	letter-spacing: 2px;
+}
+
+.nav-link.active {
+	color: white !important;
+	font-weight: bold;
+	letter-spacing: 2px;
+}
+
+#uncontrolled-tab-example-tab-neu,
+#uncontrolled-tab-example-tab-abholbereit,
+#uncontrolled-tab-example-tab-versandbereit,
+#uncontrolled-tab-example-tab-abgeschlossen,
+#uncontrolled-tab-example-tab-preisliste {
+	color: blue;
+}
+
+#uncontrolled-tab-example-tab-neu.active,
+#uncontrolled-tab-example-tab-abholbereit.active,
+#uncontrolled-tab-example-tab-versandbereit.active,
+#uncontrolled-tab-example-tab-abgeschlossen.active,
+#uncontrolled-tab-example-tab-preisliste.active {
+	color: blue !important;
+	letter-spacing: unset;
 }
 
 .shopping-cart-item {

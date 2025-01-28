@@ -1,16 +1,10 @@
 import Modal from "react-bootstrap/Modal";
 import { useState, useRef, useEffect } from "react";
 import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
-
-import { STRIPE_PUBLISHABLE_KEY } from "../../utils/config";
 
 import ItemDialog from "./ItemDialog";
 import CartAndCheckoutDialog from "./CartAndCheckoutDialog";
 import PostPaymentInfoDialog from "./PostPaymentInfoDialog";
-
-const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 const Dialog = ({
 	showDialog,
@@ -26,27 +20,10 @@ const Dialog = ({
 	changeAmount,
 	changeDeliveryAddress,
 	changeDeliveryType,
-	uploadImages,
-	deleteCookies,
+	clientSecret,
+	fetchClientSecret,
+	stripePromise,
 }) => {
-	const [clientSecret, setClientSecret] = useState(null);
-	const clientSecretRef = useRef({ current: clientSecret });
-	clientSecretRef.current = clientSecret;
-
-	const fetchClientSecret = () => {
-		if (!clientSecretRef.current) {
-			axios
-				.post("http://localhost:3001/api/orders/", {
-					items: order.items,
-					deliveryType: order.deliveryType,
-				})
-				.then((result) => {
-					console.log("clientSecretRef.current:", clientSecretRef.current);
-					changeOrderNumber(Date.now().toString());
-					setClientSecret(result["data"]["client_secret"]);
-				});
-		}
-	};
 	let content;
 
 	const [alwaysActiveList, setAlwaysActiveList] = useState(["0"]);
@@ -69,8 +46,6 @@ const Dialog = ({
 					handleClose={handleClose}
 					order={order}
 					orderSuccess={orderSuccess}
-					uploadImages={uploadImages}
-					deleteCookies={deleteCookies}
 					deleteItem={deleteItem}
 				/>
 			);

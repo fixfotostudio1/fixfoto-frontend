@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import OddSection from "./OddSection";
 import EvenSection from "./EvenSection";
-import NavBar from "./NavBar";
-import TitleSection from "./TitleSection";
-import FinalSection from "./FinalSection";
+import NavBar from "./CustomerSide/NavBar";
+import TitleSection from "./CustomerSide/TitleSection";
+import FinalSection from "./CustomerSide/FinalSection";
 import Dialog from "./Dialog";
 import ShoppingCart from "./ShoppingCart";
 

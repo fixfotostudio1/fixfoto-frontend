@@ -1,14 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-const PostPaymentInfoDialog = ({
-	handleClose,
-	order,
-	orderSuccess,
-	uploadImages,
-	deleteCookies,
-	deleteItem,
-}) => {
+const PostPaymentInfoDialog = ({ handleClose, order, orderSuccess }) => {
 	if (orderSuccess === "failed") {
 		return (
 			<>

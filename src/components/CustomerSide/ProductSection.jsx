@@ -14,7 +14,7 @@ const ProductSection = ({
 		<>
 			<div
 				id={id}
-				className="d-none d-md-flex max-vw-100 justify-content-center align-items-center"
+				className="d-none d-lg-flex max-vw-100 justify-content-center align-items-center"
 				style={{
 					...sectionStyle,
 					position: "absolute",
@@ -111,7 +111,7 @@ const ProductSection = ({
 			</div>
 			<div
 				id={id}
-				className="d-flex flex-column d-md-none max-vw-100 justify-content-center align-items-center"
+				className="d-flex flex-column d-lg-none max-vw-100 justify-content-center align-items-center"
 				style={{
 					...sectionStyle,
 					position: "absolute",
