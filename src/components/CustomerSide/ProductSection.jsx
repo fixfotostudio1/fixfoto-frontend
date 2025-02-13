@@ -62,7 +62,7 @@ const ProductSection = ({
 					<p
 						className="service-description"
 						style={{
-							maxWidth: "70%",
+							maxWidth: "100%",
 							marginBottom: "0px",
 						}}
 					>
@@ -71,7 +71,7 @@ const ProductSection = ({
 					<div
 						className="d-flex align-items-center arrow-container"
 						style={{
-							maxWidth: "70%",
+							maxWidth: "100%",
 							marginTop: "10px",
 							marginBottom: "10px",
 						}}

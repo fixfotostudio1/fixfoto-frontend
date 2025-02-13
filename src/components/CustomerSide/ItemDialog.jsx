@@ -3,7 +3,13 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState, useRef } from "react";
 
-const ItemDialog = ({ handleRedirect, itemType, pricelist, addItem }) => {
+const ItemDialog = ({
+	handleRedirect,
+	itemType,
+	pricelist,
+	addItem,
+	cancelIntent,
+}) => {
 	const [sizeOptions, setSizeOptions] = useState([
 		"Wählen Sie bitte zuerst ein Produkt.",
 	]);
@@ -158,6 +164,7 @@ const ItemDialog = ({ handleRedirect, itemType, pricelist, addItem }) => {
 								file: fileRef.current.files ? fileRef.current.files[0] : null,
 								S3TempName: Date.now().toString(),
 							});
+							cancelIntent();
 						} else {
 							setErrorMessage(
 								<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>

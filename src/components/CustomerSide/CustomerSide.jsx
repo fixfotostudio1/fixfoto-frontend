@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
-import { loadStripe } from "@stripe/stripe-js";
-import { STRIPE_PUBLISHABLE_KEY } from "../../utils/config";
-
 import {
 	S3Client,
 	S3ServiceException,
@@ -13,8 +10,6 @@ import {
 } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import Cookies from "js-cookie";
-
-const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 import {
 	S3_BUCKET,
@@ -28,7 +23,7 @@ import NavBar from "./NavBar";
 import TitleSection from "./TitleSection";
 import FinalSection from "./FinalSection";
 import Dialog from "./Dialog";
-import ShoppingCart from "../ShoppingCart";
+import ShoppingCart from "./ShoppingCart";
 
 import pass from "../../assets/pass.png";
 import bew from "../../assets/bew.jpg";
@@ -37,7 +32,7 @@ import lab from "../../assets/labor.png";
 import video from "../../assets/video.png";
 import glas from "../../assets/glas.png";
 
-const CustomerSide = ({ orderSuccess, pricelist }) => {
+const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	const [background, setBackground] = useState("start-background");
 	const [showDialog, setShowDialog] = useState(false);
 	const [dialogType, setDialogType] = useState(null);
@@ -49,55 +44,56 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					document.documentElement.clientHeight)) *
 			100;
 
-		const sectionNumber = 12;
-		if (newScrollPerc <= (1 * 100 - 50) / sectionNumber) {
+		const sectionNumber = 11;
+		const offset = 0;
+		if (newScrollPerc <= (1 * 100 - offset) / sectionNumber) {
 			setBackground("start-background");
 		} else if (
-			newScrollPerc > (1 * 100 - 50) / sectionNumber &&
-			newScrollPerc <= (2 * 100 - 50) / sectionNumber
+			newScrollPerc > (1 * 100 - offset) / sectionNumber &&
+			newScrollPerc <= (2 * 100 - offset) / sectionNumber
 		) {
 			setBackground("passfotos-background");
 		} else if (
-			newScrollPerc > (2 * 100 - 50) / sectionNumber &&
-			newScrollPerc <= (3 * 100 - 50) / sectionNumber
+			newScrollPerc > (2 * 100 - offset) / sectionNumber &&
+			newScrollPerc <= (3 * 100 - offset) / sectionNumber
 		) {
 			setBackground("bewerbung-background");
 		} else if (
-			newScrollPerc > (3 * 100 - 50) / sectionNumber &&
-			newScrollPerc <= (4 * 100 - 50) / sectionNumber
+			newScrollPerc > (3 * 100 - offset) / sectionNumber &&
+			newScrollPerc <= (4 * 100 - offset) / sectionNumber
 		) {
 			setBackground("portraits-background");
 		} else if (
-			newScrollPerc > (4 * 100 - 50) / sectionNumber &&
-			newScrollPerc <= (5 * 100 - 50) / sectionNumber
+			newScrollPerc > (4 * 100 - offset) / sectionNumber &&
+			newScrollPerc <= (5 * 100 - offset) / sectionNumber
 		) {
 			setBackground("produkte-background");
 		} else if (
-			newScrollPerc > (5 * 100 - 50) / sectionNumber &&
-			newScrollPerc <= (6 * 100 - 50) / sectionNumber
+			newScrollPerc > (5 * 100 - offset) / sectionNumber &&
+			newScrollPerc <= (6 * 100 - offset) / sectionNumber
 		) {
 			setBackground("rahmen-background");
 		} else if (
-			newScrollPerc > (6 * 100 - 50) / sectionNumber &&
-			newScrollPerc <= (7 * 100 - 50) / sectionNumber
+			newScrollPerc > (6 * 100 - offset) / sectionNumber &&
+			newScrollPerc <= (7 * 100 - offset) / sectionNumber
 		) {
 			setBackground("labor-background");
 		} else if (
-			newScrollPerc > (7 * 100 - 50) / sectionNumber &&
-			newScrollPerc <= (8 * 100 - 50) / sectionNumber
+			newScrollPerc > (7 * 100 - offset) / sectionNumber &&
+			newScrollPerc <= (8 * 100 - offset) / sectionNumber
 		) {
 			setBackground("video-background");
 		} else if (
-			newScrollPerc > (8 * 100 - 50) / sectionNumber &&
-			newScrollPerc <= (9 * 100 - 50) / sectionNumber
+			newScrollPerc > (8 * 100 - offset) / sectionNumber &&
+			newScrollPerc <= (9 * 100 - offset) / sectionNumber
 		) {
 			setBackground("glas-background");
 		} else if (
-			newScrollPerc > (9 * 100 - 50) / sectionNumber &&
-			newScrollPerc <= (10 * 100 - 50) / sectionNumber
+			newScrollPerc > (9 * 100 - offset) / sectionNumber &&
+			newScrollPerc <= (10 * 100 - offset) / sectionNumber
 		) {
 			setBackground("kopien-background");
-		} else if (newScrollPerc > (10 * 100 - 50) / sectionNumber) {
+		} else if (newScrollPerc > (10 * 100 - offset) / sectionNumber) {
 			setBackground("final-background");
 		}
 	};
@@ -119,6 +115,7 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 						city: "",
 					},
 					orderNumber: "",
+					paymentId: "",
 			  }
 	);
 	const orderRef = useRef({ current: order });
@@ -128,13 +125,13 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 		const newItems = orderRef.current["items"].concat([newItem]);
 		setOrder({ ...orderRef.current, items: newItems });
 
+		console.log("addItem");
+
 		const reader = new FileReader();
 		reader.readAsArrayBuffer(newItem.file);
 		reader.onload = (e) => {
 			uploadImage(e.target.result, newItem.S3TempName, S3_TEMP_BUCKET);
 		};
-
-		cancelIntent();
 	};
 
 	const deleteItem = (index) => {
@@ -143,7 +140,6 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 			.slice(0, index)
 			.concat(orderRef.current["items"].slice(index + 1));
 		setOrder({ ...orderRef.current, items: newItems });
-		cancelIntent();
 	};
 
 	const changeAmount = (index, newAmount) => {
@@ -161,16 +157,17 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 			orderRef.current["items"][index]["amount"] = newAmount;
 			setOrder({ ...orderRef.current });
 		}
-		cancelIntent();
 	};
 
 	const changeDeliveryAddress = (key, value) => {
 		const newDeliveryAddress = { ...orderRef.current["deliveryAddress"] };
 		newDeliveryAddress[key] = value;
 		setOrder({ ...orderRef.current, deliveryAddress: newDeliveryAddress });
+		console.log("changeDeliveryAddress");
 	};
 
 	const changeDeliveryType = (newType) => {
+		console.log("changeDeliveryType");
 		setOrder({ ...orderRef.current, deliveryType: newType });
 	};
 
@@ -196,7 +193,7 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 
 		try {
 			const response = client.send(command);
-			console.log(response);
+			console.log("uploadImage");
 		} catch (caught) {
 			if (
 				caught instanceof S3ServiceException &&
@@ -238,7 +235,7 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 
 	const deleteImages = async () => {
 		const keys = orderRef.current["items"].map((item) => item.S3TempName);
-		console.log("deleteImages: ", keys);
+		console.log("deleteImages");
 		try {
 			const response = await client.send(
 				new DeleteObjectsCommand({
@@ -282,49 +279,23 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 				})
 			),
 		};
+		//console.log(cookiesOrder);
 		Cookies.set("order", JSON.stringify(cookiesOrder));
 	};
 
-	const saveOrder = () => {
+	const saveOrder = async () => {
 		const filelessOrder = {
 			...orderRef.current,
+			intentId: intentId,
 			items: orderRef.current["items"].map((item) =>
 				Object({ ...item, file: null })
 			),
 		};
-		console.log("Dialog filelessOrder: ", filelessOrder);
-		axios.post("http://localhost:3001/api/orders/", {
+		await axios.post("http://localhost:3001/api/orders/", {
 			order: filelessOrder,
 		});
-	};
 
-	const [clientSecret, setClientSecret] = useState(null);
-	const clientSecretRef = useRef({ current: clientSecret });
-	clientSecretRef.current = clientSecret;
-
-	const fetchClientSecret = () => {
-		if (!clientSecretRef.current) {
-			axios
-				.post("http://localhost:3001/api/orders/fetchClientSecret", {
-					items: order.items,
-					deliveryType: order.deliveryType,
-				})
-				.then((result) => {
-					changeOrderNumber(Date.now().toString());
-					console.log("Dialog clientSecret: ", result["data"]["client_secret"]);
-					setClientSecret(result["data"]["client_secret"]);
-				});
-		}
-	};
-
-	const cancelIntent = async () => {
-		if (clientSecretRef.current) {
-			const paymentIntent = await stripe.paymentIntents.cancel(
-				clientSecretRef.current.split("_secret_")[0]
-			);
-			setClientSecret(null);
-			console.log("CustomerSide intent cancelled");
-		}
+		console.log("saveOrder");
 	};
 
 	useEffect(() => {
@@ -340,21 +311,25 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 	}, []);
 
 	useEffect(() => {
-		updateCookies();
-	}, [order]);
-
-	useEffect(() => {
-		if (orderSuccess === "succeeded" || orderSuccess === "pending") {
+		if (
+			(orderSuccess === "succeeded" || orderSuccess === "pending") &&
+			orderRef.current["orderNumber"] !== ""
+		) {
 			uploadImages().then(() => {
-				deleteImages().then(() => {
-					order["items"].forEach((item, index) => deleteItem(index));
-					saveOrder();
-				});
+				deleteImages()
+					.then(() => {
+						saveOrder();
+					})
+					.then(() => {
+						setOrder({ ...orderRef.current, items: [], orderNumber: "" });
+					});
 			});
 		}
 	}, [orderSuccess]);
 
-	console.log("orderNumber: ", order);
+	useEffect(() => {
+		updateCookies();
+	}, [order]);
 
 	return (
 		<div id="top-container" style={{ maxWidth: "100vw" }}>
@@ -362,7 +337,7 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 				id="main-container"
 				className={`d-flex flex-column ${background}`}
 				style={{
-					height: "1370vh",
+					height: "1100vh",
 					maxWidth: "100vw",
 				}}
 			>
@@ -375,8 +350,16 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					id="passfotos"
 					overTitle={"Lorem ipsum"}
 					title="PASSFOTOS"
-					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
+					mainText={Object.keys(pricelist["passfotos"]).map((prod) => {
+						return (
+							<>
+								{prod}: {pricelist["passfotos"][prod]} EUR
+								<br />
+								<br />
+							</>
+						);
+					})}
+					callToAction={"EINFACH VORBEIKOMMEN - OHNE TERMIN!"}
 					imageSource={pass}
 					imageSide={"left"}
 					imageStyle={{
@@ -390,8 +373,16 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					id="bewerbung"
 					overTitle={"Lorem ipsum"}
 					title="BEWERBUNGSBILDER"
-					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
+					mainText={Object.keys(pricelist["bewerbungsbilder"]).map((prod) => {
+						return (
+							<>
+								{prod}: {pricelist["bewerbungsbilder"][prod]} EUR
+								<br />
+								<br />
+							</>
+						);
+					})}
+					callToAction={"EINFACH VORBEIKOMMEN - OHNE TERMIN!"}
 					imageSource={bew}
 					imageSide={"right"}
 					imageStyle={{
@@ -405,8 +396,16 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					id="portraits"
 					overTitle={"Lorem ipsum"}
 					title="PORTRAITS"
-					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
+					mainText={Object.keys(pricelist["portraits"]).map((prod) => {
+						return (
+							<>
+								{prod}: € {pricelist["portraits"][prod]}
+								<br />
+								<br />
+							</>
+						);
+					})}
+					callToAction={"EINFACH VORBEIKOMMEN - OHNE TERMIN!"}
 					imageSource={{}}
 					imageSide={"left"}
 					imageStyle={{}}
@@ -418,8 +417,37 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					id="produkte"
 					overTitle={"Lorem ipsum"}
 					title="PRODUKTE"
-					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
+					mainText={
+						<>
+							<b>Poster (Glanz oder Matt)</b>
+							<br />
+							Größe von 30 x 30 cm bis 50 x 70 cm
+							<br />
+							Preise von € 17,90 bis € 44,90
+							<br />
+							<br />
+							<b>Leinen auf Keilrahmen</b>
+							<br />
+							Größe von 30 x 30 cm bis 50 x 70 cm
+							<br />
+							Preise von € 34,90 bis € 69,90
+							<br />
+							<br />
+							<b>Tassendruck</b>
+							<br />
+							Verschiedene Farben: € 19,90
+							<br />
+							Magic: € 24,90
+							<br />
+							<br />
+							<b>Kissendruck</b>
+							<br />
+							Verschiedene Farben: € 24,90
+							<br />
+							<br />
+						</>
+					}
+					callToAction={"ONLINE BESTELLEN"}
 					imageSource={prod}
 					imageSide={"right"}
 					imageStyle={{
@@ -428,7 +456,6 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					handleClick={() => {
 						setDialogType("fotoprodukte");
 						setShowDialog(true);
-						console.log("products handleClick");
 					}}
 				/>
 				<ProductSection
@@ -438,8 +465,39 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					id="rahmen"
 					overTitle={"Lorem ipsum"}
 					title="BILDERRAHMEN"
-					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
+					mainText={
+						<>
+							<b>Kunstoff Rahmen</b>
+							<br />
+							Größe von 10 x 15 cm bis 70 x 100 cm
+							<br />
+							Preise von € 4,90 bis € 39,90
+							<br />
+							<br />
+							<b>Quadratische Kunststoff Rahmen</b>
+							<br />
+							Größe von 10 x 10 cm bis 40 x 40 cm
+							<br />
+							Preise von € 4,90 bis € 39,90
+							<br />
+							<br />
+							<b>Rahmenlose Rahmen</b>
+							<br />
+							Größe von 10 x 15 cm bis 50 x 70 cm
+							<br />
+							Preise von € 4,90 bis € 39,90
+							<br />
+							<br />
+							<b>Silber Rahmen</b>
+							<br />
+							Größe von 3 x 5 cm bis 20 x 30 cm
+							<br />
+							Preise von € 13,9 bis € 39,90
+							<br />
+							<br />
+						</>
+					}
+					callToAction={"EINFACH VORBEIKOMMEN!"}
 					imageSource={null}
 					imageSide={"left"}
 					imageStyle={{}}
@@ -451,8 +509,53 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					id="labor"
 					overTitle={"Lorem ipsum"}
 					title="LABOR"
-					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
+					mainText={
+						<>
+							<b>Filmentwicklung</b>
+							<br />
+							Farbe: € 7,00
+							<br />
+							Schwarz-weiß: € 9,00
+							<br />
+							<br />
+							<b>Bild-Scannen</b>
+							<br />
+							Pro Neg.: € 0,70
+							<br />
+							Pro Dia: € 0,90
+							<br />
+							Pro Bild: € 0,90
+							<br />
+							<br />
+							<b>Bild vom Negativen</b>
+							<br />
+							Größe von 9 x 13 cm bis 21 x 29,7 cm
+							<br />
+							Preise von € 0,30 bis € 4,00
+							<br />
+							<br />
+							<b>Bilder vom Diafilm/Rollfilm/Planfilm</b>
+							<br />
+							Größe von 9 x 13 cm bis 21 x 29,7 cm
+							<br />
+							Preise von € 1,50 bis € 5,00
+							<br />
+							<br />
+							<b>Bild vom Bild</b>
+							<br />
+							Größe von 9 x 13 cm bis 21 x 29,7 cm
+							<br />
+							Preise von € 1,00 bis € 5,00
+							<br />
+							<br />
+							Bearbeitungsgebühren: € 2,00
+							<br />
+							Speichern auf Medien, E-Mail senden: € 5,00
+							<br />
+							<br />
+						</>
+					}
+					callToAction={"EINFACH VORBEIKOMMEN!"}
 					imageSource={lab}
 					imageSide={"right"}
 					imageStyle={{
@@ -467,8 +570,25 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					id="video"
 					overTitle={"Lorem ipsum"}
 					title="VIDEO"
-					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
+					mainText={
+						<>
+							<b>Kassetten VHS, VHS-C, auf DVD oder USB</b>
+							<br />
+							Pro Kassette: € 29,50
+							<br />
+							<br />
+							<b>Super 8 auf DVD</b>
+							<br />
+							Kleine Spule: € 44,90
+							<br />
+							Mittlere Spule: € 54,90
+							<br />
+							Große Spule: € 64,90
+							<br />
+							<br />
+						</>
+					}
+					callToAction={"EINFACH VORBEIKOMMEN!"}
 					imageSource={video}
 					imageSide={"left"}
 					imageStyle={{
@@ -481,9 +601,9 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					}}
 					id="glas"
 					overTitle={"Lorem ipsum"}
-					title="3D GLASFOTOBOR"
+					title="3D GLASFOTOLABOR"
 					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
+					callToAction={"ONLINE BESTELLEN"}
 					imageSource={glas}
 					imageSide={"right"}
 					imageStyle={{
@@ -499,13 +619,44 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					id="kopien"
 					overTitle={"Lorem ipsum"}
 					title="KOPIEN"
-					mainText={"Lorem ipsum"}
-					callToAction={"BESTELLEN"}
+					mainText={
+						<>
+							<b>Schwarz-weiß Fotokopien</b>
+							<br />
+							1 Kopie: € 0,20
+							<br />
+							1 PDF-Ausdruck: € 0,50
+							<br />
+							<br />
+							<b>Laminieren</b>
+							<br />
+							A3: € 4,00
+							<br />
+							A4: € 3,00
+							<br />
+							A5: € 2,00
+							<br />
+							A6: € 2,00
+							<br />
+							<br />
+							<b>PDF-Scannen</b>
+							<br />
+							Pro Blatt: € 1,00
+							<br />
+							<br />
+						</>
+					}
+					callToAction={"EINFACH VORBEIKOMMEN!"}
 					imageSource={null}
 					imageSide={"left"}
 					imageStyle={{}}
 				/>
-				<FinalSection />
+				<FinalSection
+					handleClick={(type) => {
+						setShowDialog(true);
+						setDialogType(type);
+					}}
+				/>
 				<Dialog
 					showDialog={showDialog}
 					dialogType={dialogType}
@@ -520,9 +671,13 @@ const CustomerSide = ({ orderSuccess, pricelist }) => {
 					changeAmount={changeAmount}
 					changeDeliveryAddress={changeDeliveryAddress}
 					changeDeliveryType={changeDeliveryType}
-					clientSecret={clientSecret}
-					fetchClientSecret={fetchClientSecret}
-					stripePromise={stripePromise}
+				/>
+				<ShoppingCart
+					order={order}
+					handleClick={() => {
+						setShowDialog(true);
+						setDialogType("CartAndCheckoutDialog");
+					}}
 				/>
 			</div>
 		</div>

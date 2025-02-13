@@ -4,8 +4,8 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Accordion from "react-bootstrap/Accordion";
 import { useState } from "react";
-import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { PaymentElement } from "@stripe/react-stripe-js";
+import { useStripe, useElements } from "@stripe/react-stripe-js";
 
 const CartAndCheckoutDialog = ({
 	handleClose,
@@ -20,6 +20,7 @@ const CartAndCheckoutDialog = ({
 	fetchClientSecret,
 	alwaysActiveList,
 	toggleActivity,
+	cancelIntent,
 }) => {
 	let stripe = null;
 	let elements = null;
@@ -27,29 +28,6 @@ const CartAndCheckoutDialog = ({
 		stripe = useStripe();
 		elements = useElements();
 	}
-
-	const submitPayment = async () => {
-		if (!stripe || !elements) {
-			return;
-		}
-
-		const { error } = await stripe.confirmPayment({
-			elements,
-			confirmParams: {
-				return_url: "http://localhost:5173/after_payment_attempt",
-			},
-		});
-
-		if (error) {
-			setErrorMessage(
-				<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
-					<p style={{ padding: 0, margin: 0 }}>{error.message}</p>
-				</Modal.Body>
-			);
-		} else {
-		}
-	};
-
 	const [errorMessage, setErrorMessage] = useState(<></>);
 	const showFormGaps = () => {
 		if (order["items"].length === 0) {
@@ -80,6 +58,29 @@ const CartAndCheckoutDialog = ({
 			);
 		} else {
 			return "";
+		}
+	};
+
+	const submitPayment = async () => {
+		if (!stripe || !elements) {
+			return;
+		}
+
+		const { error } = await stripe.confirmPayment({
+			elements,
+			confirmParams: {
+				return_url: "http://localhost:5173/after_payment_attempt",
+			},
+		});
+
+		if (error) {
+			setErrorMessage(
+				<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
+					<p style={{ padding: 0, margin: 0 }}>{error.message}</p>
+				</Modal.Body>
+			);
+		} else {
+			console.log("submitPayment");
 		}
 	};
 
@@ -165,16 +166,20 @@ const CartAndCheckoutDialog = ({
 																		? "rgba(255, 0, 0, 0.3)"
 																		: "",
 															}}
-															onChange={({ target }) =>
-																changeAmount(index, target.value)
-															}
+															onChange={({ target }) => {
+																changeAmount(index, target.value);
+																cancelIntent();
+															}}
 															min={1}
 														/>
 													</Form.Group>
 													<br />
 													<Button
 														style={{ height: "fit-content" }}
-														onClick={() => deleteItem(index)}
+														onClick={() => {
+															deleteItem(index);
+															cancelIntent();
+														}}
 													>
 														X
 													</Button>
@@ -360,8 +365,13 @@ const CartAndCheckoutDialog = ({
 					<Accordion.Item eventKey="3">
 						<Accordion.Header
 							onClick={() => {
-								toggleActivity("3");
-								fetchClientSecret();
+								if (showFormGaps()) {
+									setErrorMessage(showFormGaps());
+								} else {
+									toggleActivity("3");
+									fetchClientSecret(order);
+									changeOrderNumber(Date.now().toString());
+								}
 							}}
 						>
 							Zahlungsarten

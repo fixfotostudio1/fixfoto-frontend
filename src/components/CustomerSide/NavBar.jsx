@@ -1,19 +1,18 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 const NavBar = () => {
 	return (
 		<>
 			<Navbar
-				expand="md"
+				expand="xs"
 				fixed="top"
-				className="m-0 p-0 vw-100 d-none d-md-block"
+				className="m-0 p-0 vw-100 d-none d-xs-block"
 			>
 				<Container
-					className="d-flex align-items-between justify-content-between align-items-start pt-3 ps-3 pe-3 pt-lg-5 ps-lg-5 pe-lg-5"
+					className="d-flex align-items-between justify-content-between align-items-start pt-3 ps-3 pe-3 pt-xs-5 ps-xs-5 pe-xs-5"
 					style={{
 						minWidth: "100%",
 					}}
@@ -62,7 +61,7 @@ const NavBar = () => {
 					</div>
 				</Container>
 			</Navbar>
-			<Navbar expand="md" key="md" fixed="top" className="mb-3 d-md-none">
+			<Navbar expand="xs" key="xs" fixed="top" className="mb-3 d-xs-none">
 				<Container fluid>
 					<Navbar.Brand href="#start" className="m-0 p-0">
 						<div
@@ -82,16 +81,15 @@ const NavBar = () => {
 							STUDIO
 						</div>
 					</Navbar.Brand>
-					<Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
+					<Navbar.Toggle aria-controls={`offcanvasNavbar-expand-xs`} />
 					<Navbar.Offcanvas
-						id={`offcanvasNavbar-expand-md`}
-						aria-labelledby={`offcanvasNavbarLabel-expand-md`}
+						id={`offcanvasNavbar-expand-xs`}
+						aria-labelledby={`offcanvasNavbarLabel-expand-xs`}
 						placement="end"
 						className="bg-dark"
-						style={{ width: "80vw" }}
 					>
 						<Offcanvas.Header closeButton style={{ color: "white" }}>
-							<Offcanvas.Title id={`offcanvasNavbarLabel-expand-md`}>
+							<Offcanvas.Title id={`offcanvasNavbarLabel-expand-xs`}>
 								Menü
 							</Offcanvas.Title>
 						</Offcanvas.Header>

@@ -40,8 +40,19 @@ const TitleSection = () => {
 						marginBottom: "20px",
 					}}
 				>
-					<b>Lorem ipsum dolor sit amet consectetur adipisicing elit.</b>
+					<b>FIX FOTO STUDIO</b>
 				</h1>
+				<p
+					style={{
+						color: "white",
+						fontSize: "25px",
+						marginBottom: "20px",
+					}}
+				>
+					<b>Mo. - Fr. 09:00 - 18:30</b>
+					<br />
+					<b>Sa. 09:00 - 14:00</b>
+				</p>
 				<div
 					className="d-flex align-items-center arrow-container"
 					style={{
@@ -117,7 +128,7 @@ const TitleSection = () => {
 							marginLeft: "10px",
 						}}
 					>
-						<b>@fixfotostudio</b>
+						<b>@fixfotostudio1</b>
 					</p>
 				</div>
 			</div>
