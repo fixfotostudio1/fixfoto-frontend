@@ -341,7 +341,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					maxWidth: "100vw",
 				}}
 			>
-				<NavBar />
+				<NavBar currBackground={background} />
 				<TitleSection />
 				<ProductSection
 					sectionStyle={{

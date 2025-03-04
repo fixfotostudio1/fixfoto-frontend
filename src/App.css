@@ -130,6 +130,23 @@ h1 {
 	letter-spacing: 2px;
 }
 
+.navlink {
+	text-decoration: none;
+	color: white;
+	font-family: "Barlow";
+	font-size: 16px;
+	letter-spacing: 1px;
+	line-height: 15px;
+	padding: 8px;
+	cursor: pointer;
+}
+
+.navlink:hover,
+.navlink-in-view {
+	letter-spacing: 2px;
+	font-weight: bold;
+}
+
 #uncontrolled-tab-example-tab-neu,
 #uncontrolled-tab-example-tab-abholbereit,
 #uncontrolled-tab-example-tab-versandbereit,

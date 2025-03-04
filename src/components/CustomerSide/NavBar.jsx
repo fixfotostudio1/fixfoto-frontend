@@ -3,16 +3,16 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
-const NavBar = () => {
+const NavBar = ({ currBackground }) => {
 	return (
 		<>
 			<Navbar
-				expand="xs"
+				expand="lg"
 				fixed="top"
-				className="m-0 p-0 vw-100 d-none d-xs-block"
+				className="m-0 p-0 vw-100 d-none d-lg-block"
 			>
 				<Container
-					className="d-flex align-items-between justify-content-between align-items-start pt-3 ps-3 pe-3 pt-xs-5 ps-xs-5 pe-xs-5"
+					className="d-flex align-items-between justify-content-between align-items-start pt-3 ps-3 pe-3 pt-lg-5 ps-lg-5 pe-lg-5"
 					style={{
 						minWidth: "100%",
 					}}
@@ -47,21 +47,102 @@ const NavBar = () => {
 							style={{ width: "fit-content", maxWidth: 151 }}
 						>
 							<Nav className="me-auto d-flex flex-column">
-								<Nav.Link href="#passfotos">Passbilder</Nav.Link>
-								<Nav.Link href="#bewerbung">Bewerbungsbilder</Nav.Link>
-								<Nav.Link href="#portraits">Portraits</Nav.Link>
-								<Nav.Link href="#produkte">Fotoprodukte</Nav.Link>
-								<Nav.Link href="#rahmen">Rahmen</Nav.Link>
-								<Nav.Link href="#labor">Labor</Nav.Link>
-								<Nav.Link href="#video">Videokassetten</Nav.Link>
-								<Nav.Link href="#glas">3D Glasfoto</Nav.Link>
-								<Nav.Link href="#kopien">Kopien</Nav.Link>
+								<a
+									class={
+										currBackground === "passfotos-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight)}
+								>
+									Passbilder
+								</a>
+								<a
+									class={
+										currBackground === "bewerbung-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 2)}
+								>
+									Bewerbungsbilder
+								</a>
+								<a
+									class={
+										currBackground === "portraits-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 3)}
+								>
+									Portraits
+								</a>
+								<a
+									class={
+										currBackground === "produkte-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 4)}
+								>
+									Fotoprodukte
+								</a>
+								<a
+									class={
+										currBackground === "rahmen-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 5)}
+								>
+									Rahmen
+								</a>
+								<a
+									class={
+										currBackground === "labor-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 6)}
+								>
+									Labor
+								</a>
+								<a
+									class={
+										currBackground === "video-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 7)}
+								>
+									Videokassetten
+								</a>
+								<a
+									class={
+										currBackground === "glas-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 8)}
+								>
+									3D Glasfoto
+								</a>
+								<a
+									class={
+										currBackground === "kopien-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 9)}
+								>
+									Kopien
+								</a>
 							</Nav>
 						</Navbar.Collapse>
 					</div>
 				</Container>
 			</Navbar>
-			<Navbar expand="xs" key="xs" fixed="top" className="mb-3 d-xs-none">
+			<Navbar expand="lg" key="lg" fixed="top" className="mb-3 d-lg-none">
 				<Container fluid>
 					<Navbar.Brand href="#start" className="m-0 p-0">
 						<div
@@ -81,29 +162,110 @@ const NavBar = () => {
 							STUDIO
 						</div>
 					</Navbar.Brand>
-					<Navbar.Toggle aria-controls={`offcanvasNavbar-expand-xs`} />
+					<Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
 					<Navbar.Offcanvas
-						id={`offcanvasNavbar-expand-xs`}
-						aria-labelledby={`offcanvasNavbarLabel-expand-xs`}
+						id={`offcanvasNavbar-expand-lg`}
+						aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
 						placement="end"
 						className="bg-dark"
 					>
 						<Offcanvas.Header closeButton style={{ color: "white" }}>
-							<Offcanvas.Title id={`offcanvasNavbarLabel-expand-xs`}>
+							<Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
 								Menü
 							</Offcanvas.Title>
 						</Offcanvas.Header>
 						<Offcanvas.Body>
 							<Nav className="justify-content-end flex-grow-1 pe-3">
-								<Nav.Link href="#passfotos">Passbilder</Nav.Link>
-								<Nav.Link href="#bewerbung">Bewerbungsbilder</Nav.Link>
-								<Nav.Link href="#portraits">Portraits</Nav.Link>
-								<Nav.Link href="#produkte">Fotoprodukte</Nav.Link>
-								<Nav.Link href="#rahmen">Rahmen</Nav.Link>
-								<Nav.Link href="#labor">Labor</Nav.Link>
-								<Nav.Link href="#video">Videokassetten</Nav.Link>
-								<Nav.Link href="#glas">3D Glasfoto</Nav.Link>
-								<Nav.Link href="#kopien">Kopien</Nav.Link>
+								<a
+									class={
+										currBackground === "passfotos-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight)}
+								>
+									Passbilder
+								</a>
+								<a
+									class={
+										currBackground === "bewerbung-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 2)}
+								>
+									Bewerbungsbilder
+								</a>
+								<a
+									class={
+										currBackground === "portraits-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 3)}
+								>
+									Portraits
+								</a>
+								<a
+									class={
+										currBackground === "produkte-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 4)}
+								>
+									Fotoprodukte
+								</a>
+								<a
+									class={
+										currBackground === "rahmen-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 5)}
+								>
+									Rahmen
+								</a>
+								<a
+									class={
+										currBackground === "labor-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 6)}
+								>
+									Labor
+								</a>
+								<a
+									class={
+										currBackground === "video-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 7)}
+								>
+									Videokassetten
+								</a>
+								<a
+									class={
+										currBackground === "glas-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 8)}
+								>
+									3D Glasfoto
+								</a>
+								<a
+									class={
+										currBackground === "kopien-background"
+											? "navlink navlink-in-view"
+											: "navlink"
+									}
+									onClick={() => window.scrollTo(0, window.innerHeight * 9)}
+								>
+									Kopien
+								</a>
 							</Nav>
 						</Offcanvas.Body>
 					</Navbar.Offcanvas>

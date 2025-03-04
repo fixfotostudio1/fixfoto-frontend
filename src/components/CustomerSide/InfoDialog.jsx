@@ -1,4 +1,6 @@
 import Modal from "react-bootstrap/Modal";
+//import AGB from "../../assets/AGB.docx";
+// import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
 const InfoDialog = ({ dialogType }) => {
 	switch (dialogType) {
@@ -8,7 +10,13 @@ const InfoDialog = ({ dialogType }) => {
 					<Modal.Header closeButton>
 						<Modal.Title>AGB</Modal.Title>
 					</Modal.Header>
-					<Modal.Body></Modal.Body>
+					<Modal.Body>
+						<iframe
+							width="500"
+							height="500"
+							src="https://docs.google.com/gview?url=http://ieee802.org/secmail/docIZSEwEqHFr.doc&embedded=true"
+						></iframe>
+					</Modal.Body>
 				</>
 			);
 		case "ImpressumDialog":
