@@ -14,15 +14,16 @@ const ProductSection = ({
 		<>
 			<div
 				id={id}
-				className="d-none d-lg-flex max-vw-100 justify-content-center align-items-center"
+				className="d-none d-lg-flex max-vw-100 justify-content-center align-items-center m-0"
 				style={{
 					...sectionStyle,
 					position: "absolute",
 					left: 0,
 					height: "100vh",
 					width: "100vw",
-					margin: "0",
-					padding: "0",
+					paddingLeft: "calc(3rem + 85.15px)",
+					paddingRight: "calc(3rem + 157.64px)",
+					boxSizing: "border-box",
 				}}
 			>
 				<img
@@ -46,6 +47,7 @@ const ProductSection = ({
 							color: "white",
 							fontSize: "16px",
 							marginBottom: "10px",
+							maxWidth: "60%",
 						}}
 					>
 						<b>{overTitle}</b>
@@ -84,6 +86,7 @@ const ProductSection = ({
 								margin: "0",
 								padding: "0",
 								marginRight: "20px",
+								minWidth: "fit-content",
 							}}
 						>
 							<b>{callToAction}</b>
@@ -146,7 +149,7 @@ const ProductSection = ({
 						style={{
 							...imageStyle,
 							objectFit: "contain",
-							paddingBottom: "20px",
+							marginBottom: "20px",
 						}}
 					/>
 					<p

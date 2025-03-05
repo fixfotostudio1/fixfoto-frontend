@@ -120,12 +120,9 @@ const Dialog = ({
 
 			break;
 		case "AGBDialog":
-			content = <InfoDialog dialogType={dialogType} />;
-			break;
 		case "ImpressumDialog":
-			content = <InfoDialog dialogType={dialogType} />;
-			break;
 		case "DatenschutzDialog":
+		case "LocationDialog":
 			content = <InfoDialog dialogType={dialogType} />;
 			break;
 		default:

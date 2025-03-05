@@ -40,7 +40,7 @@ const TitleSection = () => {
 						marginBottom: "20px",
 					}}
 				>
-					<b>FIX FOTO STUDIO</b>
+					<b>FIX FOTO STUDIO1</b>
 				</h1>
 				<p
 					style={{

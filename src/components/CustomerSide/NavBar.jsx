@@ -32,7 +32,7 @@ const NavBar = ({ currBackground }) => {
 							<br />
 							FOTO
 							<br />
-							STUDIO
+							STUDIO1
 						</div>
 					</Navbar.Brand>
 					<div>

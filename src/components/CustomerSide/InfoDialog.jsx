@@ -1,6 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import AGB from "../../assets/AGB.pdf";
 import { Document } from "react-pdf";
+import loc from "../../assets/location.png";
 
 const InfoDialog = ({ dialogType }) => {
 	switch (dialogType) {
@@ -461,6 +462,43 @@ const InfoDialog = ({ dialogType }) => {
 						>
 							<p>© 2024 N. Eker</p>
 						</div>
+					</Modal.Body>
+				</>
+			);
+		case "LocationDialog":
+			return (
+				<>
+					<Modal.Header closeButton>
+						<Modal.Title>Besuchen Sie uns!</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<a
+							target="_blank"
+							href="https://www.google.com/maps/dir//Gr%C3%BCneburgweg+8,+60322+Frankfurt+am+Main/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x47bd0eb398ca3159:0xe31e7287bfa1365b?sa=X&ved=1t:707&ictx=111"
+						>
+							<img
+								style={{ width: "100%", borderRadius: "5px" }}
+								src={loc}
+							></img>
+						</a>
+						<br />
+						<br />
+						Fix Foto Studio1
+						<br />
+						Fotolabor Frankfurt
+						<br />
+						Grüneburgweg 8
+						<br />
+						60322 Frankfurt am Main
+						<br />
+						<br />
+						Öffnungszeiten:
+						<br />
+						Mo. - Fr. 9:00 - 18:30
+						<br />
+						Sa. 9:00 - 14:00
+						<br />
+						<br />
 					</Modal.Body>
 				</>
 			);

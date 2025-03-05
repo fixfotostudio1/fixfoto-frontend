@@ -22,7 +22,7 @@
 }
 
 .bewerbung-background {
-	background-color: #ffbe33; /* #ffd333; /*#fbd87f;*/
+	background-color: goldenrod; /* #ffd333; /*#fbd87f;*/
 }
 
 .portraits-background {
@@ -78,8 +78,9 @@ h1 {
 .line-1 {
 	height: 2px;
 	background: white;
-	width: 20%;
-	transition: all 1s ease-out;
+	width: 3vmax;
+	min-width: 3vmax;
+	transition: all 4s ease-out;
 }
 
 .arrow {
@@ -99,7 +100,7 @@ h1 {
 }
 
 .arrow-container:hover .line-1 {
-	width: 30%;
+	width: 100%;
 }
 
 .nav-link,

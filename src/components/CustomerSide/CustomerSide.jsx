@@ -26,11 +26,14 @@ import Dialog from "./Dialog";
 import ShoppingCart from "./ShoppingCart";
 
 import pass from "../../assets/pass.png";
-import bew from "../../assets/bew.jpg";
+import bew from "../../assets/bew2.jpg";
 import prod from "../../assets/prod.png";
 import lab from "../../assets/labor.png";
 import video from "../../assets/video.png";
 import glas from "../../assets/glas.png";
+import rahmen from "../../assets/rahmen.webp";
+import kopien from "../../assets/kopien.png";
+import portrait from "../../assets/portrait.jpg";
 
 const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	const [background, setBackground] = useState("start-background");
@@ -279,8 +282,8 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 				})
 			),
 		};
-		//console.log(cookiesOrder);
-		Cookies.set("order", JSON.stringify(cookiesOrder));
+
+		Cookies.set("order", JSON.stringify(cookiesOrder), { expires: 7 });
 	};
 
 	const saveOrder = async () => {
@@ -348,22 +351,26 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 						top: "100vh",
 					}}
 					id="passfotos"
-					overTitle={"Lorem ipsum"}
+					overTitle={null}
 					title="PASSFOTOS"
 					mainText={Object.keys(pricelist["passfotos"]).map((prod) => {
 						return (
 							<>
-								{prod}: {pricelist["passfotos"][prod]} EUR
+								{prod}: € {pricelist["passfotos"][prod]}
 								<br />
 								<br />
 							</>
 						);
 					})}
-					callToAction={"EINFACH VORBEIKOMMEN - OHNE TERMIN!"}
+					callToAction={"IHR WEG ZU UNS"}
 					imageSource={pass}
 					imageSide={"left"}
 					imageStyle={{
 						width: "30vw",
+					}}
+					handleClick={() => {
+						setShowDialog(true);
+						setDialogType("LocationDialog");
 					}}
 				/>
 				<ProductSection
@@ -371,22 +378,31 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 						top: "200vh",
 					}}
 					id="bewerbung"
-					overTitle={"Lorem ipsum"}
-					title="BEWERBUNGSBILDER"
+					overTitle={null}
+					title={
+						<>
+							BEWERBUNGS- <br /> BILDER
+						</>
+					}
 					mainText={Object.keys(pricelist["bewerbungsbilder"]).map((prod) => {
 						return (
 							<>
-								{prod}: {pricelist["bewerbungsbilder"][prod]} EUR
+								{prod}: € {pricelist["bewerbungsbilder"][prod]}
 								<br />
 								<br />
 							</>
 						);
 					})}
-					callToAction={"EINFACH VORBEIKOMMEN - OHNE TERMIN!"}
+					callToAction={"IHR WEG ZU UNS"}
 					imageSource={bew}
 					imageSide={"right"}
 					imageStyle={{
-						width: "30vw",
+						width: "25vmax",
+						border: "5px solid white",
+					}}
+					handleClick={() => {
+						setShowDialog(true);
+						setDialogType("LocationDialog");
 					}}
 				/>
 				<ProductSection
@@ -394,7 +410,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 						top: "300vh",
 					}}
 					id="portraits"
-					overTitle={"Lorem ipsum"}
+					overTitle={null}
 					title="PORTRAITS"
 					mainText={Object.keys(pricelist["portraits"]).map((prod) => {
 						return (
@@ -405,17 +421,24 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 							</>
 						);
 					})}
-					callToAction={"EINFACH VORBEIKOMMEN - OHNE TERMIN!"}
-					imageSource={{}}
+					callToAction={"IHR WEG ZU UNS"}
+					imageSource={portrait}
 					imageSide={"left"}
-					imageStyle={{}}
+					imageStyle={{
+						width: "25vmax",
+						border: "5px solid white",
+					}}
+					handleClick={() => {
+						setShowDialog(true);
+						setDialogType("LocationDialog");
+					}}
 				/>
 				<ProductSection
 					sectionStyle={{
 						top: "400vh",
 					}}
 					id="produkte"
-					overTitle={"Lorem ipsum"}
+					overTitle={null}
 					title="PRODUKTE"
 					mainText={
 						<>
@@ -463,18 +486,18 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 						top: "500vh",
 					}}
 					id="rahmen"
-					overTitle={"Lorem ipsum"}
+					overTitle={null}
 					title="BILDERRAHMEN"
 					mainText={
 						<>
-							<b>Kunstoff Rahmen</b>
+							<b>Kunststoffrahmen</b>
 							<br />
 							Größe von 10 x 15 cm bis 70 x 100 cm
 							<br />
 							Preise von € 4,90 bis € 39,90
 							<br />
 							<br />
-							<b>Quadratische Kunststoff Rahmen</b>
+							<b>Quadratische Kunststoffrahmen</b>
 							<br />
 							Größe von 10 x 10 cm bis 40 x 40 cm
 							<br />
@@ -488,7 +511,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 							Preise von € 4,90 bis € 39,90
 							<br />
 							<br />
-							<b>Silber Rahmen</b>
+							<b>Silberrahmen</b>
 							<br />
 							Größe von 3 x 5 cm bis 20 x 30 cm
 							<br />
@@ -497,17 +520,21 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 							<br />
 						</>
 					}
-					callToAction={"EINFACH VORBEIKOMMEN!"}
-					imageSource={null}
+					callToAction={"IHR WEG ZU UNS"}
+					imageSource={rahmen}
 					imageSide={"left"}
-					imageStyle={{}}
+					imageStyle={{ width: "30vw" }}
+					handleClick={() => {
+						setShowDialog(true);
+						setDialogType("LocationDialog");
+					}}
 				/>
 				<ProductSection
 					sectionStyle={{
 						top: "600vh",
 					}}
 					id="labor"
-					overTitle={"Lorem ipsum"}
+					overTitle={null}
 					title="LABOR"
 					mainText={
 						<>
@@ -555,20 +582,23 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 							<br />
 						</>
 					}
-					callToAction={"EINFACH VORBEIKOMMEN!"}
+					callToAction={"IHR WEG ZU UNS"}
 					imageSource={lab}
 					imageSide={"right"}
 					imageStyle={{
 						width: "30vw",
 					}}
-					handleClick={() => {}}
+					handleClick={() => {
+						setShowDialog(true);
+						setDialogType("LocationDialog");
+					}}
 				/>
 				<ProductSection
 					sectionStyle={{
 						top: "700vh",
 					}}
 					id="video"
-					overTitle={"Lorem ipsum"}
+					overTitle={null}
 					title="VIDEO"
 					mainText={
 						<>
@@ -588,11 +618,15 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 							<br />
 						</>
 					}
-					callToAction={"EINFACH VORBEIKOMMEN!"}
+					callToAction={"IHR WEG ZU UNS"}
 					imageSource={video}
 					imageSide={"left"}
 					imageStyle={{
 						width: "25vw",
+					}}
+					handleClick={() => {
+						setShowDialog(true);
+						setDialogType("LocationDialog");
 					}}
 				/>
 				<ProductSection
@@ -600,7 +634,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 						top: "800vh",
 					}}
 					id="glas"
-					overTitle={"Lorem ipsum"}
+					overTitle={null}
 					title="3D GLASFOTOLABOR"
 					mainText={"Lorem ipsum"}
 					callToAction={"ONLINE BESTELLEN"}
@@ -609,7 +643,10 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					imageStyle={{
 						width: "20vw",
 					}}
-					handleClick={() => {}}
+					handleClick={() => {
+						setShowDialog(true);
+						setDialogType("LocationDialog");
+					}}
 				/>
 
 				<ProductSection
@@ -617,7 +654,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 						top: "900vh",
 					}}
 					id="kopien"
-					overTitle={"Lorem ipsum"}
+					overTitle={null}
 					title="KOPIEN"
 					mainText={
 						<>
@@ -646,10 +683,16 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 							<br />
 						</>
 					}
-					callToAction={"EINFACH VORBEIKOMMEN!"}
-					imageSource={null}
+					callToAction={"IHR WEG ZU UNS"}
+					imageSource={kopien}
 					imageSide={"left"}
-					imageStyle={{}}
+					imageStyle={{
+						width: "20vmax",
+					}}
+					handleClick={() => {
+						setShowDialog(true);
+						setDialogType("LocationDialog");
+					}}
 				/>
 				<FinalSection
 					handleClick={(type) => {
