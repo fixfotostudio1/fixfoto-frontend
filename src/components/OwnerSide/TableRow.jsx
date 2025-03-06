@@ -1,10 +1,11 @@
 import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 
 import { S3_BUCKET, REGION, AWS_IDENTITY_POOL_ID } from "../../utils/config";
 
-const TableRow = ({ item, handleClick }) => {
+const TableRow = ({ item, handleClick, handleDelete, statusesArray }) => {
 	const client = new S3Client({
 		region: REGION,
 		credentials: fromCognitoIdentityPool({
@@ -108,7 +109,42 @@ const TableRow = ({ item, handleClick }) => {
 				)}
 			</td>
 			<td>
-				<Button onClick={handleClick}>{buttonText}</Button>
+				<Dropdown>
+					<Button
+						onClick={() => {
+							if (statusesArray[0] === "löschen") {
+								handleDelete();
+							} else {
+								handleClick(statusesArray[0]);
+							}
+						}}
+						style={{ width: "70%", minWidth: "fit-content" }}
+					>
+						{statusesArray[0]}
+					</Button>
+					<Dropdown.Toggle
+						variant="success"
+						id="dropdown-basic"
+						style={{ width: "30%", minWidth: "fit-content" }}
+					></Dropdown.Toggle>
+
+					<Dropdown.Menu>
+						{statusesArray.slice(1).map((item) => {
+							if (item === "löschen") {
+								return (
+									<Dropdown.Item onClick={() => handleDelete()}>
+										{item}
+									</Dropdown.Item>
+								);
+							}
+							return (
+								<Dropdown.Item onClick={() => handleClick(item)}>
+									{item}
+								</Dropdown.Item>
+							);
+						})}
+					</Dropdown.Menu>
+				</Dropdown>
 			</td>
 		</tr>
 	);
