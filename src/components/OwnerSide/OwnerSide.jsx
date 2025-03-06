@@ -332,27 +332,55 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 					<div className="vw-100 d-flex flex-column justify-content-center align-items-center">
 						<Card className="text-center">
 							<Card.Header>Preisliste</Card.Header>
-							<Card.Body>
-								<Card.Title>Passfotos</Card.Title>
-								<Form.Group className="d-flex justify-content-between align-items-center mt-3">
-									<Form.Label style={{ padding: 0, margin: 0 }}>
-										4 biometrische Passbilder:
-									</Form.Label>
-									<Form.Control
-										style={{ width: "70%" }}
-										value={
-											newPricelist["passfotos"]["4 biometrische Passbilder"]
-										}
-										onChange={({ target }) => {
-											const temp = {
-												...newPricelist["passfotos"],
-												"4 biometrische Passbilder": Number(target.value),
-											};
-											setNewPricelist({ ...newPricelist, passfotos: temp });
-										}}
-									/>
-								</Form.Group>
-							</Card.Body>
+							<PriceCard
+								productType={"passfotos"}
+								newPricelist={newPricelist}
+								setNewPricelist={setNewPricelist}
+							/>
+							<PriceCard
+								productType={"bewerbungsbilder"}
+								newPricelist={newPricelist}
+								setNewPricelist={setNewPricelist}
+							/>
+							<PriceCard
+								productType={"portraits"}
+								newPricelist={newPricelist}
+								setNewPricelist={setNewPricelist}
+							/>
+							<PriceCard
+								productType={"fotoprodukte"}
+								productSubtypesAvailable={true}
+								newPricelist={newPricelist}
+								setNewPricelist={setNewPricelist}
+							/>
+							<PriceCard
+								productType={"rahmen"}
+								newPricelist={newPricelist}
+								setNewPricelist={setNewPricelist}
+							/>
+							<PriceCard
+								productType={"labor"}
+								productSubtypesAvailable={true}
+								newPricelist={newPricelist}
+								setNewPricelist={setNewPricelist}
+							/>
+							<PriceCard
+								productType={"videokassetten"}
+								productSubtypesAvailable={true}
+								newPricelist={newPricelist}
+								setNewPricelist={setNewPricelist}
+							/>
+							<PriceCard
+								productType={"kopien"}
+								productSubtypesAvailable={true}
+								newPricelist={newPricelist}
+								setNewPricelist={setNewPricelist}
+							/>
+							<PriceCard
+								productType={"delivery"}
+								newPricelist={newPricelist}
+								setNewPricelist={setNewPricelist}
+							/>
 							<Card.Footer>
 								<Button
 									onClick={() => handlePricelistChange(newPricelist, user)}

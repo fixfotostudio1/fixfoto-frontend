@@ -1,8 +1,10 @@
+import owner from "../../assets/owner.jpg";
+
 const FinalSection = ({ handleClick }) => {
 	return (
 		<div
 			id="final"
-			className="m-0 p-0 max-vw-100 d-flex flex-column justify-content-end align-items-center"
+			className="m-0 p-0 max-vw-100 d-flex flex-column justify-content-center align-items-center"
 			style={{
 				position: "absolute",
 				top: "1000vh",
@@ -11,29 +13,42 @@ const FinalSection = ({ handleClick }) => {
 			}}
 		>
 			<div
+				className="d-flex justify-content-center"
+				style={{
+					paddingTop: "20vh",
+					paddingBottom: "20vh",
+					width: "fit-content",
+				}}
+			>
+				<img
+					src={owner}
+					style={{ height: "40vh", border: "3px solid white" }}
+				/>
+			</div>
+			<div
 				id={"final-section"}
-				className="d-flex justify-content-center align-items-center"
+				className="d-flex justify-content-center align-items-center p-0 m-5"
 				style={{
 					width: "100vw",
-					height: "100vh",
+					height: "fit-content",
 				}}
 			>
 				<p
-					className="p-0 pe-5 info-p"
+					className="m-0 p-0 pe-5 info-p"
 					style={{ color: "white" }}
 					onClick={() => handleClick("AGBDialog")}
 				>
 					AGB
 				</p>
 				<p
-					className="p-0 pe-5 info-p"
+					className="m-0 p-0 pe-5 info-p"
 					style={{ color: "white" }}
 					onClick={() => handleClick("ImpressumDialog")}
 				>
 					Impressum
 				</p>
 				<p
-					className="p-0 info-p"
+					className="m-0 p-0 info-p"
 					style={{ color: "white" }}
 					onClick={() => handleClick("DatenschutzDialog")}
 				>

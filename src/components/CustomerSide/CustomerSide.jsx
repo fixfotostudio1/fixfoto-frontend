@@ -35,6 +35,14 @@ import rahmen from "../../assets/rahmen.webp";
 import kopien from "../../assets/kopien.png";
 import portrait from "../../assets/portrait.jpg";
 
+const findMinValue = (obj) => {
+	return Math.min.apply(null, [...Object.values(obj)]);
+};
+
+const findMaxValue = (obj) => {
+	return Math.max.apply(null, [...Object.values(obj)]);
+};
+
 const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	const [background, setBackground] = useState("start-background");
 	const [showDialog, setShowDialog] = useState(false);
@@ -384,15 +392,13 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 							BEWERBUNGS- <br /> BILDER
 						</>
 					}
-					mainText={Object.keys(pricelist["bewerbungsbilder"]).map((prod) => {
-						return (
-							<>
-								{prod}: € {pricelist["bewerbungsbilder"][prod]}
-								<br />
-								<br />
-							</>
-						);
-					})}
+					mainText={Object.keys(pricelist["bewerbungsbilder"]).map((prod) => (
+						<>
+							{prod}: € {pricelist["bewerbungsbilder"][prod]}
+							<br />
+							<br />
+						</>
+					))}
 					callToAction={"IHR WEG ZU UNS"}
 					imageSource={bew}
 					imageSide={"right"}
@@ -446,26 +452,42 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 							<br />
 							Größe von 30 x 30 cm bis 50 x 70 cm
 							<br />
-							Preise von € 17,90 bis € 44,90
+							Preise von €{" "}
+							{findMinValue({
+								...pricelist["fotoprodukte"]["Poster (Glanz)"],
+								...pricelist["fotoprodukte"]["Poster (Matt)"],
+							})}{" "}
+							bis €{" "}
+							{findMaxValue({
+								...pricelist["fotoprodukte"]["Poster (Glanz)"],
+								...pricelist["fotoprodukte"]["Poster (Matt)"],
+							})}
 							<br />
 							<br />
 							<b>Leinen auf Keilrahmen</b>
 							<br />
 							Größe von 30 x 30 cm bis 50 x 70 cm
 							<br />
-							Preise von € 34,90 bis € 69,90
+							Preise von €{" "}
+							{findMinValue(
+								pricelist["fotoprodukte"]["Leinen auf Keilrahmen"]
+							)}{" "}
+							bis €{" "}
+							{findMaxValue(pricelist["fotoprodukte"]["Leinen auf Keilrahmen"])}
 							<br />
 							<br />
 							<b>Tassendruck</b>
 							<br />
-							Verschiedene Farben: € 19,90
+							Verschiedene Farben: €{" "}
+							{pricelist["fotoprodukte"]["Tassendruck"]["Verschiedene Farben"]}
 							<br />
-							Magic: € 24,90
+							Magic: € {pricelist["fotoprodukte"]["Tassendruck"]["Magic"]}
 							<br />
 							<br />
 							<b>Kissendruck</b>
 							<br />
-							Verschiedene Farben: € 24,90
+							Verschiedene Farben: €{" "}
+							{pricelist["fotoprodukte"]["Kissendruck"]["Verschiedene Farben"]}
 							<br />
 							<br />
 						</>
@@ -494,28 +516,33 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 							<br />
 							Größe von 10 x 15 cm bis 70 x 100 cm
 							<br />
-							Preise von € 4,90 bis € 39,90
+							Preise von € {pricelist["rahmen"]["Kunststoffrahmen"]["min"]} bis
+							€ {pricelist["rahmen"]["Kunststoffrahmen"]["max"]}
 							<br />
 							<br />
 							<b>Quadratische Kunststoffrahmen</b>
 							<br />
 							Größe von 10 x 10 cm bis 40 x 40 cm
 							<br />
-							Preise von € 4,90 bis € 39,90
+							Preise von €{" "}
+							{pricelist["rahmen"]["Quadratische Kunststoffrahmen"]["min"]} bis
+							€ {pricelist["rahmen"]["Quadratische Kunststoffrahmen"]["max"]}
 							<br />
 							<br />
 							<b>Rahmenlose Rahmen</b>
 							<br />
 							Größe von 10 x 15 cm bis 50 x 70 cm
 							<br />
-							Preise von € 4,90 bis € 39,90
+							Preise von € {pricelist["rahmen"]["Rahmenlose Rahmen"]["min"]} bis
+							€ {pricelist["rahmen"]["Rahmenlose Rahmen"]["max"]}
 							<br />
 							<br />
 							<b>Silberrahmen</b>
 							<br />
 							Größe von 3 x 5 cm bis 20 x 30 cm
 							<br />
-							Preise von € 13,9 bis € 39,90
+							Preise von € {pricelist["rahmen"]["Silberrahmen"]["min"]} bis €{" "}
+							{pricelist["rahmen"]["Silberrahmen"]["max"]}
 							<br />
 							<br />
 						</>
@@ -540,44 +567,63 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 						<>
 							<b>Filmentwicklung</b>
 							<br />
-							Farbe: € 7,00
+							Farbe: € {pricelist["labor"]["Filmentwicklung"]["Farbe"]}
 							<br />
-							Schwarz-weiß: € 9,00
+							Schwarz-weiß: €{" "}
+							{pricelist["labor"]["Filmentwicklung"]["Schwarz-weiß"]}
 							<br />
 							<br />
 							<b>Bild-Scannen</b>
 							<br />
-							Pro Neg.: € 0,70
+							Pro Neg.: € {pricelist["labor"]["Bild-Scannen"]["Pro Neg."]}
 							<br />
-							Pro Dia: € 0,90
+							Pro Dia: € {pricelist["labor"]["Bild-Scannen"]["Pro Dia"]}
 							<br />
-							Pro Bild: € 0,90
+							Pro Bild: € {pricelist["labor"]["Bild-Scannen"]["Pro Bild"]}
 							<br />
 							<br />
 							<b>Bild vom Negativen</b>
 							<br />
 							Größe von 9 x 13 cm bis 21 x 29,7 cm
 							<br />
-							Preise von € 0,30 bis € 4,00
+							Preise von €{" "}
+							{findMinValue(pricelist["labor"]["Bild vom Negativen"])} bis €{" "}
+							{findMaxValue(pricelist["labor"]["Bild vom Negativen"])}
 							<br />
 							<br />
 							<b>Bilder vom Diafilm/Rollfilm/Planfilm</b>
 							<br />
 							Größe von 9 x 13 cm bis 21 x 29,7 cm
 							<br />
-							Preise von € 1,50 bis € 5,00
+							Preise von €{" "}
+							{findMinValue(
+								pricelist["labor"]["Bilder vom Diafilm/Rollfilm/Planfilm"]
+							)}{" "}
+							bis €{" "}
+							{findMaxValue(
+								pricelist["labor"]["Bilder vom Diafilm/Rollfilm/Planfilm"]
+							)}
 							<br />
 							<br />
 							<b>Bild vom Bild</b>
 							<br />
 							Größe von 9 x 13 cm bis 21 x 29,7 cm
 							<br />
-							Preise von € 1,00 bis € 5,00
+							Preise von € {findMinValue(
+								pricelist["labor"]["Bild vom Bild"]
+							)}{" "}
+							bis € {findMaxValue(pricelist["labor"]["Bild vom Bild"])}
 							<br />
 							<br />
-							Bearbeitungsgebühren: € 2,00
+							Bearbeitungsgebühren: €{" "}
+							{pricelist["labor"]["Sonstiges"]["Bearbeitungsgebühren"]}
 							<br />
-							Speichern auf Medien, E-Mail senden: € 5,00
+							Speichern auf Medien, E-Mail senden: €{" "}
+							{
+								pricelist["labor"]["Sonstiges"][
+									"Speichern auf Medien, E-Mail senden"
+								]
+							}
 							<br />
 							<br />
 						</>
@@ -604,16 +650,24 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 						<>
 							<b>Kassetten VHS, VHS-C, auf DVD oder USB</b>
 							<br />
-							Pro Kassette: € 29,50
+							Pro Kassette: €{" "}
+							{
+								pricelist["videokassetten"][
+									"Kassetten VHS, VHS-C, auf DVD oder USB"
+								]["Pro Kassette"]
+							}
 							<br />
 							<br />
 							<b>Super 8 auf DVD</b>
 							<br />
-							Kleine Spule: € 44,90
+							Kleine Spule: €{" "}
+							{pricelist["videokassetten"]["Super 8 auf DVD"]["Kleine Spule"]}
 							<br />
-							Mittlere Spule: € 54,90
+							Mittlere Spule: €{" "}
+							{pricelist["videokassetten"]["Super 8 auf DVD"]["Mittlere Spule"]}
 							<br />
-							Große Spule: € 64,90
+							Große Spule: €{" "}
+							{pricelist["videokassetten"]["Super 8 auf DVD"]["Große Spule"]}
 							<br />
 							<br />
 						</>
@@ -659,26 +713,26 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					mainText={
 						<>
 							<b>Schwarz-weiß Fotokopien</b>
-							<br />
-							1 Kopie: € 0,20
-							<br />
-							1 PDF-Ausdruck: € 0,50
+							<br />1 Kopie: €{" "}
+							{pricelist["kopien"]["Schwarz-weiß Fotokopien"]["1 Kopie"]}
+							<br />1 PDF-Ausdruck: €{" "}
+							{pricelist["kopien"]["Schwarz-weiß Fotokopien"]["1 PDF-Ausdruck"]}
 							<br />
 							<br />
 							<b>Laminieren</b>
 							<br />
-							A3: € 4,00
+							A3: € {pricelist["kopien"]["Laminieren"]["A3"]}
 							<br />
-							A4: € 3,00
+							A4: € {pricelist["kopien"]["Laminieren"]["A4"]}
 							<br />
-							A5: € 2,00
+							A5: € {pricelist["kopien"]["Laminieren"]["A5"]}
 							<br />
-							A6: € 2,00
+							A6: € {pricelist["kopien"]["Laminieren"]["A6"]}
 							<br />
 							<br />
 							<b>PDF-Scannen</b>
 							<br />
-							Pro Blatt: € 1,00
+							Pro Blatt: € {pricelist["kopien"]["PDF-Scannen"]["Pro Blatt"]}
 							<br />
 							<br />
 						</>
