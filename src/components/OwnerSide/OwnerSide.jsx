@@ -29,29 +29,29 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 		}),
 	});
 
-	const [user, setUser] = useState(null);
+	const [modifiedPricelist, setModifiedPricelist] = useState(pricelist);
+	const [orders, setOrders] = useState([]);
+
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
-	const [orderInfo, setOrderInfo] = useState([]);
+	const [token, setToken] = useState(null);
 
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [orderToBeDeleted, setOrderToBeDeleted] = useState(null);
-
-	const [newPricelist, setNewPricelist] = useState(pricelist);
 
 	const handleLogin = (un, pw) => {
 		axios
 			.post("http://localhost:3001/api/login", { username: un, password: pw })
 			.then((response) => {
-				setUser(response["data"]["token"]);
-				updateInfo(response["data"]["token"]);
+				setToken(response["data"]["token"]);
+				updateOrders(response["data"]["token"]);
 			})
 			.catch((error) => {
 				console.log("error: ", error);
 			});
 	};
 
-	const updateInfo = (token) => {
+	const updateOrders = (token) => {
 		axios
 			.get("http://localhost:3001/api/orders", {
 				headers: {
@@ -59,7 +59,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				},
 			})
 			.then((result) => {
-				setOrderInfo(result["data"]);
+				setOrders(result["data"]);
 			});
 	};
 
@@ -76,7 +76,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				}
 			)
 			.then(() => {
-				updateInfo(token);
+				updateOrders(token);
 			});
 	};
 
@@ -120,7 +120,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 					Authorization: `Bearer ${token}`,
 				},
 			})
-			.then(() => updateInfo(token));
+			.then(() => updateOrders(token));
 	};
 
 	const dashboard = () => (
@@ -133,7 +133,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				<Tab
 					eventKey="neu"
 					title={`Neu (${
-						orderInfo.filter((order) => order["status"] === "neu").length
+						orders.filter((order) => order["status"] === "neu").length
 					})`}
 				>
 					<Table striped bordered hover>
@@ -147,14 +147,14 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 							</tr>
 						</thead>
 						<tbody>
-							{...orderInfo
+							{...orders
 								.filter((order) => order["status"] === "neu")
 								.map((order) => (
 									<TableRow
 										item={order}
 										handleClick={(newStatus) => {
 											console.log("nS: ", newStatus);
-											changeStatus(order, user, newStatus);
+											changeStatus(order, token, newStatus);
 										}}
 										handleDelete={() => {
 											setOrderToBeDeleted(order);
@@ -173,8 +173,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				<Tab
 					eventKey="abholbereit"
 					title={`Abholbereit (${
-						orderInfo.filter((order) => order["status"] === "abholbereit")
-							.length
+						orders.filter((order) => order["status"] === "abholbereit").length
 					})`}
 				>
 					<Table striped bordered hover>
@@ -188,14 +187,14 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 							</tr>
 						</thead>
 						<tbody>
-							{...orderInfo
+							{...orders
 								.filter((order) => order["status"] === "abholbereit")
 								.map((order) => (
 									<TableRow
 										item={order}
 										handleClick={(newStatus) => {
 											console.log("nS: ", newStatus);
-											changeStatus(order, user, newStatus);
+											changeStatus(order, token, newStatus);
 										}}
 										handleDelete={() => {
 											setOrderToBeDeleted(order);
@@ -210,8 +209,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				<Tab
 					eventKey="versandbereit"
 					title={`Versandbereit (${
-						orderInfo.filter((order) => order["status"] === "versandbereit")
-							.length
+						orders.filter((order) => order["status"] === "versandbereit").length
 					})`}
 				>
 					<Table striped bordered hover>
@@ -225,14 +223,14 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 							</tr>
 						</thead>
 						<tbody>
-							{...orderInfo
+							{...orders
 								.filter((order) => order["status"] === "versandbereit")
 								.map((order) => (
 									<TableRow
 										item={order}
 										handleClick={(newStatus) => {
 											console.log("nS: ", newStatus);
-											changeStatus(order, user, newStatus);
+											changeStatus(order, token, newStatus);
 										}}
 										handleDelete={() => {
 											setOrderToBeDeleted(order);
@@ -247,8 +245,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				<Tab
 					eventKey="abgeschlossen"
 					title={`Abgeschlossen (${
-						orderInfo.filter((order) => order["status"] === "abgeschlossen")
-							.length
+						orders.filter((order) => order["status"] === "abgeschlossen").length
 					})`}
 				>
 					<Table striped bordered hover>
@@ -262,14 +259,14 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 							</tr>
 						</thead>
 						<tbody>
-							{...orderInfo
+							{...orders
 								.filter((order) => order["status"] === "abgeschlossen")
 								.map((order) => (
 									<TableRow
 										item={order}
 										handleClick={(newStatus) => {
 											console.log("nS: ", newStatus);
-											changeStatus(order, user, newStatus);
+											changeStatus(order, token, newStatus);
 										}}
 										handleDelete={() => {
 											setOrderToBeDeleted(order);
@@ -291,56 +288,58 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 							<Card.Header>Preisliste</Card.Header>
 							<PriceCard
 								productType={"passfotos"}
-								newPricelist={newPricelist}
-								setNewPricelist={setNewPricelist}
+								modifiedPricelist={modifiedPricelist}
+								setModifiedPricelist={setModifiedPricelist}
 							/>
 							<PriceCard
 								productType={"bewerbungsbilder"}
-								newPricelist={newPricelist}
-								setNewPricelist={setNewPricelist}
+								modifiedPricelist={modifiedPricelist}
+								setModifiedPricelist={setModifiedPricelist}
 							/>
 							<PriceCard
 								productType={"portraits"}
-								newPricelist={newPricelist}
-								setNewPricelist={setNewPricelist}
+								modifiedPricelist={modifiedPricelist}
+								setModifiedPricelist={setModifiedPricelist}
 							/>
 							<PriceCard
 								productType={"fotoprodukte"}
 								productSubtypesAvailable={true}
-								newPricelist={newPricelist}
-								setNewPricelist={setNewPricelist}
+								modifiedPricelist={modifiedPricelist}
+								setModifiedPricelist={setModifiedPricelist}
 							/>
 							<PriceCard
 								productType={"rahmen"}
-								newPricelist={newPricelist}
-								setNewPricelist={setNewPricelist}
+								modifiedPricelist={modifiedPricelist}
+								setModifiedPricelist={setModifiedPricelist}
 							/>
 							<PriceCard
 								productType={"labor"}
 								productSubtypesAvailable={true}
-								newPricelist={newPricelist}
-								setNewPricelist={setNewPricelist}
+								modifiedPricelist={modifiedPricelist}
+								setModifiedPricelist={setModifiedPricelist}
 							/>
 							<PriceCard
 								productType={"videokassetten"}
 								productSubtypesAvailable={true}
-								newPricelist={newPricelist}
-								setNewPricelist={setNewPricelist}
+								modifiedPricelist={modifiedPricelist}
+								setModifiedPricelist={setModifiedPricelist}
 							/>
 							<PriceCard
 								productType={"kopien"}
 								productSubtypesAvailable={true}
-								newPricelist={newPricelist}
-								setNewPricelist={setNewPricelist}
+								modifiedPricelist={modifiedPricelist}
+								setModifiedPricelist={setModifiedPricelist}
 							/>
 							<PriceCard
 								productType={"delivery"}
-								newPricelist={newPricelist}
-								setNewPricelist={setNewPricelist}
+								modifiedPricelist={modifiedPricelist}
+								setModifiedPricelist={setModifiedPricelist}
 							/>
 							<Card.Footer>
 								<Button
-									onClick={() => handlePricelistChange(newPricelist, user)}
+									onClick={() =>
+										handlePricelistChange(modifiedPricelist, token)
+									}
 								>
 									Speichern
 								</Button>
@@ -355,7 +354,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				orderToBeDeleted={orderToBeDeleted}
 				handleDelete={() => {
 					deleteOrderFilesFromBucket(orderToBeDeleted);
-					deleteOrderFromDb(orderToBeDeleted, user);
+					deleteOrderFromDb(orderToBeDeleted, token);
 					setShowDeleteDialog(false);
 				}}
 			/>
@@ -364,7 +363,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 
 	return (
 		<>
-			{!user ? (
+			{!token ? (
 				<LoginForm
 					handleLogin={() => handleLogin(username, password)}
 					setPassword={setPassword}
