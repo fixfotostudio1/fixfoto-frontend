@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 import {
@@ -9,9 +9,7 @@ import {
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { S3_BUCKET, REGION, AWS_IDENTITY_POOL_ID } from "../../utils/config";
 
-import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Table from "react-bootstrap/Table";
@@ -20,6 +18,7 @@ import Card from "react-bootstrap/Card";
 import TableRow from "./TableRow";
 import PriceCard from "./PriceCard";
 import DeleteDialog from "./DeleteDialog";
+import LoginForm from "./LoginForm";
 
 const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 	const client = new S3Client({
@@ -123,48 +122,6 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 			})
 			.then(() => updateInfo(token));
 	};
-
-	const loginForm = () => (
-		<Modal
-			show={true}
-			animation={true}
-			centered
-			onKeyDown={(event) => {
-				if (event.key === "Enter") {
-					handleLogin(username, password);
-				}
-			}}
-		>
-			<Modal.Header>
-				<Modal.Title>Login</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>
-				<Form.Group className="d-flex justify-content-between align-items-center mt-3">
-					<Form.Label style={{ padding: 0, margin: 0 }}>username:</Form.Label>
-					<Form.Control
-						style={{ width: "70%" }}
-						onChange={({ target }) => setUsername(target.value)}
-					/>
-				</Form.Group>
-				<Form.Group className="d-flex justify-content-between align-items-center mt-3">
-					<Form.Label style={{ padding: 0, margin: 0 }}>password:</Form.Label>
-					<Form.Control
-						style={{ width: "70%" }}
-						onChange={({ target }) => setPassword(target.value)}
-						type="password"
-					/>
-				</Form.Group>
-			</Modal.Body>
-			<Modal.Footer>
-				<Button
-					variant="primary"
-					onClick={() => handleLogin(username, password)}
-				>
-					Einloggen
-				</Button>
-			</Modal.Footer>
-		</Modal>
-	);
 
 	const dashboard = () => (
 		<>
@@ -405,7 +362,19 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 		</>
 	);
 
-	return <>{!user ? loginForm() : dashboard()}</>;
+	return (
+		<>
+			{!user ? (
+				<LoginForm
+					handleLogin={() => handleLogin(username, password)}
+					setPassword={setPassword}
+					setUsername={setUsername}
+				/>
+			) : (
+				dashboard()
+			)}
+		</>
+	);
 };
 
 export default OwnerSide;
