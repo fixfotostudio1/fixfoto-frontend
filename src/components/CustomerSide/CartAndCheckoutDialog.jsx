@@ -69,7 +69,7 @@ const CartAndCheckoutDialog = ({
 		const { error } = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
-				return_url: "http://localhost:5173/after_payment_attempt",
+				return_url: "http://localhost:5174/after_payment_attempt",
 			},
 		});
 

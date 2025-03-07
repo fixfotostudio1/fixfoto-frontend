@@ -1,5 +1,5 @@
 import Modal from "react-bootstrap/Modal";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 
 import ItemDialog from "./ItemDialog";
