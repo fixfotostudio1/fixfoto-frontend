@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
@@ -6,18 +7,13 @@ import Card from "react-bootstrap/Card";
 import PriceCard from "./PriceCard";
 import OrdersTable from "./OrdersTable";
 
-const Dashboard = ({
-	AWSObj2ImageURL,
-	handleClick,
-	handleDelete,
-	modifiedPricelist,
-	orders,
-	token,
-	setModifiedPricelist,
-}) => {
+import { DashboardContext } from "./OwnerSide";
+
+const Dashboard = ({ token }) => {
+	const ctx = useContext(DashboardContext);
 	const computeTabTitle = (tabName) => {
 		return `${tabName.slice(0, 1).toUpperCase() + tabName.slice(1)} (${
-			orders.filter((order) => order["status"] === tabName).length
+			ctx.orders.filter((order) => order["status"] === tabName).length
 		})`;
 	};
 	return (
@@ -30,71 +26,32 @@ const Dashboard = ({
 				"abgeschlossen",
 			].map((status) => (
 				<Tab eventKey={status} title={computeTabTitle(status)}>
-					<OrdersTable
-						AWSObj2ImageURL={AWSObj2ImageURL}
-						currStatus={status}
-						handleClick={handleClick}
-						handleDelete={handleDelete}
-						orders={orders}
-					/>
+					<OrdersTable currStatus={status} />
 				</Tab>
 			))}
 			<Tab eventKey="preisliste" title="Preisliste-Einstellungen">
 				<div className="vw-100 d-flex flex-column justify-content-center align-items-center">
 					<Card className="text-center">
 						<Card.Header>Preisliste</Card.Header>
-						<PriceCard
-							productType={"passfotos"}
-							modifiedPricelist={modifiedPricelist}
-							setModifiedPricelist={setModifiedPricelist}
-						/>
-						<PriceCard
-							productType={"bewerbungsbilder"}
-							modifiedPricelist={modifiedPricelist}
-							setModifiedPricelist={setModifiedPricelist}
-						/>
-						<PriceCard
-							productType={"portraits"}
-							modifiedPricelist={modifiedPricelist}
-							setModifiedPricelist={setModifiedPricelist}
-						/>
-						<PriceCard
-							productType={"fotoprodukte"}
-							productSubtypesAvailable={true}
-							modifiedPricelist={modifiedPricelist}
-							setModifiedPricelist={setModifiedPricelist}
-						/>
-						<PriceCard
-							productType={"rahmen"}
-							modifiedPricelist={modifiedPricelist}
-							setModifiedPricelist={setModifiedPricelist}
-						/>
-						<PriceCard
-							productType={"labor"}
-							productSubtypesAvailable={true}
-							modifiedPricelist={modifiedPricelist}
-							setModifiedPricelist={setModifiedPricelist}
-						/>
-						<PriceCard
-							productType={"videokassetten"}
-							productSubtypesAvailable={true}
-							modifiedPricelist={modifiedPricelist}
-							setModifiedPricelist={setModifiedPricelist}
-						/>
-						<PriceCard
-							productType={"kopien"}
-							productSubtypesAvailable={true}
-							modifiedPricelist={modifiedPricelist}
-							setModifiedPricelist={setModifiedPricelist}
-						/>
-						<PriceCard
-							productType={"delivery"}
-							modifiedPricelist={modifiedPricelist}
-							setModifiedPricelist={setModifiedPricelist}
-						/>
+						<>
+							{...[
+								"passfotos",
+								"bewerbungsbilder",
+								"portraits",
+								"fotoprodukte",
+								"rahmen",
+								"labor",
+								"videokassetten",
+								"kopien",
+								"delivery",
+							].map((supertype) => <PriceCard productSupertype={supertype} />)}
+						</>
+
 						<Card.Footer>
 							<Button
-								onClick={() => handlePricelistChange(modifiedPricelist, token)}
+								onClick={() =>
+									ctx.handlePricelistChange(ctx.modifiedPricelist, token)
+								}
 							>
 								Speichern
 							</Button>

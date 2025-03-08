@@ -1,13 +1,11 @@
+import { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 
-const TableRow = ({
-	AWSObj2ImageURL,
-	order,
-	handleClick,
-	handleDelete,
-	statusesArray,
-}) => {
+import { DashboardContext } from "./OwnerSide";
+
+const TableRow = ({ order, statusesArray }) => {
+	const ctx = useContext(DashboardContext);
 	const orderNumber = order["orderNumber"];
 	const itemsDetails = (
 		<ul>
@@ -23,7 +21,7 @@ const TableRow = ({
 					<br />
 					<Button
 						onClick={() =>
-							AWSObj2ImageURL(order["orderNumber"], i["S3TempName"])
+							ctx.AWSObj2ImageURL(order["orderNumber"], i["S3TempName"])
 						}
 						style={{ color: "blue", backgroundColor: "white" }}
 					>
@@ -65,9 +63,9 @@ const TableRow = ({
 		<Button
 			onClick={() => {
 				if (statusesArray[0] === "löschen") {
-					handleDelete();
+					ctx.handleDelete(order);
 				} else {
-					handleClick(statusesArray[0]);
+					ctx.handleClick(order, statusesArray[0]);
 				}
 			}}
 			style={{ width: "70%", minWidth: "fit-content" }}
@@ -77,17 +75,17 @@ const TableRow = ({
 	);
 	const dropdownButtons = (
 		<>
-			{...statusesArray.slice(1).map((order) => {
-				if (order === "löschen") {
+			{...statusesArray.slice(1).map((newStatus) => {
+				if (newStatus === "löschen") {
 					return (
-						<Dropdown.Item onClick={() => handleDelete()}>
-							{order}
+						<Dropdown.Item onClick={() => ctx.handleDelete(order)}>
+							{newStatus}
 						</Dropdown.Item>
 					);
 				}
 				return (
-					<Dropdown.Item onClick={() => handleClick(order)}>
-						{order}
+					<Dropdown.Item onClick={() => ctx.handleClick(order, newStatus)}>
+						{newStatus}
 					</Dropdown.Item>
 				);
 			})}

@@ -1,13 +1,11 @@
+import { useContext } from "react";
 import Table from "react-bootstrap/Table";
 import TableRow from "./TableRow";
 
-const OrdersTable = ({
-	AWSObj2ImageURL,
-	currStatus,
-	handleClick,
-	handleDelete,
-	orders,
-}) => {
+import { DashboardContext } from "./OwnerSide";
+
+const OrdersTable = ({ currStatus }) => {
+	const ctx = useContext(DashboardContext);
 	const determineStatusesArray = (order) => {
 		if (currStatus === "unbezahlt") {
 			if (order["deliveryType"] === "Abholen") {
@@ -45,14 +43,11 @@ const OrdersTable = ({
 				</tr>
 			</thead>
 			<tbody>
-				{...orders
+				{...ctx.orders
 					.filter((order) => order["status"] === currStatus)
 					.map((order) => (
 						<TableRow
-							AWSObj2ImageURL={AWSObj2ImageURL}
 							order={order}
-							handleClick={(newStatus) => handleClick(order, newStatus)}
-							handleDelete={() => handleDelete(order)}
 							statusesArray={determineStatusesArray(order)}
 						/>
 					))}

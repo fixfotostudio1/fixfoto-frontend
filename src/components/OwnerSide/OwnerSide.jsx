@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
 import axios from "axios";
 
 import {
@@ -13,6 +13,8 @@ import { S3_BUCKET, REGION, AWS_IDENTITY_POOL_ID } from "../../utils/config";
 import LoginForm from "./LoginForm";
 import Dashboard from "./Dashboard";
 import DeleteDialog from "./DeleteDialog";
+
+export const DashboardContext = createContext({});
 
 const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 	const client = new S3Client({
@@ -58,7 +60,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 	};
 
 	const changeStatus = (order, token, newStatus) => {
-		console.log("OwnerSide changeStatus newStatus: ", newStatus);
+		console.log("OwnerSide changeStatus newStatus: ", order, newStatus);
 		axios
 			.put(
 				`http://localhost:3001/api/orders/${order["id"]}`,
@@ -155,23 +157,24 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				/>
 			) : (
 				<>
-					<Dashboard
-						AWSObj2ImageURL={AWSObj2ImageURL}
-						handleClick={(order, newStatus) => {
-							changeStatus(order, token, newStatus);
+					<DashboardContext.Provider
+						value={{
+							AWSObj2ImageURL: AWSObj2ImageURL,
+							handleClick: (order, newStatus) => {
+								changeStatus(order, token, newStatus);
+							},
+							handleDelete: (order) => {
+								setOrderToBeDeleted(order);
+								setShowDeleteDialog(true);
+							},
+							modifiedPricelist: modifiedPricelist,
+							orders: orders,
+							setModifiedPricelist: setModifiedPricelist,
+							handlePricelistChange: handlePricelistChange,
 						}}
-						handleDelete={(order) => {
-							setOrderToBeDeleted(order);
-							setShowDeleteDialog(true);
-						}}
-						modifiedPricelist={modifiedPricelist}
-						orders={orders}
-						orderToBeDeleted={orderToBeDeleted}
-						token={token}
-						setModifiedPricelist={setModifiedPricelist}
-						setShowDeleteDialog={setShowDeleteDialog}
-						showDeleteDialog={showDeleteDialog}
-					/>
+					>
+						<Dashboard token={token} />
+					</DashboardContext.Provider>
 					<DeleteDialog
 						showDeleteDialog={showDeleteDialog}
 						handleClose={() => setShowDeleteDialog(false)}
