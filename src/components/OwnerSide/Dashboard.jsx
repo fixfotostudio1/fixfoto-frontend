@@ -7,6 +7,7 @@ import PriceCard from "./PriceCard";
 import OrdersTable from "./OrdersTable";
 
 const Dashboard = ({
+	AWSObj2ImageURL,
 	handleClick,
 	handleDelete,
 	modifiedPricelist,
@@ -30,6 +31,7 @@ const Dashboard = ({
 			].map((status) => (
 				<Tab eventKey={status} title={computeTabTitle(status)}>
 					<OrdersTable
+						AWSObj2ImageURL={AWSObj2ImageURL}
 						currStatus={status}
 						handleClick={handleClick}
 						handleDelete={handleDelete}

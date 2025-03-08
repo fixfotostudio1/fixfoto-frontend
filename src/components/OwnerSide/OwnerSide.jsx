@@ -5,6 +5,7 @@ import {
 	S3Client,
 	S3ServiceException,
 	DeleteObjectsCommand,
+	GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { S3_BUCKET, REGION, AWS_IDENTITY_POOL_ID } from "../../utils/config";
@@ -116,6 +117,34 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 			.then(() => updateOrders(token));
 	};
 
+	const AWSObj2ImageURL = async (orderNumber, S3TempName) => {
+		const response = await client.send(
+			new GetObjectCommand({
+				Bucket: S3_BUCKET,
+				Key: orderNumber + "-" + S3TempName,
+			})
+		);
+		// The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
+		const byteArr = await response.Body.transformToByteArray();
+		const file = new File([byteArr], orderNumber + "-" + S3TempName, {
+			type: "image/jpeg",
+		});
+		const reader = new FileReader();
+		let url = "";
+		reader.readAsDataURL(file);
+		reader.onload = (e) => {
+			console.log("OwnerSide e.target.result: ", e.target.result);
+			url = e.target.result;
+
+			const a = document.createElement("a");
+			const el = new MouseEvent("click");
+			a.download = orderNumber + "-" + S3TempName;
+			a.href = e.target.result;
+			a.dispatchEvent(el);
+		};
+		return url;
+	};
+
 	return (
 		<>
 			{!token ? (
@@ -127,6 +156,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 			) : (
 				<>
 					<Dashboard
+						AWSObj2ImageURL={AWSObj2ImageURL}
 						handleClick={(order, newStatus) => {
 							changeStatus(order, token, newStatus);
 						}}

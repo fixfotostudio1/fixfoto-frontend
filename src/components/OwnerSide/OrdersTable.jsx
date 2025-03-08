@@ -1,7 +1,13 @@
 import Table from "react-bootstrap/Table";
 import TableRow from "./TableRow";
 
-const OrdersTable = ({ currStatus, handleClick, handleDelete, orders }) => {
+const OrdersTable = ({
+	AWSObj2ImageURL,
+	currStatus,
+	handleClick,
+	handleDelete,
+	orders,
+}) => {
 	const determineStatusesArray = (order) => {
 		if (currStatus === "unbezahlt") {
 			if (order["deliveryType"] === "Abholen") {
@@ -43,7 +49,8 @@ const OrdersTable = ({ currStatus, handleClick, handleDelete, orders }) => {
 					.filter((order) => order["status"] === currStatus)
 					.map((order) => (
 						<TableRow
-							item={order}
+							AWSObj2ImageURL={AWSObj2ImageURL}
+							order={order}
 							handleClick={(newStatus) => handleClick(order, newStatus)}
 							handleDelete={() => handleDelete(order)}
 							statusesArray={determineStatusesArray(order)}
