@@ -148,6 +148,7 @@ h1 {
 	font-weight: bold;
 }
 
+#uncontrolled-tab-example-tab-unbezahlt,
 #uncontrolled-tab-example-tab-neu,
 #uncontrolled-tab-example-tab-abholbereit,
 #uncontrolled-tab-example-tab-versandbereit,
@@ -156,6 +157,7 @@ h1 {
 	color: blue;
 }
 
+#uncontrolled-tab-example-tab-unbezahlt.active,
 #uncontrolled-tab-example-tab-neu.active,
 #uncontrolled-tab-example-tab-abholbereit.active,
 #uncontrolled-tab-example-tab-versandbereit.active,

@@ -3,7 +3,13 @@ import TableRow from "./TableRow";
 
 const OrdersTable = ({ currStatus, handleClick, handleDelete, orders }) => {
 	const determineStatusesArray = (order) => {
-		if (currStatus === "neu") {
+		if (currStatus === "unbezahlt") {
+			if (order["deliveryType"] === "Abholen") {
+				return ["neu", "abholbereit", "abgeschlossen", "löschen"];
+			} else {
+				return ["neu", "versandbereit", "abgeschlossen", "löschen"];
+			}
+		} else if (currStatus === "neu") {
 			if (order["deliveryType"] === "Abholen") {
 				return ["abholbereit", "abgeschlossen", "löschen"];
 			} else {

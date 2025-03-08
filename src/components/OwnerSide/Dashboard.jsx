@@ -21,38 +21,22 @@ const Dashboard = ({
 	};
 	return (
 		<Tabs defaultActiveKey="neu" id="uncontrolled-tab-example" className="mb-3">
-			<Tab eventKey={"neu"} title={computeTabTitle("neu")}>
-				<OrdersTable
-					currStatus={"neu"}
-					handleClick={handleClick}
-					handleDelete={handleDelete}
-					orders={orders}
-				/>
-			</Tab>
-			<Tab eventKey={"abholbereit"} title={computeTabTitle("abholbereit")}>
-				<OrdersTable
-					currStatus={"abholbereit"}
-					handleClick={handleClick}
-					handleDelete={handleDelete}
-					orders={orders}
-				/>
-			</Tab>
-			<Tab eventKey={"versandbereit"} title={computeTabTitle("versandbereit")}>
-				<OrdersTable
-					currStatus={"versandbereit"}
-					handleClick={handleClick}
-					handleDelete={handleDelete}
-					orders={orders}
-				/>
-			</Tab>
-			<Tab eventKey={"abgeschlossen"} title={computeTabTitle("abgeschlossen")}>
-				<OrdersTable
-					currStatus={"abgeschlossen"}
-					handleClick={handleClick}
-					handleDelete={handleDelete}
-					orders={orders}
-				/>
-			</Tab>
+			{...[
+				"unbezahlt",
+				"neu",
+				"abholbereit",
+				"versandbereit",
+				"abgeschlossen",
+			].map((status) => (
+				<Tab eventKey={status} title={computeTabTitle(status)}>
+					<OrdersTable
+						currStatus={status}
+						handleClick={handleClick}
+						handleDelete={handleDelete}
+						orders={orders}
+					/>
+				</Tab>
+			))}
 			<Tab eventKey="preisliste" title="Preisliste-Einstellungen">
 				<div className="vw-100 d-flex flex-column justify-content-center align-items-center">
 					<Card className="text-center">
