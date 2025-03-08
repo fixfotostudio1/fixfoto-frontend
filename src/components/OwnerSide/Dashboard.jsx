@@ -1,11 +1,10 @@
 import Button from "react-bootstrap/Button";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
 
-import TableRow from "./TableRow";
 import PriceCard from "./PriceCard";
+import OrdersTable from "./OrdersTable";
 
 const Dashboard = ({
 	handleClick,
@@ -15,135 +14,44 @@ const Dashboard = ({
 	token,
 	setModifiedPricelist,
 }) => {
+	const computeTabTitle = (tabName) => {
+		return `${tabName.slice(0, 1).toUpperCase() + tabName.slice(1)} (${
+			orders.filter((order) => order["status"] === tabName).length
+		})`;
+	};
 	return (
 		<Tabs defaultActiveKey="neu" id="uncontrolled-tab-example" className="mb-3">
-			<Tab
-				eventKey="neu"
-				title={`Neu (${
-					orders.filter((order) => order["status"] === "neu").length
-				})`}
-			>
-				<Table striped bordered hover>
-					<thead>
-						<tr>
-							<th>Bestellnr.</th>
-							<th>Artikel</th>
-							<th>Versandart</th>
-							<th>Kontaktdaten</th>
-							<th>Status ändern</th>
-						</tr>
-					</thead>
-					<tbody>
-						{...orders
-							.filter((order) => order["status"] === "neu")
-							.map((order) => (
-								<TableRow
-									item={order}
-									handleClick={(newStatus) => handleClick(order, newStatus)}
-									handleDelete={() => handleDelete(order)}
-									statusesArray={
-										order["deliveryType"] === "Abholen"
-											? ["abholbereit", "abgeschlossen", "löschen"]
-											: ["versandbereit", "abgeschlossen", "löschen"]
-									}
-								/>
-							))}
-					</tbody>
-				</Table>
+			<Tab eventKey={"neu"} title={computeTabTitle("neu")}>
+				<OrdersTable
+					currStatus={"neu"}
+					handleClick={handleClick}
+					handleDelete={handleDelete}
+					orders={orders}
+				/>
 			</Tab>
-			<Tab
-				eventKey="abholbereit"
-				title={`Abholbereit (${
-					orders.filter((order) => order["status"] === "abholbereit").length
-				})`}
-			>
-				<Table striped bordered hover>
-					<thead>
-						<tr>
-							<th>Bestellnr.</th>
-							<th>Artikel</th>
-							<th>Versandart</th>
-							<th>Kontaktdaten</th>
-							<th>Status ändern</th>
-						</tr>
-					</thead>
-					<tbody>
-						{...orders
-							.filter((order) => order["status"] === "abholbereit")
-							.map((order) => (
-								<TableRow
-									item={order}
-									handleClick={(newStatus) => handleClick(order, newStatus)}
-									handleDelete={() => handleDelete(order)}
-									statusesArray={["abgeschlossen", "neu", "löschen"]}
-								/>
-							))}
-					</tbody>
-				</Table>
+			<Tab eventKey={"abholbereit"} title={computeTabTitle("abholbereit")}>
+				<OrdersTable
+					currStatus={"abholbereit"}
+					handleClick={handleClick}
+					handleDelete={handleDelete}
+					orders={orders}
+				/>
 			</Tab>
-			<Tab
-				eventKey="versandbereit"
-				title={`Versandbereit (${
-					orders.filter((order) => order["status"] === "versandbereit").length
-				})`}
-			>
-				<Table striped bordered hover>
-					<thead>
-						<tr>
-							<th>Bestellnr.</th>
-							<th>Artikel</th>
-							<th>Versandart</th>
-							<th>Kontaktdaten</th>
-							<th>Status ändern</th>
-						</tr>
-					</thead>
-					<tbody>
-						{...orders
-							.filter((order) => order["status"] === "versandbereit")
-							.map((order) => (
-								<TableRow
-									item={order}
-									handleClick={(newStatus) => handleClick(order, newStatus)}
-									handleDelete={() => handleDelete(order)}
-									statusesArray={["abgeschlossen", "neu", "löschen"]}
-								/>
-							))}
-					</tbody>
-				</Table>
+			<Tab eventKey={"versandbereit"} title={computeTabTitle("versandbereit")}>
+				<OrdersTable
+					currStatus={"versandbereit"}
+					handleClick={handleClick}
+					handleDelete={handleDelete}
+					orders={orders}
+				/>
 			</Tab>
-			<Tab
-				eventKey="abgeschlossen"
-				title={`Abgeschlossen (${
-					orders.filter((order) => order["status"] === "abgeschlossen").length
-				})`}
-			>
-				<Table striped bordered hover>
-					<thead>
-						<tr>
-							<th>Bestellnr.</th>
-							<th>Artikel</th>
-							<th>Versandart</th>
-							<th>Kontaktdaten</th>
-							<th>Status ändern</th>
-						</tr>
-					</thead>
-					<tbody>
-						{...orders
-							.filter((order) => order["status"] === "abgeschlossen")
-							.map((order) => (
-								<TableRow
-									item={order}
-									handleClick={(newStatus) => handleClick(order, newStatus)}
-									handleDelete={() => handleDelete(order)}
-									statusesArray={
-										order["deliveryType"] === "Abholen"
-											? ["löschen", "abholbereit", "neu"]
-											: ["löschen", "versandbereit", "neu"]
-									}
-								/>
-							))}
-					</tbody>
-				</Table>
+			<Tab eventKey={"abgeschlossen"} title={computeTabTitle("abgeschlossen")}>
+				<OrdersTable
+					currStatus={"abgeschlossen"}
+					handleClick={handleClick}
+					handleDelete={handleDelete}
+					orders={orders}
+				/>
 			</Tab>
 			<Tab eventKey="preisliste" title="Preisliste-Einstellungen">
 				<div className="vw-100 d-flex flex-column justify-content-center align-items-center">
