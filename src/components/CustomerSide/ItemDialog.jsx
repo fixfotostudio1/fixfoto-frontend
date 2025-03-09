@@ -47,12 +47,12 @@ const ItemDialog = ({
 		}
 	};
 
-	const [errorMessage, setErrorMessage] = useState(<></>);
-
 	let nameRef = useRef({ current: { value: null } });
 	let sizeRef = useRef({ current: { value: null } });
 	let numberRef = useRef({ current: { value: null } });
 	let fileRef = useRef({ current: { files: null } });
+
+	const [message, setMessage] = useState(<></>);
 
 	const findInvalidFields = () => {
 		let invalidFields = [];
@@ -69,15 +69,31 @@ const ItemDialog = ({
 		return invalidFields;
 	};
 
-	return (
-		<>
-			<Modal.Header closeButton>
-				<Modal.Title>{itemType.toUpperCase().replace("-", " ")}</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>
-				<Form.Group className="d-flex justify-content-between align-items-center">
-					<Form.Label style={{ padding: 0, margin: 0 }}>Druckart:</Form.Label>
+	const [keys, setKeys] = useState({
+		type: `${Date.now().toString(16)}-t`,
+		subtype: `${Date.now().toString(16)}-s`,
+		amount: `${Date.now().toString(16)}-a`,
+		file: `${Date.now().toString(16)}-f`,
+	});
+
+	const reset = () => {
+		setKeys({
+			type: `${Date.now().toString(16)}-t`,
+			subtype: `${Date.now().toString(16)}-s`,
+			amount: `${Date.now().toString(16)}-a`,
+			file: `${Date.now().toString(16)}-f`,
+		});
+		setPrice(null);
+		setSizeOptions(["Wählen Sie bitte zuerst ein Produkt."]);
+	};
+
+	const computeInputField = (label) => {
+		let field = <></>;
+		switch (label) {
+			case "Druckart":
+				field = (
 					<Form.Select
+						key={keys["type"]}
 						ref={nameRef}
 						aria-label="Default select example"
 						style={{ width: "70%" }}
@@ -91,10 +107,12 @@ const ItemDialog = ({
 							<option value={item}>{item}</option>
 						))}
 					</Form.Select>
-				</Form.Group>
-				<Form.Group className="d-flex justify-content-between align-items-center mt-3">
-					<Form.Label style={{ padding: 0, margin: 0 }}>Größe:</Form.Label>
+				);
+				break;
+			case "Größe":
+				field = (
 					<Form.Select
+						key={keys["subtype"]}
 						ref={sizeRef}
 						disabled={sizeOptions.length === 1}
 						aria-label="Default select example"
@@ -105,10 +123,12 @@ const ItemDialog = ({
 					>
 						{...sizeOptions.map((size) => <option value={size}>{size}</option>)}
 					</Form.Select>
-				</Form.Group>
-				<Form.Group className="d-flex justify-content-between align-items-center mt-3">
-					<Form.Label style={{ padding: 0, margin: 0 }}>Anzahl:</Form.Label>
+				);
+				break;
+			case "Anzahl":
+				field = (
 					<Form.Control
+						key={keys["amount"]}
 						style={{ width: "70%" }}
 						type="number"
 						ref={numberRef}
@@ -118,14 +138,37 @@ const ItemDialog = ({
 							changePrice();
 						}}
 					/>
-				</Form.Group>
-				<Form.Group
-					controlId="formFile"
-					className="d-flex justify-content-between align-items-center mt-3"
-				>
-					<Form.Label style={{ padding: 0, margin: 0 }}>Datei:</Form.Label>
-					<Form.Control ref={fileRef} style={{ width: "70%" }} type="file" />
-				</Form.Group>
+				);
+				break;
+			case "Datei":
+				field = (
+					<Form.Control
+						key={keys["file"]}
+						ref={fileRef}
+						style={{ width: "70%" }}
+						type="file"
+					/>
+				);
+				break;
+		}
+		return (
+			<Form.Group className="d-flex justify-content-between align-items-center">
+				<Form.Label style={{ padding: 0, margin: 0 }}>{label}:</Form.Label>
+				{field}
+			</Form.Group>
+		);
+	};
+
+	return (
+		<>
+			<Modal.Header closeButton>
+				<Modal.Title>{itemType.toUpperCase().replace("-", " ")}</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				{computeInputField("Druckart")}
+				{computeInputField("Größe")}
+				{computeInputField("Anzahl")}
+				{computeInputField("Datei")}
 				{price ? (
 					<div className="d-flex justify-content-between align-items-center mt-5">
 						<p style={{ padding: 0, margin: 0, color: "white" }}>Preis:</p>
@@ -136,20 +179,20 @@ const ItemDialog = ({
 								width: "68%",
 							}}
 						>
-							{price}€
+							€{price}
 						</h4>
 					</div>
 				) : (
 					""
 				)}
 			</Modal.Body>
-			{errorMessage}
+			{message}
 			<Modal.Footer>
 				<Button
 					variant="secondary"
 					onClick={() => {
 						if (findInvalidFields().length === 0) {
-							setErrorMessage(
+							setMessage(
 								<Modal.Body style={{ backgroundColor: "rgba(0, 255, 0, 0.3)" }}>
 									<p style={{ padding: 0, margin: 0 }}>
 										Ihr Artikel befindet sich im Warenkorb.
@@ -165,8 +208,10 @@ const ItemDialog = ({
 								S3TempName: Date.now().toString(),
 							});
 							cancelIntent();
+							setTimeout(setMessage, 3000, <></>);
+							reset();
 						} else {
-							setErrorMessage(
+							setMessage(
 								<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
 									<p style={{ padding: 0, margin: 0 }}>
 										Sie müssen <b>{`${findInvalidFields().join(", ")}`}</b>{" "}

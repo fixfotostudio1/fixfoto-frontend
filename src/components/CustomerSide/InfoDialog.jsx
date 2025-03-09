@@ -1,6 +1,4 @@
 import Modal from "react-bootstrap/Modal";
-import AGB from "../../assets/AGB.pdf";
-import { Document } from "react-pdf";
 import loc from "../../assets/location.png";
 
 const InfoDialog = ({ dialogType }) => {
