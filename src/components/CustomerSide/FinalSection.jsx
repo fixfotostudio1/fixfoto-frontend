@@ -1,21 +1,21 @@
 import owner from "../../assets/owner.jpg";
 
-const FinalSection = ({ handleClick }) => {
+const FinalSection = ({ handleClick, sectionSize }) => {
 	return (
 		<div
 			id="final"
 			className="m-0 p-0 max-vw-100 d-flex flex-column justify-content-center align-items-center"
 			style={{
 				position: "absolute",
-				top: "1000vh",
+				top: `${10 * sectionSize}vh`,
 				width: "100vw",
-				height: "100vh",
+				height: `${sectionSize}vh`,
 			}}
 		>
 			<div
 				className="d-flex justify-content-center"
 				style={{
-					paddingTop: "20vh",
+					paddingTop: "50vh",
 					paddingBottom: "20vh",
 					width: "fit-content",
 				}}

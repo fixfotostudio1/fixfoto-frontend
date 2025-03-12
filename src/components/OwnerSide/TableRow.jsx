@@ -101,7 +101,6 @@ const TableRow = ({ order, statusesArray }) => {
 				<Dropdown>
 					{mainButton}
 					<Dropdown.Toggle
-						variant="success"
 						id="dropdown-basic"
 						style={{ width: "30%", minWidth: "fit-content" }}
 					></Dropdown.Toggle>

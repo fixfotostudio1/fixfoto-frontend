@@ -2,6 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState, useRef } from "react";
+import { Big } from "bigdecimal.js";
 
 const ItemDialog = ({
 	handleRedirect,
@@ -36,11 +37,9 @@ const ItemDialog = ({
 			numberRef.current.value
 		) {
 			setPrice(
-				Math.round(
-					pricelist[itemType][nameRef.current.value][sizeRef.current.value] *
-						numberRef.current.value *
-						100
-				) / 100
+				Big(pricelist[itemType][nameRef.current.value][sizeRef.current.value])
+					.multiply(Big(numberRef.current.value))
+					.toString()
 			);
 		} else {
 			setPrice(null);

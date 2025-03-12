@@ -3,7 +3,7 @@
 }
 
 #top-container {
-	background-image: url("./assets/ffm2.png");
+	background-image: url("./assets/ffm4.jpg");
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -22,11 +22,11 @@
 }
 
 .bewerbung-background {
-	background-color: goldenrod; /* #ffd333; /*#fbd87f;*/
+	background-color: #fa8072; /* #ffd333; /*#fbd87f;*/
 }
 
 .portraits-background {
-	background-color: #fa8072;
+	background-color: goldenrod;
 }
 
 .produkte-background {
@@ -198,4 +198,12 @@ td {
 	to {
 		stroke-dashoffset: 1000;
 	}
+}
+
+.navbar-toggler-icon {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.navbar-toggler {
+	border-color: rgb(255, 255, 255);
 }

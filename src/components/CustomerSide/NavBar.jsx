@@ -3,7 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
-const NavBar = ({ currBackground }) => {
+const NavBar = ({ currBackground, sectionSize }) => {
 	return (
 		<>
 			<Navbar
@@ -53,7 +53,9 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight)}
+									onClick={() =>
+										window.scrollTo(0, window.innerHeight * (sectionSize / 100))
+									}
 								>
 									Passbilder
 								</a>
@@ -63,7 +65,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 2)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 2
+										)
+									}
 								>
 									Bewerbungsbilder
 								</a>
@@ -73,7 +80,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 3)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 3
+										)
+									}
 								>
 									Portraits
 								</a>
@@ -83,7 +95,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 4)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 4
+										)
+									}
 								>
 									Fotoprodukte
 								</a>
@@ -93,7 +110,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 5)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 5
+										)
+									}
 								>
 									Rahmen
 								</a>
@@ -103,7 +125,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 6)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 6
+										)
+									}
 								>
 									Labor
 								</a>
@@ -113,7 +140,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 7)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 7
+										)
+									}
 								>
 									Videokassetten
 								</a>
@@ -123,7 +155,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 8)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 8
+										)
+									}
 								>
 									3D Glasfoto
 								</a>
@@ -133,7 +170,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 9)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 9
+										)
+									}
 								>
 									Kopien
 								</a>
@@ -182,7 +224,9 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight)}
+									onClick={() =>
+										window.scrollTo(0, window.innerHeight * (sectionSize / 100))
+									}
 								>
 									Passbilder
 								</a>
@@ -192,7 +236,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 2)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 2
+										)
+									}
 								>
 									Bewerbungsbilder
 								</a>
@@ -202,7 +251,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 3)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 3
+										)
+									}
 								>
 									Portraits
 								</a>
@@ -212,7 +266,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 4)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 4
+										)
+									}
 								>
 									Fotoprodukte
 								</a>
@@ -222,7 +281,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 5)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 5
+										)
+									}
 								>
 									Rahmen
 								</a>
@@ -232,7 +296,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 6)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 6
+										)
+									}
 								>
 									Labor
 								</a>
@@ -242,7 +311,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 7)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 7
+										)
+									}
 								>
 									Videokassetten
 								</a>
@@ -252,7 +326,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 8)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 8
+										)
+									}
 								>
 									3D Glasfoto
 								</a>
@@ -262,7 +341,12 @@ const NavBar = ({ currBackground }) => {
 											? "navlink navlink-in-view"
 											: "navlink"
 									}
-									onClick={() => window.scrollTo(0, window.innerHeight * 9)}
+									onClick={() =>
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) * 9
+										)
+									}
 								>
 									Kopien
 								</a>

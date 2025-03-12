@@ -6,6 +6,7 @@ import Accordion from "react-bootstrap/Accordion";
 import { useState } from "react";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
+import { Big } from "bigdecimal.js";
 
 const CartAndCheckoutDialog = ({
 	handleClose,
@@ -186,13 +187,13 @@ const CartAndCheckoutDialog = ({
 												</div>
 											</td>
 											<td className="align-middle">
-												{Math.round(
+												{Big(
 													pricelist[item["supertype"]][item["product"]][
 														item["type"]
-													] *
-														item["amount"] *
-														100
-												) / 100}
+													]
+												)
+													.multiply(Big(item["amount"].toString()))
+													.toString()}
 											</td>
 										</tr>
 									))}
@@ -201,17 +202,19 @@ const CartAndCheckoutDialog = ({
 										<td></td>
 										<td className="align-middle"></td>
 										<td className="align-middle">
-											{Math.round(
-												order["items"].reduce(
+											{order["items"]
+												.reduce(
 													(acc, item) =>
-														acc +
-														pricelist[item["supertype"]][item["product"]][
-															item["type"]
-														] *
-															item["amount"],
-													0
-												) * 100
-											) / 100}
+														Big(
+															pricelist[item["supertype"]][item["product"]][
+																item["type"]
+															]
+														)
+															.multiply(item["amount"].toString())
+															.add(acc),
+													Big("0")
+												)
+												.toString()}
 										</td>
 									</tr>
 								</tbody>

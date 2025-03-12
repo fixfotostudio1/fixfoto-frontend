@@ -9,6 +9,7 @@ const ProductSection = ({
 	imageSide,
 	imageStyle,
 	handleClick,
+	sectionSize,
 }) => {
 	return (
 		<>
@@ -19,7 +20,7 @@ const ProductSection = ({
 					...sectionStyle,
 					position: "absolute",
 					left: 0,
-					height: "100vh",
+					height: `${sectionSize}vh`,
 					width: "100vw",
 					paddingLeft: "calc(3rem + 85.15px)",
 					paddingRight: "calc(3rem + 157.64px)",
@@ -119,7 +120,7 @@ const ProductSection = ({
 					...sectionStyle,
 					position: "absolute",
 					left: 0,
-					height: "100vh",
+					height: `${sectionSize}vh`,
 					width: "100vw",
 					margin: "0",
 					padding: "0",

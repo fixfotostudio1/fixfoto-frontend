@@ -31,12 +31,12 @@ const PostPaymentInfoDialog = ({ handleClose, order, orderSuccess }) => {
 					<Modal.Title>{"Bestellung erhalten. Danke!"}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					Ihre Bestellung (Nr. {order["orderNumber"]}) wird gleich bearbeitet.
-					Sie bekommen in Kürze eine Bestätigung per E-Mail und werden auch noch
-					benachrichtigt, sobald Ihre Bestellung abholbereit ist. <br />
+					Ihre Bestellung wird gleich bearbeitet. Sie bekommen in Kürze eine
+					Bestätigung per E-Mail und werden auch noch benachrichtigt, sobald
+					Ihre Bestellung abholbereit ist. <br />
 					<br />
-					Falls Sie noch Fragen haben, können Sie uns unter ... oder ...
-					erreichen.
+					Falls Sie noch Fragen haben, können Sie uns unter telefonisch oder per
+					E-Mail erreichen.
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="primary" onClick={() => handleClose()}>

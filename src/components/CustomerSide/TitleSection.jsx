@@ -1,4 +1,4 @@
-const TitleSection = () => {
+const TitleSection = (sectionSize) => {
 	return (
 		<div id="start" className="m-0 p-0 max-vw-100" style={{ height: "130vh" }}>
 			<div
@@ -7,7 +7,7 @@ const TitleSection = () => {
 					margin: "0",
 					marginLeft: "20%",
 					marginRight: "20%",
-					height: "100vh",
+					height: `${sectionSize}vh`,
 					padding: 0,
 					paddingTop: "38vh",
 				}}

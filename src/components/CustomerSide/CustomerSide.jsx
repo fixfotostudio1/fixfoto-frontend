@@ -26,22 +26,28 @@ import Dialog from "./Dialog";
 import ShoppingCart from "./ShoppingCart";
 
 import pass from "../../assets/pass.png";
-import bew from "../../assets/bew2.jpg";
+import bew from "../../assets/bewe.jpg";
 import prod from "../../assets/prod.png";
 import lab from "../../assets/labor.png";
 import video from "../../assets/video.png";
 import glas from "../../assets/glas.png";
 import rahmen from "../../assets/rahmen.webp";
 import kopien from "../../assets/kopien.png";
-import portrait from "../../assets/portrait.jpg";
+import portrait from "../../assets/portr.jpg";
 
 const findMinValue = (obj) => {
-	return Math.min.apply(null, [...Object.values(obj)]);
+	return Math.min.apply(null, [
+		...Object.values(obj).map((item) => parseFloat(item)),
+	]);
 };
 
 const findMaxValue = (obj) => {
-	return Math.max.apply(null, [...Object.values(obj)]);
+	return Math.max.apply(null, [
+		...Object.values(obj).map((item) => parseFloat(item)),
+	]);
 };
+
+const SECTION_SIZE = "130";
 
 const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	const [background, setBackground] = useState("start-background");
@@ -348,15 +354,16 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 				id="main-container"
 				className={`d-flex flex-column ${background}`}
 				style={{
-					height: "1100vh",
+					height: `${SECTION_SIZE * 11}vh`,
 					maxWidth: "100vw",
 				}}
 			>
-				<NavBar currBackground={background} />
-				<TitleSection />
+				<NavBar currBackground={background} sectionSize={SECTION_SIZE} />
+				<TitleSection sectionSize={SECTION_SIZE} />
 				<ProductSection
+					sectionSize={SECTION_SIZE}
 					sectionStyle={{
-						top: "100vh",
+						top: `${SECTION_SIZE}vh`,
 					}}
 					id="passfotos"
 					overTitle={null}
@@ -382,8 +389,9 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					}}
 				/>
 				<ProductSection
+					sectionSize={SECTION_SIZE}
 					sectionStyle={{
-						top: "200vh",
+						top: `${2 * SECTION_SIZE}vh`,
 					}}
 					id="bewerbung"
 					overTitle={null}
@@ -403,7 +411,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					imageSource={bew}
 					imageSide={"right"}
 					imageStyle={{
-						width: "25vmax",
+						width: "18vmax",
 						border: "5px solid white",
 					}}
 					handleClick={() => {
@@ -412,8 +420,9 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					}}
 				/>
 				<ProductSection
+					sectionSize={SECTION_SIZE}
 					sectionStyle={{
-						top: "300vh",
+						top: `${3 * SECTION_SIZE}vh`,
 					}}
 					id="portraits"
 					overTitle={null}
@@ -431,7 +440,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					imageSource={portrait}
 					imageSide={"left"}
 					imageStyle={{
-						width: "25vmax",
+						width: "18vmax",
 						border: "5px solid white",
 					}}
 					handleClick={() => {
@@ -440,8 +449,9 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					}}
 				/>
 				<ProductSection
+					sectionSize={SECTION_SIZE}
 					sectionStyle={{
-						top: "400vh",
+						top: `${4 * SECTION_SIZE}vh`,
 					}}
 					id="produkte"
 					overTitle={null}
@@ -504,8 +514,9 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					}}
 				/>
 				<ProductSection
+					sectionSize={SECTION_SIZE}
 					sectionStyle={{
-						top: "500vh",
+						top: `${5 * SECTION_SIZE}vh`,
 					}}
 					id="rahmen"
 					overTitle={null}
@@ -557,8 +568,9 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					}}
 				/>
 				<ProductSection
+					sectionSize={SECTION_SIZE}
 					sectionStyle={{
-						top: "600vh",
+						top: `${6 * SECTION_SIZE}vh`,
 					}}
 					id="labor"
 					overTitle={null}
@@ -640,8 +652,9 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					}}
 				/>
 				<ProductSection
+					sectionSize={SECTION_SIZE}
 					sectionStyle={{
-						top: "700vh",
+						top: `${7 * SECTION_SIZE}vh`,
 					}}
 					id="video"
 					overTitle={null}
@@ -684,8 +697,9 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					}}
 				/>
 				<ProductSection
+					sectionSize={SECTION_SIZE}
 					sectionStyle={{
-						top: "800vh",
+						top: `${8 * SECTION_SIZE}vh`,
 					}}
 					id="glas"
 					overTitle={null}
@@ -704,8 +718,9 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 				/>
 
 				<ProductSection
+					sectionSize={SECTION_SIZE}
 					sectionStyle={{
-						top: "900vh",
+						top: `${9 * SECTION_SIZE}vh`,
 					}}
 					id="kopien"
 					overTitle={null}
@@ -749,6 +764,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					}}
 				/>
 				<FinalSection
+					sectionSize={SECTION_SIZE}
 					handleClick={(type) => {
 						setShowDialog(true);
 						setDialogType(type);
