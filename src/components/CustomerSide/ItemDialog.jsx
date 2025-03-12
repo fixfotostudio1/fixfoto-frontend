@@ -4,6 +4,8 @@ import Form from "react-bootstrap/Form";
 import { useState, useRef } from "react";
 import { Big } from "bigdecimal.js";
 
+const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
+
 const ItemDialog = ({
 	handleRedirect,
 	itemType,
@@ -190,7 +192,10 @@ const ItemDialog = ({
 				<Button
 					variant="secondary"
 					onClick={() => {
-						if (findInvalidFields().length === 0) {
+						if (
+							findInvalidFields().length === 0 &&
+							allowedFormats.includes(fileRef.current.files[0].type)
+						) {
 							setMessage(
 								<Modal.Body style={{ backgroundColor: "rgba(0, 255, 0, 0.3)" }}>
 									<p style={{ padding: 0, margin: 0 }}>
@@ -204,11 +209,23 @@ const ItemDialog = ({
 								type: sizeRef.current.value,
 								amount: parseInt(numberRef.current.value),
 								file: fileRef.current.files ? fileRef.current.files[0] : null,
-								S3TempName: Date.now().toString(),
+								S3TempName:
+									Date.now().toString() + "-" + fileRef.current.files[0].type,
 							});
 							cancelIntent();
 							setTimeout(setMessage, 3000, <></>);
 							reset();
+						} else if (
+							!allowedFormats.includes(fileRef.current.files[0].type)
+						) {
+							setMessage(
+								<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
+									<p style={{ padding: 0, margin: 0 }}>
+										Die Datei muss einen der folgenden Formaten haben: .jpeg,
+										.jpg, .png, .webp, .tif, .tiff.
+									</p>
+								</Modal.Body>
+							);
 						} else {
 							setMessage(
 								<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>

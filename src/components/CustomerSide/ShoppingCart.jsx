@@ -1,5 +1,8 @@
 const ShoppingCart = ({ order, handleClick }) => {
-	const itemCount = order.items.length;
+	const itemCount = order.items.reduce(
+		(acc, val) => parseInt(val["amount"]) + acc,
+		0
+	);
 
 	if (itemCount !== 0) {
 		return (

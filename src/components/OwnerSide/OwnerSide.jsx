@@ -128,9 +128,13 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 		);
 		// The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
 		const byteArr = await response.Body.transformToByteArray();
-		const file = new File([byteArr], orderNumber + "-" + S3TempName, {
-			type: "image/jpeg",
-		});
+		const file = new File(
+			[byteArr],
+			orderNumber + "-" + S3TempName.split("-")[0],
+			{
+				type: S3TempName.split("-")[1],
+			}
+		);
 		const reader = new FileReader();
 		let url = "";
 		reader.readAsDataURL(file);

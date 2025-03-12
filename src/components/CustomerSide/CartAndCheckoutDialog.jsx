@@ -60,12 +60,6 @@ const CartAndCheckoutDialog = ({
 					</p>
 				</Modal.Body>
 			);
-		} else if (!AGBCheckboxRef.current.checked) {
-			return (
-				<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
-					<p style={{ padding: 0, margin: 0 }}>Sie müssen den AGB zustimmen.</p>
-				</Modal.Body>
-			);
 		} else {
 			return "";
 		}
@@ -437,6 +431,14 @@ const CartAndCheckoutDialog = ({
 								<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
 									<p style={{ padding: 0, margin: 0 }}>
 										Bitte wählen Sie Ihre bevorzugte Zahlungsmethode.
+									</p>
+								</Modal.Body>
+							);
+						} else if (!AGBCheckboxRef.current.checked) {
+							setErrorMessage(
+								<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
+									<p style={{ padding: 0, margin: 0 }}>
+										Sie müssen den AGB zustimmen.
 									</p>
 								</Modal.Body>
 							);
