@@ -3,6 +3,7 @@ import loc from "../../assets/location.png";
 
 const InfoDialog = ({ dialogType }) => {
 	switch (dialogType) {
+		case "AGBDialogReversible":
 		case "AGBDialog":
 			return (
 				<>

@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Accordion from "react-bootstrap/Accordion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { Big } from "bigdecimal.js";
@@ -22,7 +22,10 @@ const CartAndCheckoutDialog = ({
 	alwaysActiveList,
 	toggleActivity,
 	cancelIntent,
+	handleRedirect,
 }) => {
+	let AGBCheckboxRef = useRef({ current: { checked: null } });
+
 	let stripe = null;
 	let elements = null;
 	if (clientSecret) {
@@ -55,6 +58,12 @@ const CartAndCheckoutDialog = ({
 						Sie müssen <b>{`${checkInvalidDeliveryFields().join(", ")}`}</b>{" "}
 						unter "Kontaktdaten" angeben.
 					</p>
+				</Modal.Body>
+			);
+		} else if (!AGBCheckboxRef.current.checked) {
+			return (
+				<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
+					<p style={{ padding: 0, margin: 0 }}>Sie müssen den AGB zustimmen.</p>
 				</Modal.Body>
 			);
 		} else {
@@ -235,7 +244,10 @@ const CartAndCheckoutDialog = ({
 										id="inline-radio-1"
 										checked={order["deliveryType"] === "Abholen"}
 										onChange={({ target }) => {
-											if (target.value === "on") changeDeliveryType("Abholen");
+											if (target.value === "on") {
+												changeDeliveryType("Abholen");
+											}
+											cancelIntent();
 										}}
 									/>
 									<Form.Check
@@ -245,8 +257,10 @@ const CartAndCheckoutDialog = ({
 										id="inline-radio-2"
 										checked={order["deliveryType"] === "Hermes-Versand"}
 										onChange={({ target }) => {
-											if (target.value === "on")
+											if (target.value === "on") {
 												changeDeliveryType("Hermes-Versand");
+											}
+											cancelIntent();
 										}}
 									/>
 								</div>
@@ -391,6 +405,23 @@ const CartAndCheckoutDialog = ({
 					</Accordion.Item>
 				</Accordion>
 			</Modal.Body>
+			<Form.Check
+				type="checkbox"
+				ref={AGBCheckboxRef}
+				className="m-4"
+				label={
+					<>
+						Ich stimme den{" "}
+						<b
+							style={{ cursor: "pointer" }}
+							onClick={() => handleRedirect("AGBDialogReversible")}
+						>
+							AGB
+						</b>{" "}
+						zu.
+					</>
+				}
+			/>
 			{errorMessage}
 			<Modal.Footer>
 				<Button variant="secondary" onClick={() => handleClose()}>
@@ -401,6 +432,14 @@ const CartAndCheckoutDialog = ({
 					onClick={() => {
 						if (showFormGaps()) {
 							setErrorMessage(showFormGaps());
+						} else if (!clientSecret) {
+							setErrorMessage(
+								<Modal.Body style={{ backgroundColor: "rgba(255, 0, 0, 0.3)" }}>
+									<p style={{ padding: 0, margin: 0 }}>
+										Bitte wählen Sie Ihre bevorzugte Zahlungsmethode.
+									</p>
+								</Modal.Body>
+							);
 						} else {
 							setErrorMessage(<></>);
 							changeOrderNumber(

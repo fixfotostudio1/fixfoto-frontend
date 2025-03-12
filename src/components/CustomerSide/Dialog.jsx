@@ -105,6 +105,7 @@ const Dialog = ({
 					alwaysActiveList={alwaysActiveList}
 					toggleActivity={toggleActivity}
 					cancelIntent={cancelIntent}
+					handleRedirect={handleRedirect}
 				/>
 			);
 			if (clientSecret) {
@@ -123,6 +124,7 @@ const Dialog = ({
 		case "ImpressumDialog":
 		case "DatenschutzDialog":
 		case "LocationDialog":
+		case "AGBDialogReversible":
 			content = <InfoDialog dialogType={dialogType} />;
 			break;
 		default:
@@ -138,7 +140,18 @@ const Dialog = ({
 	}
 
 	return (
-		<Modal show={showDialog} onHide={handleClose} animation={true} centered>
+		<Modal
+			show={showDialog}
+			onHide={() => {
+				if (dialogType.includes("Reversible")) {
+					handleRedirect("CartAndCheckoutDialog");
+				} else {
+					handleClose();
+				}
+			}}
+			animation={true}
+			centered
+		>
 			{content}
 		</Modal>
 	);
