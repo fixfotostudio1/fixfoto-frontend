@@ -9,9 +9,15 @@ const OrdersTable = ({ currStatus }) => {
 	const determineStatusesArray = (order) => {
 		if (currStatus === "unbezahlt") {
 			if (order["deliveryType"] === "Abholen") {
-				return ["neu", "abholbereit", "abgeschlossen", "löschen"];
+				return ["neu", "abholbereit", "abgeschlossen", "löschen", "erstatten"];
 			} else {
-				return ["neu", "versandbereit", "abgeschlossen", "löschen"];
+				return [
+					"neu",
+					"versandbereit",
+					"abgeschlossen",
+					"löschen",
+					"erstatten",
+				];
 			}
 		} else if (currStatus === "neu") {
 			if (order["deliveryType"] === "Abholen") {

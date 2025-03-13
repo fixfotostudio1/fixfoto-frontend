@@ -304,6 +304,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 		const filelessOrder = {
 			...orderRef.current,
 			intentId: intentId,
+			orderSuccess: orderSuccess,
 			items: orderRef.current["items"].map((item) =>
 				Object({ ...item, file: null })
 			),
