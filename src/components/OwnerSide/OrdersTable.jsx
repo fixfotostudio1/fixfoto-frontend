@@ -15,19 +15,19 @@ const OrdersTable = ({ currStatus }) => {
 			}
 		} else if (currStatus === "neu") {
 			if (order["deliveryType"] === "Abholen") {
-				return ["abholbereit", "abgeschlossen", "löschen"];
+				return ["abholbereit", "abgeschlossen", "löschen", "erstatten"];
 			} else {
-				return ["versandbereit", "abgeschlossen", "löschen"];
+				return ["versandbereit", "abgeschlossen", "löschen", "erstatten"];
 			}
 		} else if (currStatus === "abholbereit") {
-			return ["abgeschlossen", "neu", "löschen"];
+			return ["abgeschlossen", "neu", "löschen", "erstatten"];
 		} else if (currStatus === "versandbereit") {
-			return ["abgeschlossen", "neu", "löschen"];
+			return ["abgeschlossen", "neu", "löschen", "erstatten"];
 		} else if (currStatus === "abgeschlossen") {
 			if (order["deliveryType"] === "Abholen") {
-				return ["löschen", "neu", "abholbereit"];
+				return ["löschen", "neu", "abholbereit", "erstatten"];
 			} else {
-				return ["löschen", "neu", "versandbereit"];
+				return ["löschen", "neu", "versandbereit", "erstatten"];
 			}
 		}
 	};

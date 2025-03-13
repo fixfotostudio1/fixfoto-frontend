@@ -2,6 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
 const DeleteDialog = ({
+	deleteOrRefund,
 	showDeleteDialog,
 	handleClose,
 	orderToBeDeleted,
@@ -16,13 +17,21 @@ const DeleteDialog = ({
 				centered
 			>
 				<Modal.Header closeButton>
-					<Modal.Title>Bestellung löschen</Modal.Title>
+					<Modal.Title>
+						Bestellung {deleteOrRefund === "delete" ? "löschen" : "erstatten"}
+					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					Soll Bestellung {orderToBeDeleted["orderNumber"]} von{" "}
 					{orderToBeDeleted["deliveryAddress"]["firstName"]}{" "}
-					{orderToBeDeleted["deliveryAddress"]["surname"]} <b>permanent</b>{" "}
-					gelöscht werden?
+					{orderToBeDeleted["deliveryAddress"]["surname"]}{" "}
+					<b>
+						permanent{" "}
+						{deleteOrRefund === "delete"
+							? "gelöscht"
+							: "gelöscht und erstattet"}{" "}
+					</b>{" "}
+					werden?
 				</Modal.Body>
 				<Modal.Footer className="d-flex justify-content-between">
 					<Button onClick={handleDelete}>Ja</Button>

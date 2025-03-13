@@ -13,7 +13,7 @@ const TableRow = ({ order, statusesArray }) => {
 				<li style={{ marginBottom: "40px" }}>
 					{i["product"]}
 					<br />
-					{"ID: " + i["S3TempName"]}
+					{"ID: " + i["S3TempName"].split("-")[0]}
 					<br />
 					{i["type"]}
 					<br />
@@ -63,7 +63,7 @@ const TableRow = ({ order, statusesArray }) => {
 		<Button
 			onClick={() => {
 				if (statusesArray[0] === "löschen") {
-					ctx.handleDelete(order);
+					ctx.handleDelete("delete", order);
 				} else {
 					ctx.handleClick(order, statusesArray[0]);
 				}
@@ -78,7 +78,13 @@ const TableRow = ({ order, statusesArray }) => {
 			{...statusesArray.slice(1).map((newStatus) => {
 				if (newStatus === "löschen") {
 					return (
-						<Dropdown.Item onClick={() => ctx.handleDelete(order)}>
+						<Dropdown.Item onClick={() => ctx.handleDelete("delete", order)}>
+							{newStatus}
+						</Dropdown.Item>
+					);
+				} else if (newStatus === "erstatten") {
+					return (
+						<Dropdown.Item onClick={() => ctx.handleDelete("refund", order)}>
 							{newStatus}
 						</Dropdown.Item>
 					);

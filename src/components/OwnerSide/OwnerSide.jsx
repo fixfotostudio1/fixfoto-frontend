@@ -34,6 +34,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [orderToBeDeleted, setOrderToBeDeleted] = useState(null);
+	const [deleteOrRefund, setDeleteOrRefund] = useState(null);
 
 	const handleLogin = (un, pw) => {
 		axios
@@ -126,7 +127,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				Key: orderNumber + "-" + S3TempName,
 			})
 		);
-		// The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
+
 		const byteArr = await response.Body.transformToByteArray();
 		const file = new File(
 			[byteArr],
@@ -151,6 +152,22 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 		return url;
 	};
 
+	const refundOrder = (order) => {
+		axios
+			.post(
+				`http://localhost:3001/api/orders/refund`,
+				{
+					...order,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
+			.then((response) => console.log("refundOrder(): ", response));
+	};
+
 	return (
 		<>
 			{!token ? (
@@ -167,7 +184,8 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 							handleClick: (order, newStatus) => {
 								changeStatus(order, token, newStatus);
 							},
-							handleDelete: (order) => {
+							handleDelete: (setting, order) => {
+								setDeleteOrRefund(setting);
 								setOrderToBeDeleted(order);
 								setShowDeleteDialog(true);
 							},
@@ -180,10 +198,17 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 						<Dashboard token={token} />
 					</DashboardContext.Provider>
 					<DeleteDialog
+						deleteOrRefund={deleteOrRefund}
 						showDeleteDialog={showDeleteDialog}
-						handleClose={() => setShowDeleteDialog(false)}
+						handleClose={() => {
+							setShowDeleteDialog(false);
+							setOrderToBeDeleted(null);
+						}}
 						orderToBeDeleted={orderToBeDeleted}
 						handleDelete={() => {
+							if (deleteOrRefund === "refund") {
+								refundOrder(orderToBeDeleted);
+							}
 							deleteOrderFilesFromBucket(orderToBeDeleted);
 							deleteOrderFromDb(orderToBeDeleted, token);
 							setShowDeleteDialog(false);
