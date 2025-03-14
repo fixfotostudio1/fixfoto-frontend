@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import axios from "axios";
+import Button from "react-bootstrap/Button";
 
 import {
 	S3Client,
@@ -178,6 +179,14 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 				/>
 			) : (
 				<>
+					<Button
+						onClick={() => {
+							updateOrders(token);
+							console.log(orders.items.length);
+						}}
+					>
+						Bestellungen neu laden
+					</Button>
 					<DashboardContext.Provider
 						value={{
 							AWSObj2ImageURL: AWSObj2ImageURL,

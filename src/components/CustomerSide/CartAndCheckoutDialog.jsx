@@ -416,7 +416,7 @@ const CartAndCheckoutDialog = ({
 			/>
 			{Number(subtotal.toString()) !== 0 ? (
 				<div className="d-flex justify-content-start align-items-center m-4">
-					<h4 style={{ padding: 0, margin: 0 }}>Preis: </h4>
+					<h4 style={{ padding: 0, margin: 0 }}>Gesammtsumme: </h4>
 					<h4
 						className="ms-2"
 						style={{
