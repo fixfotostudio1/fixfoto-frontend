@@ -144,8 +144,6 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 		const newItems = orderRef.current["items"].concat([newItem]);
 		setOrder({ ...orderRef.current, items: newItems });
 
-		console.log("addItem");
-
 		const reader = new FileReader();
 		reader.readAsArrayBuffer(newItem.file);
 		reader.onload = (e) => {
@@ -154,7 +152,6 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	};
 
 	const deleteItem = (index) => {
-		console.log("deleteItem");
 		const newItems = orderRef.current["items"]
 			.slice(0, index)
 			.concat(orderRef.current["items"].slice(index + 1));
@@ -182,16 +179,13 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 		const newDeliveryAddress = { ...orderRef.current["deliveryAddress"] };
 		newDeliveryAddress[key] = value;
 		setOrder({ ...orderRef.current, deliveryAddress: newDeliveryAddress });
-		console.log("changeDeliveryAddress");
 	};
 
 	const changeDeliveryType = (newType) => {
-		console.log("changeDeliveryType");
 		setOrder({ ...orderRef.current, deliveryType: newType });
 	};
 
 	const changeOrderNumber = (newOrderNumber) => {
-		console.log("changeOrderNumber");
 		setOrder({ ...orderRef.current, orderNumber: newOrderNumber });
 	};
 
@@ -212,7 +206,6 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 
 		try {
 			const response = client.send(command);
-			console.log("uploadImage");
 		} catch (caught) {
 			if (
 				caught instanceof S3ServiceException &&
@@ -234,7 +227,6 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	};
 
 	const uploadImages = async () => {
-		console.log("uploadImages");
 		if (client) {
 			const imageS3TempNames = order["items"].map((item) => item.S3TempName);
 
@@ -254,7 +246,6 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 
 	const deleteImages = async () => {
 		const keys = orderRef.current["items"].map((item) => item.S3TempName);
-		console.log("deleteImages");
 		try {
 			const response = await client.send(
 				new DeleteObjectsCommand({
@@ -264,7 +255,6 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					},
 				})
 			);
-			console.log("deleted images: ", response);
 		} catch (caught) {
 			if (
 				caught instanceof S3ServiceException &&
@@ -284,7 +274,6 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	};
 
 	const updateCookies = () => {
-		console.log("updateCookies");
 		const cookiesOrder = {
 			...orderRef.current,
 			items: orderRef.current["items"].map((item) =>
@@ -314,8 +303,6 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 		await axios.post("http://localhost:3001/api/orders/", {
 			order: filelessOrder,
 		});
-
-		console.log("saveOrder");
 	};
 
 	useEffect(() => {

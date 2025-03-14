@@ -48,7 +48,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 						>
 							<Nav className="me-auto d-flex flex-column">
 								<a
-									class={
+									className={
 										currBackground === "passfotos-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -64,7 +64,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Passbilder
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "bewerbung-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -80,7 +80,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Bewerbungsbilder
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "portraits-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -96,7 +96,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Portraits
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "produkte-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -112,7 +112,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Fotoprodukte
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "rahmen-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -128,7 +128,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Rahmen
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "labor-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -144,7 +144,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Labor
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "video-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -160,7 +160,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Videokassetten
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "glas-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -176,7 +176,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									3D Glasfoto
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "kopien-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -213,7 +213,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 							<br />
 							FOTO
 							<br />
-							STUDIO
+							STUDIO1
 						</div>
 					</Navbar.Brand>
 					<Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
@@ -231,7 +231,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 						<Offcanvas.Body>
 							<Nav className="justify-content-end flex-grow-1 pe-3">
 								<a
-									class={
+									className={
 										currBackground === "passfotos-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -247,7 +247,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Passbilder
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "bewerbung-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -263,7 +263,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Bewerbungsbilder
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "portraits-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -279,7 +279,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Portraits
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "produkte-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -295,7 +295,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Fotoprodukte
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "rahmen-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -311,7 +311,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Rahmen
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "labor-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -327,7 +327,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Labor
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "video-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -343,7 +343,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									Videokassetten
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "glas-background"
 											? "navlink navlink-in-view"
 											: "navlink"
@@ -359,7 +359,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									3D Glasfoto
 								</a>
 								<a
-									class={
+									className={
 										currBackground === "kopien-background"
 											? "navlink navlink-in-view"
 											: "navlink"

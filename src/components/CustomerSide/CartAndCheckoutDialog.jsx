@@ -85,8 +85,6 @@ const CartAndCheckoutDialog = ({
 					<p style={{ padding: 0, margin: 0 }}>{error.message}</p>
 				</Modal.Body>
 			);
-		} else {
-			console.log("submitPayment");
 		}
 	};
 

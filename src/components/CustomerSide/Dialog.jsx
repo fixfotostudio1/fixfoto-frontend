@@ -37,7 +37,6 @@ const Dialog = ({
 	clientSecretRef.current = clientSecret;
 
 	const fetchClientSecret = (order) => {
-		console.log("fetchClientSecret");
 		if (!clientSecretRef.current) {
 			axios
 				.post("http://localhost:3001/api/orders/fetchClientSecret", {
@@ -76,7 +75,6 @@ const Dialog = ({
 						.concat(alwaysActiveList.slice(alwaysActiveList.indexOf("3") + 1))
 				);
 			}
-			console.log("cancelIntent: ", clientSecret.split("_secret_"));
 		}
 	};
 

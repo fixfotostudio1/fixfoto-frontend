@@ -62,7 +62,6 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 	};
 
 	const changeStatus = (order, token, newStatus) => {
-		console.log("OwnerSide changeStatus newStatus: ", order, newStatus);
 		axios
 			.put(
 				`http://localhost:3001/api/orders/${order["id"]}`,
@@ -82,7 +81,6 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 		const keys = order["items"].map(
 			(item) => order["orderNumber"] + "-" + item.S3TempName
 		);
-		console.log("deleteImages");
 		try {
 			const response = await client.send(
 				new DeleteObjectsCommand({
@@ -92,7 +90,6 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 					},
 				})
 			);
-			console.log("deleted images: ", response);
 		} catch (caught) {
 			if (
 				caught instanceof S3ServiceException &&
@@ -141,7 +138,6 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 		let url = "";
 		reader.readAsDataURL(file);
 		reader.onload = (e) => {
-			console.log("OwnerSide e.target.result: ", e.target.result);
 			url = e.target.result;
 
 			const a = document.createElement("a");
@@ -154,19 +150,17 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 	};
 
 	const refundOrder = (order) => {
-		axios
-			.post(
-				`http://localhost:3001/api/orders/refund`,
-				{
-					...order,
+		axios.post(
+			`http://localhost:3001/api/orders/refund`,
+			{
+				...order,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
 				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			)
-			.then((response) => console.log("refundOrder(): ", response));
+			}
+		);
 	};
 
 	return (
@@ -182,7 +176,6 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 					<Button
 						onClick={() => {
 							updateOrders(token);
-							console.log(orders.items.length);
 						}}
 					>
 						Bestellungen neu laden
