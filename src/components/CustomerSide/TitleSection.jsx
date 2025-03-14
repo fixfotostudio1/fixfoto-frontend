@@ -33,15 +33,7 @@ const TitleSection = (sectionSize) => {
 						<b>Grüneburgweg 8, 60322 Frankfurt am Main</b>
 					</h5>
 				</div>
-				<h1
-					style={{
-						color: "white",
-						fontSize: "50px",
-						marginBottom: "20px",
-					}}
-				>
-					<b>FIX FOTO STUDIO1</b>
-				</h1>
+				<h1 className="section-title-text">FIX FOTO STUDIO1</h1>
 				<p
 					style={{
 						color: "white",

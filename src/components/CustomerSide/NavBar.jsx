@@ -4,6 +4,24 @@ import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
 const NavBar = ({ currBackground, sectionSize }) => {
+	const navbarItem = (sectionName, seqNumber) => (
+		<a
+			className={
+				currBackground === `${sectionName.toLowerCase()}-background`
+					? "smallest-text-unit link link-in-view"
+					: "smallest-text-unit link"
+			}
+			onClick={() =>
+				window.scrollTo(
+					0,
+					window.innerHeight * (sectionSize / 100) * seqNumber +
+						window.innerHeight * 0.15
+				)
+			}
+		>
+			{sectionName}
+		</a>
+	);
 	return (
 		<>
 			<Navbar
@@ -18,16 +36,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 					}}
 				>
 					<Navbar.Brand href="#start" className="m-0 p-0">
-						<div
-							href="#start"
-							style={{
-								fontWeight: "bold",
-								fontFamily: "Raleway !important",
-								fontSize: "20px",
-								lineHeight: "25px",
-								color: "white",
-							}}
-						>
+						<div href="#start" className="logo-text">
 							FIX
 							<br />
 							FOTO
@@ -47,150 +56,17 @@ const NavBar = ({ currBackground, sectionSize }) => {
 							style={{ width: "fit-content", maxWidth: 151 }}
 						>
 							<Nav className="me-auto d-flex flex-column">
-								<a
-									className={
-										currBackground === "passfotos-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Passbilder
-								</a>
-								<a
-									className={
-										currBackground === "bewerbung-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 2 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Bewerbungsbilder
-								</a>
-								<a
-									className={
-										currBackground === "portraits-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 3 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Portraits
-								</a>
-								<a
-									className={
-										currBackground === "produkte-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 4 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Fotoprodukte
-								</a>
-								<a
-									className={
-										currBackground === "rahmen-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 5 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Rahmen
-								</a>
-								<a
-									className={
-										currBackground === "labor-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 6 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Labor
-								</a>
-								<a
-									className={
-										currBackground === "video-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 7 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Videokassetten
-								</a>
-								<a
-									className={
-										currBackground === "glas-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 8 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									3D Glasfoto
-								</a>
-								<a
-									className={
-										currBackground === "kopien-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 9 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Kopien
-								</a>
+								{...[
+									"Passfotos",
+									"Bewerbungsbilder",
+									"Portraits",
+									"Fotoprodukte",
+									"Rahmen",
+									"Labor",
+									"Videokassetten",
+									"Glasfotos",
+									"Kopien",
+								].map((item, index) => navbarItem(item, index + 1))}
 							</Nav>
 						</Navbar.Collapse>
 					</div>
@@ -199,16 +75,7 @@ const NavBar = ({ currBackground, sectionSize }) => {
 			<Navbar expand="lg" key="lg" fixed="top" className="mb-3 d-lg-none">
 				<Container fluid>
 					<Navbar.Brand href="#start" className="m-0 p-0">
-						<div
-							href="#start"
-							style={{
-								fontWeight: "bold",
-								fontFamily: "Raleway !important",
-								fontSize: "20px",
-								lineHeight: "25px",
-								color: "white",
-							}}
-						>
+						<div href="#start" className="logo-text">
 							FIX
 							<br />
 							FOTO
@@ -230,150 +97,17 @@ const NavBar = ({ currBackground, sectionSize }) => {
 						</Offcanvas.Header>
 						<Offcanvas.Body>
 							<Nav className="justify-content-end flex-grow-1 pe-3">
-								<a
-									className={
-										currBackground === "passfotos-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Passbilder
-								</a>
-								<a
-									className={
-										currBackground === "bewerbung-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 2 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Bewerbungsbilder
-								</a>
-								<a
-									className={
-										currBackground === "portraits-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 3 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Portraits
-								</a>
-								<a
-									className={
-										currBackground === "produkte-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 4 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Fotoprodukte
-								</a>
-								<a
-									className={
-										currBackground === "rahmen-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 5 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Rahmen
-								</a>
-								<a
-									className={
-										currBackground === "labor-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 6 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Labor
-								</a>
-								<a
-									className={
-										currBackground === "video-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 7 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Videokassetten
-								</a>
-								<a
-									className={
-										currBackground === "glas-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 8 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									3D Glasfoto
-								</a>
-								<a
-									className={
-										currBackground === "kopien-background"
-											? "navlink navlink-in-view"
-											: "navlink"
-									}
-									onClick={() =>
-										window.scrollTo(
-											0,
-											window.innerHeight * (sectionSize / 100) * 9 +
-												window.innerHeight * 0.15
-										)
-									}
-								>
-									Kopien
-								</a>
+								{...[
+									"Passfotos",
+									"Bewerbungsbilder",
+									"Portraits",
+									"Fotoprodukte",
+									"Rahmen",
+									"Labor",
+									"Videokassetten",
+									"Glasfotos",
+									"Kopien",
+								].map((item, index) => navbarItem(item, index + 1))}
 							</Nav>
 						</Offcanvas.Body>
 					</Navbar.Offcanvas>

@@ -53,17 +53,9 @@ const ProductSection = ({
 					>
 						<b>{overTitle}</b>
 					</h5>
-					<h1
-						style={{
-							color: "white",
-							fontSize: "50px",
-							marginBottom: "20px",
-						}}
-					>
-						<b>{title}</b>
-					</h1>
+					<h1 className="section-title-text">{title}</h1>
 					<p
-						className="service-description"
+						className="smallest-text-unit"
 						style={{
 							maxWidth: "100%",
 							marginBottom: "0px",
@@ -136,15 +128,7 @@ const ProductSection = ({
 					>
 						<b>{overTitle}</b>
 					</h5>
-					<h1
-						style={{
-							color: "white",
-							fontSize: "50px",
-							marginBottom: "20px",
-						}}
-					>
-						<b>{title}</b>
-					</h1>
+					<h1 className="section-title-text">{title}</h1>
 					<img
 						src={imageSource}
 						style={{
@@ -154,7 +138,7 @@ const ProductSection = ({
 						}}
 					/>
 					<p
-						className="service-description"
+						className="smallest-text-unit"
 						style={{
 							maxWidth: "70%",
 							marginBottom: "0px",

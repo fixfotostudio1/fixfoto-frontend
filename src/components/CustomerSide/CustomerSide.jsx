@@ -74,7 +74,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 			newScrollPerc > (2 * 100 - offset) / sectionNumber &&
 			newScrollPerc <= (3 * 100 - offset) / sectionNumber
 		) {
-			setBackground("bewerbung-background");
+			setBackground("bewerbungsbilder-background");
 		} else if (
 			newScrollPerc > (3 * 100 - offset) / sectionNumber &&
 			newScrollPerc <= (4 * 100 - offset) / sectionNumber
@@ -84,7 +84,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 			newScrollPerc > (4 * 100 - offset) / sectionNumber &&
 			newScrollPerc <= (5 * 100 - offset) / sectionNumber
 		) {
-			setBackground("produkte-background");
+			setBackground("fotoprodukte-background");
 		} else if (
 			newScrollPerc > (5 * 100 - offset) / sectionNumber &&
 			newScrollPerc <= (6 * 100 - offset) / sectionNumber
@@ -99,12 +99,12 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 			newScrollPerc > (7 * 100 - offset) / sectionNumber &&
 			newScrollPerc <= (8 * 100 - offset) / sectionNumber
 		) {
-			setBackground("video-background");
+			setBackground("videokassetten-background");
 		} else if (
 			newScrollPerc > (8 * 100 - offset) / sectionNumber &&
 			newScrollPerc <= (9 * 100 - offset) / sectionNumber
 		) {
-			setBackground("glas-background");
+			setBackground("glasfotos-background");
 		} else if (
 			newScrollPerc > (9 * 100 - offset) / sectionNumber &&
 			newScrollPerc <= (10 * 100 - offset) / sectionNumber
