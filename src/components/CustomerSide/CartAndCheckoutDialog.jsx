@@ -9,6 +9,8 @@ import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { Big } from "bigdecimal.js";
 
 const CartAndCheckoutDialog = ({
+	AGBAgreement,
+	setAGBAgreement,
 	handleClose,
 	order,
 	pricelist,
@@ -129,6 +131,14 @@ const CartAndCheckoutDialog = ({
 		return invalidFields;
 	};
 
+	const subtotal = order["items"].reduce(
+		(acc, item) =>
+			Big(pricelist[item["supertype"]][item["product"]][item["type"]])
+				.multiply(item["amount"].toString())
+				.add(acc),
+		Big("0")
+	);
+
 	return (
 		<>
 			<Modal.Header closeButton>
@@ -204,21 +214,7 @@ const CartAndCheckoutDialog = ({
 										<td>Zwischen-summe:</td>
 										<td></td>
 										<td className="align-middle"></td>
-										<td className="align-middle">
-											{order["items"]
-												.reduce(
-													(acc, item) =>
-														Big(
-															pricelist[item["supertype"]][item["product"]][
-																item["type"]
-															]
-														)
-															.multiply(item["amount"].toString())
-															.add(acc),
-													Big("0")
-												)
-												.toString()}
-										</td>
+										<td className="align-middle">{subtotal.toString()}</td>
 									</tr>
 								</tbody>
 							</Table>
@@ -403,6 +399,8 @@ const CartAndCheckoutDialog = ({
 				type="checkbox"
 				ref={AGBCheckboxRef}
 				className="m-4"
+				checked={AGBAgreement}
+				onChange={() => setAGBAgreement(AGBCheckboxRef.current.checked)}
 				label={
 					<>
 						Ich stimme den{" "}
@@ -416,6 +414,27 @@ const CartAndCheckoutDialog = ({
 					</>
 				}
 			/>
+			{Number(subtotal.toString()) !== 0 ? (
+				<div className="d-flex justify-content-start align-items-center m-4">
+					<h4 style={{ padding: 0, margin: 0 }}>Preis: </h4>
+					<h4
+						className="ms-2"
+						style={{
+							padding: 0,
+							margin: 0,
+							width: "68%",
+						}}
+					>
+						€
+						{subtotal
+							.add(Big(pricelist["delivery"][order["deliveryType"]]))
+							.toString()}
+					</h4>
+				</div>
+			) : (
+				<></>
+			)}
+
 			{errorMessage}
 			<Modal.Footer>
 				<Button variant="secondary" onClick={() => handleClose()}>

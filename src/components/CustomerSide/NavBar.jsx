@@ -54,7 +54,11 @@ const NavBar = ({ currBackground, sectionSize }) => {
 											: "navlink"
 									}
 									onClick={() =>
-										window.scrollTo(0, window.innerHeight * (sectionSize / 100))
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) +
+												window.innerHeight * 0.15
+										)
 									}
 								>
 									Passbilder
@@ -68,7 +72,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 2
+											window.innerHeight * (sectionSize / 100) * 2 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -83,7 +88,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 3
+											window.innerHeight * (sectionSize / 100) * 3 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -98,7 +104,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 4
+											window.innerHeight * (sectionSize / 100) * 4 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -113,7 +120,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 5
+											window.innerHeight * (sectionSize / 100) * 5 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -128,7 +136,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 6
+											window.innerHeight * (sectionSize / 100) * 6 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -143,7 +152,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 7
+											window.innerHeight * (sectionSize / 100) * 7 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -158,7 +168,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 8
+											window.innerHeight * (sectionSize / 100) * 8 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -173,7 +184,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 9
+											window.innerHeight * (sectionSize / 100) * 9 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -225,7 +237,11 @@ const NavBar = ({ currBackground, sectionSize }) => {
 											: "navlink"
 									}
 									onClick={() =>
-										window.scrollTo(0, window.innerHeight * (sectionSize / 100))
+										window.scrollTo(
+											0,
+											window.innerHeight * (sectionSize / 100) +
+												window.innerHeight * 0.15
+										)
 									}
 								>
 									Passbilder
@@ -239,7 +255,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 2
+											window.innerHeight * (sectionSize / 100) * 2 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -254,7 +271,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 3
+											window.innerHeight * (sectionSize / 100) * 3 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -269,7 +287,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 4
+											window.innerHeight * (sectionSize / 100) * 4 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -284,7 +303,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 5
+											window.innerHeight * (sectionSize / 100) * 5 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -299,7 +319,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 6
+											window.innerHeight * (sectionSize / 100) * 6 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -314,7 +335,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 7
+											window.innerHeight * (sectionSize / 100) * 7 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -329,7 +351,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 8
+											window.innerHeight * (sectionSize / 100) * 8 +
+												window.innerHeight * 0.15
 										)
 									}
 								>
@@ -344,7 +367,8 @@ const NavBar = ({ currBackground, sectionSize }) => {
 									onClick={() =>
 										window.scrollTo(
 											0,
-											window.innerHeight * (sectionSize / 100) * 9
+											window.innerHeight * (sectionSize / 100) * 9 +
+												window.innerHeight * 0.15
 										)
 									}
 								>

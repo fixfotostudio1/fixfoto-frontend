@@ -14,6 +14,8 @@ import { STRIPE_PUBLISHABLE_KEY } from "../../utils/config";
 const stripePromise = await loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 const Dialog = ({
+	AGBAgreement,
+	setAGBAgreement,
 	showDialog,
 	dialogType,
 	handleClose,
@@ -92,6 +94,8 @@ const Dialog = ({
 		case "CartAndCheckoutDialog":
 			content = (
 				<CartAndCheckoutDialog
+					AGBAgreement={AGBAgreement}
+					setAGBAgreement={setAGBAgreement}
 					handleClose={handleClose}
 					order={order}
 					pricelist={pricelist}

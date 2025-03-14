@@ -138,6 +138,8 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	const orderRef = useRef({ current: order });
 	orderRef.current = order;
 
+	const [AGBAgreement, setAGBAgreement] = useState(false);
+
 	const addItem = (newItem) => {
 		const newItems = orderRef.current["items"].concat([newItem]);
 		setOrder({ ...orderRef.current, items: newItems });
@@ -772,6 +774,8 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 					}}
 				/>
 				<Dialog
+					AGBAgreement={AGBAgreement}
+					setAGBAgreement={setAGBAgreement}
 					showDialog={showDialog}
 					dialogType={dialogType}
 					handleClose={() => setShowDialog(false)}
