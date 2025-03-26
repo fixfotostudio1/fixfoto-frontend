@@ -75,12 +75,15 @@ const NavBar = ({ currBackground, sectionSize }) => {
 			<Navbar expand="lg" key="lg" fixed="top" className="mb-3 d-lg-none">
 				<Container fluid>
 					<Navbar.Brand href="#start" className="m-0 p-0">
-						<div href="#start" className="logo-text">
+						<div href="#start" className="logo-text d-none d-sm-block">
 							FIX
 							<br />
 							FOTO
 							<br />
 							STUDIO1
+						</div>
+						<div href="#start" className="logo-text d-block d-sm-none">
+							FFS1
 						</div>
 					</Navbar.Brand>
 					<Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />

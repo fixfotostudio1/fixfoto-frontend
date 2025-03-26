@@ -1,6 +1,7 @@
 html {
 	/* setting rem */
 	font-size: 16px !important;
+	width: fit-content;
 }
 
 #main-container {
@@ -9,7 +10,7 @@ html {
 
 #top-container {
 	background-image: url("./assets/ffm4.jpg");
-	background-size: 100vw 100%;
+	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-color: black;
@@ -70,7 +71,7 @@ html {
 }
 
 .section-title-text {
-	font-size: 50px;
+	font-size: min(50px, 10vw);
 	font-weight: bold;
 	color: white;
 	margin-bottom: 20px;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 import {
@@ -25,31 +25,26 @@ import FinalSection from "./FinalSection";
 import Dialog from "./Dialog";
 import ShoppingCart from "./ShoppingCart";
 
-import pass from "../../assets/pass.png";
-import bew from "../../assets/bewe.jpg";
-import prod from "../../assets/prod.png";
-import lab from "../../assets/labor.png";
-import video from "../../assets/video.png";
-import glas from "../../assets/glas.png";
+import passfotos from "../../assets/pass.png";
+import bewerbungsbilder from "../../assets/bewe.jpg";
+import portraits from "../../assets/portr.jpg";
+import fotoprodukte from "../../assets/prod.png";
 import rahmen from "../../assets/rahmen.webp";
+import labor from "../../assets/labor.png";
+import videokassetten from "../../assets/video.png";
+import glasfotos from "../../assets/glas.png";
 import kopien from "../../assets/kopien.png";
-import portrait from "../../assets/portr.jpg";
 
-const findMinValue = (obj) => {
-	return Math.min.apply(null, [
-		...Object.values(obj).map((item) => parseFloat(item)),
-	]);
-};
-
-const findMaxValue = (obj) => {
-	return Math.max.apply(null, [
-		...Object.values(obj).map((item) => parseFloat(item)),
-	]);
-};
+export const ProductSectionContext = createContext({});
+export const DialogContext = createContext({});
 
 const SECTION_SIZE = "130";
 
 const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
+	const supertypes = Object.keys(pricelist).filter(
+		(supertype) => !["id", "delivery"].includes(supertype)
+	);
+
 	const [background, setBackground] = useState("start-background");
 	const [showDialog, setShowDialog] = useState(false);
 	const [dialogType, setDialogType] = useState(null);
@@ -305,6 +300,33 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 		});
 	};
 
+	const determineCalltoAction = (id) => {
+		switch (id) {
+			case "fotoprodukte":
+			case "glasfotos":
+				return "ONLINE BESTELLEN";
+			default:
+				return "IHR WEG ZU UNS";
+		}
+	};
+
+	const determineHandleClick = (id) => {
+		switch (id) {
+			case "fotoprodukte":
+				return () => {
+					setShowDialog(true);
+					setDialogType(id);
+				};
+			case "glasfotos":
+				return () => {};
+			default:
+				return () => {
+					setShowDialog(true);
+					setDialogType("LocationDialog");
+				};
+		}
+	};
+
 	useEffect(() => {
 		if (orderSuccess) {
 			setDialogType("PostPaymentInfoDialog");
@@ -350,409 +372,73 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 			>
 				<NavBar currBackground={background} sectionSize={SECTION_SIZE} />
 				<TitleSection sectionSize={SECTION_SIZE} />
-				<ProductSection
-					sectionSize={SECTION_SIZE}
-					sectionStyle={{
-						top: `${SECTION_SIZE}vh`,
-					}}
-					id="passfotos"
-					overTitle={null}
-					title="PASSFOTOS"
-					mainText={Object.keys(pricelist["passfotos"]).map((prod) => {
-						return (
-							<>
-								{prod}: € {pricelist["passfotos"][prod]}
-								<br />
-								<br />
-							</>
-						);
-					})}
-					callToAction={"IHR WEG ZU UNS"}
-					imageSource={pass}
-					imageSide={"left"}
-					imageStyle={{
-						width: "30vw",
-					}}
-					handleClick={() => {
-						setShowDialog(true);
-						setDialogType("LocationDialog");
-					}}
-				/>
-				<ProductSection
-					sectionSize={SECTION_SIZE}
-					sectionStyle={{
-						top: `${2 * SECTION_SIZE}vh`,
-					}}
-					id="bewerbung"
-					overTitle={null}
-					title={
-						<>
-							BEWERBUNGS- <br /> BILDER
-						</>
-					}
-					mainText={Object.keys(pricelist["bewerbungsbilder"]).map((prod) => (
-						<>
-							{prod}: € {pricelist["bewerbungsbilder"][prod]}
-							<br />
-							<br />
-						</>
-					))}
-					callToAction={"IHR WEG ZU UNS"}
-					imageSource={bew}
-					imageSide={"right"}
-					imageStyle={{
-						width: "18vmax",
-						border: "5px solid white",
-					}}
-					handleClick={() => {
-						setShowDialog(true);
-						setDialogType("LocationDialog");
-					}}
-				/>
-				<ProductSection
-					sectionSize={SECTION_SIZE}
-					sectionStyle={{
-						top: `${3 * SECTION_SIZE}vh`,
-					}}
-					id="portraits"
-					overTitle={null}
-					title="PORTRAITS"
-					mainText={Object.keys(pricelist["portraits"]).map((prod) => {
-						return (
-							<>
-								{prod}: € {pricelist["portraits"][prod]}
-								<br />
-								<br />
-							</>
-						);
-					})}
-					callToAction={"IHR WEG ZU UNS"}
-					imageSource={portrait}
-					imageSide={"left"}
-					imageStyle={{
-						width: "18vmax",
-						border: "5px solid white",
-					}}
-					handleClick={() => {
-						setShowDialog(true);
-						setDialogType("LocationDialog");
-					}}
-				/>
-				<ProductSection
-					sectionSize={SECTION_SIZE}
-					sectionStyle={{
-						top: `${4 * SECTION_SIZE}vh`,
-					}}
-					id="produkte"
-					overTitle={null}
-					title="PRODUKTE"
-					mainText={
-						<>
-							<b>Poster (Glanz oder Matt)</b>
-							<br />
-							Größe von 30 x 30 cm bis 50 x 70 cm
-							<br />
-							Preise von €{" "}
-							{findMinValue({
-								...pricelist["fotoprodukte"]["Poster (Glanz)"],
-								...pricelist["fotoprodukte"]["Poster (Matt)"],
-							})}{" "}
-							bis €{" "}
-							{findMaxValue({
-								...pricelist["fotoprodukte"]["Poster (Glanz)"],
-								...pricelist["fotoprodukte"]["Poster (Matt)"],
-							})}
-							<br />
-							<br />
-							<b>Leinen auf Keilrahmen</b>
-							<br />
-							Größe von 30 x 30 cm bis 50 x 70 cm
-							<br />
-							Preise von €{" "}
-							{findMinValue(
-								pricelist["fotoprodukte"]["Leinen auf Keilrahmen"]
-							)}{" "}
-							bis €{" "}
-							{findMaxValue(pricelist["fotoprodukte"]["Leinen auf Keilrahmen"])}
-							<br />
-							<br />
-							<b>Tassendruck</b>
-							<br />
-							Verschiedene Farben: €{" "}
-							{pricelist["fotoprodukte"]["Tassendruck"]["Verschiedene Farben"]}
-							<br />
-							Magic: € {pricelist["fotoprodukte"]["Tassendruck"]["Magic"]}
-							<br />
-							<br />
-							<b>Kissendruck</b>
-							<br />
-							Verschiedene Farben: €{" "}
-							{pricelist["fotoprodukte"]["Kissendruck"]["Verschiedene Farben"]}
-							<br />
-							<br />
-						</>
-					}
-					callToAction={"ONLINE BESTELLEN"}
-					imageSource={prod}
-					imageSide={"right"}
-					imageStyle={{
-						width: "30vw",
-					}}
-					handleClick={() => {
-						setDialogType("fotoprodukte");
-						setShowDialog(true);
-					}}
-				/>
-				<ProductSection
-					sectionSize={SECTION_SIZE}
-					sectionStyle={{
-						top: `${5 * SECTION_SIZE}vh`,
-					}}
-					id="rahmen"
-					overTitle={null}
-					title="BILDERRAHMEN"
-					mainText={
-						<>
-							<b>Kunststoffrahmen</b>
-							<br />
-							Größe von 10 x 15 cm bis 70 x 100 cm
-							<br />
-							Preise von € {pricelist["rahmen"]["Kunststoffrahmen"]["min"]} bis
-							€ {pricelist["rahmen"]["Kunststoffrahmen"]["max"]}
-							<br />
-							<br />
-							<b>Quadratische Kunststoffrahmen</b>
-							<br />
-							Größe von 10 x 10 cm bis 40 x 40 cm
-							<br />
-							Preise von €{" "}
-							{pricelist["rahmen"]["Quadratische Kunststoffrahmen"]["min"]} bis
-							€ {pricelist["rahmen"]["Quadratische Kunststoffrahmen"]["max"]}
-							<br />
-							<br />
-							<b>Rahmenlose Rahmen</b>
-							<br />
-							Größe von 10 x 15 cm bis 50 x 70 cm
-							<br />
-							Preise von € {pricelist["rahmen"]["Rahmenlose Rahmen"]["min"]} bis
-							€ {pricelist["rahmen"]["Rahmenlose Rahmen"]["max"]}
-							<br />
-							<br />
-							<b>Silberrahmen</b>
-							<br />
-							Größe von 3 x 5 cm bis 20 x 30 cm
-							<br />
-							Preise von € {pricelist["rahmen"]["Silberrahmen"]["min"]} bis €{" "}
-							{pricelist["rahmen"]["Silberrahmen"]["max"]}
-							<br />
-							<br />
-						</>
-					}
-					callToAction={"IHR WEG ZU UNS"}
-					imageSource={rahmen}
-					imageSide={"left"}
-					imageStyle={{ width: "30vw" }}
-					handleClick={() => {
-						setShowDialog(true);
-						setDialogType("LocationDialog");
-					}}
-				/>
-				<ProductSection
-					sectionSize={SECTION_SIZE}
-					sectionStyle={{
-						top: `${6 * SECTION_SIZE}vh`,
-					}}
-					id="labor"
-					overTitle={null}
-					title="LABOR"
-					mainText={
-						<>
-							<b>Filmentwicklung</b>
-							<br />
-							Farbe: € {pricelist["labor"]["Filmentwicklung"]["Farbe"]}
-							<br />
-							Schwarz-weiß: €{" "}
-							{pricelist["labor"]["Filmentwicklung"]["Schwarz-weiß"]}
-							<br />
-							<br />
-							<b>Bild-Scannen</b>
-							<br />
-							Pro Neg.: € {pricelist["labor"]["Bild-Scannen"]["Pro Neg."]}
-							<br />
-							Pro Dia: € {pricelist["labor"]["Bild-Scannen"]["Pro Dia"]}
-							<br />
-							Pro Bild: € {pricelist["labor"]["Bild-Scannen"]["Pro Bild"]}
-							<br />
-							<br />
-							<b>Bild vom Negativen</b>
-							<br />
-							Größe von 9 x 13 cm bis 21 x 29,7 cm
-							<br />
-							Preise von €{" "}
-							{findMinValue(pricelist["labor"]["Bild vom Negativen"])} bis €{" "}
-							{findMaxValue(pricelist["labor"]["Bild vom Negativen"])}
-							<br />
-							<br />
-							<b>Bilder vom Diafilm/Rollfilm/Planfilm</b>
-							<br />
-							Größe von 9 x 13 cm bis 21 x 29,7 cm
-							<br />
-							Preise von €{" "}
-							{findMinValue(
-								pricelist["labor"]["Bilder vom Diafilm/Rollfilm/Planfilm"]
-							)}{" "}
-							bis €{" "}
-							{findMaxValue(
-								pricelist["labor"]["Bilder vom Diafilm/Rollfilm/Planfilm"]
-							)}
-							<br />
-							<br />
-							<b>Bild vom Bild</b>
-							<br />
-							Größe von 9 x 13 cm bis 21 x 29,7 cm
-							<br />
-							Preise von € {findMinValue(
-								pricelist["labor"]["Bild vom Bild"]
-							)}{" "}
-							bis € {findMaxValue(pricelist["labor"]["Bild vom Bild"])}
-							<br />
-							<br />
-							Bearbeitungsgebühren: €{" "}
-							{pricelist["labor"]["Sonstiges"]["Bearbeitungsgebühren"]}
-							<br />
-							Speichern auf Medien, E-Mail senden: €{" "}
-							{
-								pricelist["labor"]["Sonstiges"][
-									"Speichern auf Medien, E-Mail senden"
-								]
-							}
-							<br />
-							<br />
-						</>
-					}
-					callToAction={"IHR WEG ZU UNS"}
-					imageSource={lab}
-					imageSide={"right"}
-					imageStyle={{
-						width: "30vw",
-					}}
-					handleClick={() => {
-						setShowDialog(true);
-						setDialogType("LocationDialog");
-					}}
-				/>
-				<ProductSection
-					sectionSize={SECTION_SIZE}
-					sectionStyle={{
-						top: `${7 * SECTION_SIZE}vh`,
-					}}
-					id="video"
-					overTitle={null}
-					title="VIDEO"
-					mainText={
-						<>
-							<b>Kassetten VHS, VHS-C, auf DVD oder USB</b>
-							<br />
-							Pro Kassette: €{" "}
-							{
-								pricelist["videokassetten"][
-									"Kassetten VHS, VHS-C, auf DVD oder USB"
-								]["Pro Kassette"]
-							}
-							<br />
-							<br />
-							<b>Super 8 auf DVD</b>
-							<br />
-							Kleine Spule: €{" "}
-							{pricelist["videokassetten"]["Super 8 auf DVD"]["Kleine Spule"]}
-							<br />
-							Mittlere Spule: €{" "}
-							{pricelist["videokassetten"]["Super 8 auf DVD"]["Mittlere Spule"]}
-							<br />
-							Große Spule: €{" "}
-							{pricelist["videokassetten"]["Super 8 auf DVD"]["Große Spule"]}
-							<br />
-							<br />
-						</>
-					}
-					callToAction={"IHR WEG ZU UNS"}
-					imageSource={video}
-					imageSide={"left"}
-					imageStyle={{
-						width: "25vw",
-					}}
-					handleClick={() => {
-						setShowDialog(true);
-						setDialogType("LocationDialog");
-					}}
-				/>
-				<ProductSection
-					sectionSize={SECTION_SIZE}
-					sectionStyle={{
-						top: `${8 * SECTION_SIZE}vh`,
-					}}
-					id="glas"
-					overTitle={null}
-					title="3D GLASFOTOLABOR"
-					mainText={"Lorem ipsum"}
-					callToAction={"ONLINE BESTELLEN"}
-					imageSource={glas}
-					imageSide={"right"}
-					imageStyle={{
-						width: "20vw",
-					}}
-					handleClick={() => {
-						setShowDialog(true);
-						setDialogType("LocationDialog");
-					}}
-				/>
-
-				<ProductSection
-					sectionSize={SECTION_SIZE}
-					sectionStyle={{
-						top: `${9 * SECTION_SIZE}vh`,
-					}}
-					id="kopien"
-					overTitle={null}
-					title="KOPIEN"
-					mainText={
-						<>
-							<b>Schwarz-weiß Fotokopien</b>
-							<br />1 Kopie: €{" "}
-							{pricelist["kopien"]["Schwarz-weiß Fotokopien"]["1 Kopie"]}
-							<br />1 PDF-Ausdruck: €{" "}
-							{pricelist["kopien"]["Schwarz-weiß Fotokopien"]["1 PDF-Ausdruck"]}
-							<br />
-							<br />
-							<b>Laminieren</b>
-							<br />
-							A3: € {pricelist["kopien"]["Laminieren"]["A3"]}
-							<br />
-							A4: € {pricelist["kopien"]["Laminieren"]["A4"]}
-							<br />
-							A5: € {pricelist["kopien"]["Laminieren"]["A5"]}
-							<br />
-							A6: € {pricelist["kopien"]["Laminieren"]["A6"]}
-							<br />
-							<br />
-							<b>PDF-Scannen</b>
-							<br />
-							Pro Blatt: € {pricelist["kopien"]["PDF-Scannen"]["Pro Blatt"]}
-							<br />
-							<br />
-						</>
-					}
-					callToAction={"IHR WEG ZU UNS"}
-					imageSource={kopien}
-					imageSide={"left"}
-					imageStyle={{
-						width: "20vmax",
-					}}
-					handleClick={() => {
-						setShowDialog(true);
-						setDialogType("LocationDialog");
-					}}
-				/>
+				<ProductSectionContext.Provider
+					value={{ pricelist: pricelist, sectionSize: SECTION_SIZE }}
+				>
+					<ProductSection
+						callToAction={determineCalltoAction("passfotos")}
+						id="passfotos"
+						imageSource={passfotos}
+						seqNumber={1}
+						handleClick={determineHandleClick("passfotos")}
+					/>
+					<ProductSection
+						callToAction={determineCalltoAction("bewerbungsbilder")}
+						id="bewerbungsbilder"
+						imageSource={bewerbungsbilder}
+						seqNumber={2}
+						handleClick={determineHandleClick("bewerbungsbilder")}
+					/>
+					<ProductSection
+						callToAction={determineCalltoAction("portraits")}
+						id="portraits"
+						imageSource={portraits}
+						seqNumber={3}
+						handleClick={determineHandleClick("portraits")}
+					/>
+					<ProductSection
+						callToAction={determineCalltoAction("fotoprodukte")}
+						id="fotoprodukte"
+						imageSource={fotoprodukte}
+						seqNumber={4}
+						handleClick={determineHandleClick("fotoprodukte")}
+					/>
+					<ProductSection
+						callToAction={determineCalltoAction("rahmen")}
+						id="rahmen"
+						imageSource={rahmen}
+						seqNumber={5}
+						handleClick={determineHandleClick("rahmen")}
+					/>
+					<ProductSection
+						callToAction={determineCalltoAction("labor")}
+						id="labor"
+						imageSource={labor}
+						seqNumber={6}
+						handleClick={determineHandleClick("labor")}
+					/>
+					<ProductSection
+						callToAction={determineCalltoAction("videokassetten")}
+						id="videokassetten"
+						imageSource={videokassetten}
+						seqNumber={7}
+						handleClick={determineHandleClick("videokassetten")}
+					/>
+					<ProductSection
+						callToAction={determineCalltoAction("glasfotos")}
+						id="glasfotos"
+						imageSource={glasfotos}
+						seqNumber={8}
+						handleClick={determineHandleClick("glasfotos")}
+					/>
+					<ProductSection
+						callToAction={determineCalltoAction("kopien")}
+						id="kopien"
+						imageSource={kopien}
+						seqNumber={9}
+						handleClick={determineHandleClick("kopien")}
+					/>
+				</ProductSectionContext.Provider>
 				<FinalSection
 					sectionSize={SECTION_SIZE}
 					handleClick={(type) => {
