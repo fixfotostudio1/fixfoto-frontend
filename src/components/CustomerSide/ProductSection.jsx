@@ -36,6 +36,7 @@ const ProductSection = ({
 					<>
 						{type}: € {ctx.pricelist[sectionName][type]}
 						<br />
+						<br />
 					</>
 				);
 			}

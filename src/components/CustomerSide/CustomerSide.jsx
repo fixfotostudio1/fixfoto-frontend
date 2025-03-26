@@ -26,8 +26,8 @@ import Dialog from "./Dialog";
 import ShoppingCart from "./ShoppingCart";
 
 import passfotos from "../../assets/pass.png";
-import bewerbungsbilder from "../../assets/bewe.jpg";
-import portraits from "../../assets/portr.jpg";
+import bewerbungsbilder from "../../assets/bewe_wb1.png";
+import portraits from "../../assets/portr_wb.png";
 import fotoprodukte from "../../assets/prod.png";
 import rahmen from "../../assets/rahmen.webp";
 import labor from "../../assets/labor.png";
