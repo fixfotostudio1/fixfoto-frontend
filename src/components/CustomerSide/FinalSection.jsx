@@ -1,4 +1,4 @@
-import owner from "../../assets/owner_bw.png";
+import owner from "../../assets/owner.jpg";
 
 const FinalSection = ({ sectionSize, handleClick }) => {
 	const text =
@@ -46,7 +46,6 @@ const FinalSection = ({ sectionSize, handleClick }) => {
 							marginTop: "10px",
 							marginBottom: "10px",
 						}}
-						onClick={handleClick}
 					>
 						<h5
 							style={{
@@ -153,7 +152,6 @@ const FinalSection = ({ sectionSize, handleClick }) => {
 							marginTop: "10px",
 							marginBottom: "10px",
 						}}
-						onClick={handleClick}
 					>
 						<h5
 							style={{
