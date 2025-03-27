@@ -9,7 +9,7 @@ import InfoDialog from "./InfoDialog";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { STRIPE_PUBLISHABLE_KEY } from "../../utils/config";
+import { STRIPE_PUBLISHABLE_KEY, BASE_URL } from "../../utils/config";
 
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
@@ -39,7 +39,7 @@ const Dialog = ({
 	const fetchClientSecret = (order) => {
 		if (!clientSecretRef.current) {
 			axios
-				.post("http://localhost:3001/api/orders/fetchClientSecret", {
+				.post(`${BASE_URL}/api/orders/fetchClientSecret`, {
 					items: order.items,
 					deliveryType: order.deliveryType,
 				})
@@ -64,7 +64,7 @@ const Dialog = ({
 
 	const cancelIntent = () => {
 		if (clientSecret) {
-			axios.post("http://localhost:3001/api/orders/cancelPaymentIntent", {
+			axios.post(`${BASE_URL}/api/orders/cancelPaymentIntent`, {
 				intentId: clientSecret.split("_secret_")[0],
 			});
 			setClientSecret(null);

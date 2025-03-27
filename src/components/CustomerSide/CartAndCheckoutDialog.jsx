@@ -8,6 +8,8 @@ import { PaymentElement } from "@stripe/react-stripe-js";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { Big } from "bigdecimal.js";
 
+import { SELF_URL } from "../../utils/config";
+
 const CartAndCheckoutDialog = ({
 	AGBAgreement,
 	setAGBAgreement,
@@ -75,7 +77,7 @@ const CartAndCheckoutDialog = ({
 		const { error } = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
-				return_url: "http://localhost:5174/after_payment_attempt",
+				return_url: `${SELF_URL}/after_payment_attempt`,
 			},
 		});
 

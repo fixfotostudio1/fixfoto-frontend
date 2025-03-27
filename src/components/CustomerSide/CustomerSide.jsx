@@ -16,6 +16,7 @@ import {
 	S3_TEMP_BUCKET,
 	REGION,
 	AWS_IDENTITY_POOL_ID,
+	BASE_URL,
 } from "../../utils/config";
 
 import ProductSection from "./ProductSection";
@@ -295,7 +296,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 				Object({ ...item, file: null })
 			),
 		};
-		await axios.post("http://localhost:3001/api/orders/", {
+		await axios.post(`${BASE_URL}/api/orders/`, {
 			order: filelessOrder,
 		});
 	};
@@ -342,7 +343,7 @@ const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	useEffect(() => {
 		if (
 			(orderSuccess === "succeeded" || orderSuccess === "pending") &&
-			orderRef.current["orderNumber"] !== ""
+			JSON.parse(Cookies.get("order"))["orderNumber"].includes("-")
 		) {
 			uploadImages().then(() => {
 				deleteImages()

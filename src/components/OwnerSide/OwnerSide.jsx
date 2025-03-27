@@ -9,7 +9,12 @@ import {
 	GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
-import { S3_BUCKET, REGION, AWS_IDENTITY_POOL_ID } from "../../utils/config";
+import {
+	S3_BUCKET,
+	REGION,
+	AWS_IDENTITY_POOL_ID,
+	BASE_URL,
+} from "../../utils/config";
 
 import LoginForm from "./LoginForm";
 import Dashboard from "./Dashboard";
@@ -39,7 +44,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 
 	const handleLogin = (un, pw) => {
 		axios
-			.post("http://localhost:3001/api/login", { username: un, password: pw })
+			.post(`${BASE_URL}/api/login`, { username: un, password: pw })
 			.then((response) => {
 				setToken(response["data"]["token"]);
 				updateOrders(response["data"]["token"]);
@@ -51,7 +56,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 
 	const updateOrders = (token) => {
 		axios
-			.get("http://localhost:3001/api/orders", {
+			.get(`${BASE_URL}/api/orders`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -64,7 +69,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 	const changeStatus = (order, token, newStatus) => {
 		axios
 			.put(
-				`http://localhost:3001/api/orders/${order["id"]}`,
+				`${BASE_URL}/api/orders/${order["id"]}`,
 				{ ...order, status: newStatus },
 				{
 					headers: {
@@ -110,7 +115,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 
 	const deleteOrderFromDb = (order, token) => {
 		axios
-			.delete(`http://localhost:3001/api/orders/${order["id"]}`, {
+			.delete(`${BASE_URL}/api/orders/${order["id"]}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -151,7 +156,7 @@ const OwnerSide = ({ pricelist, handlePricelistChange }) => {
 
 	const refundOrder = (order) => {
 		axios.post(
-			`http://localhost:3001/api/orders/refund`,
+			`${BASE_URL}/api/orders/refund`,
 			{
 				...order,
 			},

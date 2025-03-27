@@ -1,11 +1,13 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useSearchParams } from "react-router-dom";
 
 import "./App.css";
 import CustomerSide from "./components/CustomerSide/CustomerSide";
 import OwnerSide from "./components/OwnerSide/OwnerSide";
+
+import { BASE_URL } from "./utils/config";
 
 const App = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -15,24 +17,20 @@ const App = () => {
 	const [pricelist, setPricelist] = useState(null);
 	const handlePricelistChange = (newPricelist, token) => {
 		axios
-			.put(
-				`http://localhost:3001/api/pricelist/${newPricelist["id"]}`,
-				newPricelist,
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			)
+			.put(`${BASE_URL}/api/pricelist/${newPricelist["id"]}`, newPricelist, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
 			.then((result) => {
-				axios.get("http://localhost:3001/api/pricelist").then((result) => {
+				axios.get(`${BASE_URL}/api/pricelist`).then((result) => {
 					setPricelist(result["data"][0]);
 				});
 			});
 	};
 
 	useEffect(() => {
-		axios.get("http://localhost:3001/api/pricelist").then((result) => {
+		axios.get(`${BASE_URL}/api/pricelist`).then((result) => {
 			setPricelist(result["data"][0]);
 		});
 	}, []);
