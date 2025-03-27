@@ -11,7 +11,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { STRIPE_PUBLISHABLE_KEY } from "../../utils/config";
 
-const stripePromise = await loadStripe(STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 const Dialog = ({
 	AGBAgreement,
