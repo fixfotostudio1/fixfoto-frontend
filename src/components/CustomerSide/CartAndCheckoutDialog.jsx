@@ -226,7 +226,7 @@ const CartAndCheckoutDialog = ({
 							<Form>
 								<div key="inline-radio" className="mb-3">
 									<Form.Check
-										label="Abholen (Kostenlos)"
+										label={`Abholen (€ ${pricelist["delivery"]["Abholen"]})`}
 										name="group1"
 										type="radio"
 										id="inline-radio-1"
@@ -239,7 +239,7 @@ const CartAndCheckoutDialog = ({
 										}}
 									/>
 									<Form.Check
-										label="Hermes-Versand (4.99)"
+										label={`Hermes-Versand (€ ${pricelist["delivery"]["Hermes-Versand"]})`}
 										name="group1"
 										type="radio"
 										id="inline-radio-2"
