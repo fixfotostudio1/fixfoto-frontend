@@ -51,6 +51,11 @@ const ProductSection = ({
 							</>
 						);
 					}
+					arr.push(
+						<>
+							<br />
+						</>
+					);
 				} else {
 					arr.push(
 						<>
@@ -97,11 +102,6 @@ const ProductSection = ({
 					);
 				}
 			}
-			arr.push(
-				<>
-					<br />
-				</>
-			);
 		}
 		return <>{...arr}</>;
 	};
