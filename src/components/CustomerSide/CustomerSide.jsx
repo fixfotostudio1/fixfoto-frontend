@@ -39,7 +39,7 @@ import kopien from "../../assets/kopien.png";
 export const ProductSectionContext = createContext({});
 export const DialogContext = createContext({});
 
-const SECTION_SIZE = "138";
+const SECTION_SIZE = "150";
 
 const CustomerSide = ({ intentId, orderSuccess, pricelist }) => {
 	const supertypes = Object.keys(pricelist).filter(
