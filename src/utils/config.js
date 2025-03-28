@@ -4,8 +4,8 @@ const S3_BUCKET = import.meta.env.VITE_S3_BUCKET;
 const S3_TEMP_BUCKET = import.meta.env.VITE_S3_TEMP_BUCKET;
 const REGION = import.meta.env.VITE_REGION;
 const AWS_IDENTITY_POOL_ID = import.meta.env.VITE_AWS_IDENTITY_POOL_ID;
-const SELF_URL = "https://fixfoto-frontend-production.up.railway.app";
-const BASE_URL = "https://fixfoto-backend-production-6e13.up.railway.app";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+const SELF_URL = import.meta.env.VITE_SELF_URL;
 
 export {
 	STRIPE_PUBLISHABLE_KEY,
